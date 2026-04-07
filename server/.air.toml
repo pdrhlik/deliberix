@@ -2,8 +2,8 @@ root = "."
 tmp_dir = "tmp"
 
 [build]
-  bin = "./tmp/edemos-server"
   cmd = "go build -o ./tmp/edemos-server ."
+  entrypoint = ["./tmp/edemos-server"]
   delay = 1000
   exclude_dir = ["tmp", "vendor"]
   exclude_regex = ["_test.go"]

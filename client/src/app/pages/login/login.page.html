@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ "auth.login" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="auth-container">
+    <h1 class="auth-title">{{ "common.app-name" | translate }}</h1>
+
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+      <ion-input
+        type="email"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="email"
+        name="email"
+        [label]="'auth.email' | translate"
+      ></ion-input>
+
+      <ion-input
+        type="password"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="password"
+        name="password"
+        [label]="'auth.password' | translate"
+      ></ion-input>
+
+      @if (error()) {
+        <ion-text color="danger">
+          <p class="error-message">{{ "auth.login-failed" | translate }}</p>
+        </ion-text>
+      }
+
+      <ion-button expand="block" type="submit">
+        {{ "auth.login" | translate }}
+      </ion-button>
+    </form>
+
+    <p class="auth-link">
+      {{ "auth.no-account" | translate }}
+      <a routerLink="/register">{{ "auth.register" | translate }}</a>
+    </p>
+  </div>
+</ion-content>

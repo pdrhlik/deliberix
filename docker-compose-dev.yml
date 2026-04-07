@@ -13,6 +13,11 @@ services:
       - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
     ports:
       - "127.0.0.1:3307:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
     networks:
       - edemos
 
@@ -38,7 +43,8 @@ services:
     networks:
       - edemos
     depends_on:
-      - mariadb
+      mariadb:
+        condition: service_healthy
 
   client:
     build:

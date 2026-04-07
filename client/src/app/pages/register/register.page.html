@@ -1,0 +1,64 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ "auth.register" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="auth-container">
+    <h1 class="auth-title">{{ "common.app-name" | translate }}</h1>
+
+    <form (ngSubmit)="onSubmit()" class="auth-form">
+      <ion-input
+        type="text"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="name"
+        name="name"
+        [label]="'auth.name' | translate"
+      ></ion-input>
+
+      <ion-input
+        type="email"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="email"
+        name="email"
+        [label]="'auth.email' | translate"
+      ></ion-input>
+
+      <ion-input
+        type="password"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="password"
+        name="password"
+        [label]="'auth.password' | translate"
+      ></ion-input>
+
+      <ion-input
+        type="password"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="confirmPassword"
+        name="confirmPassword"
+        [label]="'auth.confirm-password' | translate"
+      ></ion-input>
+
+      @if (error()) {
+        <ion-text color="danger">
+          <p class="error-message">{{ errorMessage() }}</p>
+        </ion-text>
+      }
+
+      <ion-button expand="block" type="submit">
+        {{ "auth.register" | translate }}
+      </ion-button>
+    </form>
+
+    <p class="auth-link">
+      {{ "auth.have-account" | translate }}
+      <a routerLink="/login">{{ "auth.login" | translate }}</a>
+    </p>
+  </div>
+</ion-content>

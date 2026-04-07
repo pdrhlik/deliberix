@@ -24,7 +24,8 @@
     "no-account": "Nemáte účet?",
     "have-account": "Již máte účet?",
     "login-failed": "Nesprávný e-mail nebo heslo",
-    "register-failed": "Registrace se nezdařila"
+    "register-failed": "Registrace se nezdařila",
+    "passwords-no-match": "Hesla se neshodují"
   },
   "survey": {
     "surveys": "Průzkumy",

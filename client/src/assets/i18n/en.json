@@ -24,7 +24,8 @@
     "no-account": "Don't have an account?",
     "have-account": "Already have an account?",
     "login-failed": "Invalid email or password",
-    "register-failed": "Registration failed"
+    "register-failed": "Registration failed",
+    "passwords-no-match": "Passwords do not match"
   },
   "survey": {
     "surveys": "Surveys",

@@ -4,9 +4,7 @@ import "context"
 
 type ctxKey int
 
-const (
-	ctxUser ctxKey = 1
-)
+const CtxUserKey ctxKey = 1
 
 type User struct {
 	ID   uint
@@ -14,10 +12,10 @@ type User struct {
 }
 
 func ContextWithUser(ctx context.Context, user *User) context.Context {
-	return context.WithValue(ctx, ctxUser, user)
+	return context.WithValue(ctx, CtxUserKey, user)
 }
 
 func GetUserFromContext(ctx context.Context) *User {
-	user, _ := ctx.Value(ctxUser).(*User)
+	user, _ := ctx.Value(CtxUserKey).(*User)
 	return user
 }
