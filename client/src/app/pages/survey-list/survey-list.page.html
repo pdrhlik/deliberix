@@ -5,27 +5,62 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  @if (surveyService.surveys().length === 0) {
-    <div class="empty-state">
-      <ion-text color="medium">
-        <p>{{ "survey.no-surveys" | translate }}</p>
-      </ion-text>
-    </div>
-  } @else {
-    <ion-list>
-      @for (survey of surveyService.surveys(); track survey.id) {
-        <ion-item [routerLink]="'/survey/' + survey.id" detail="true" button>
-          <ion-label>
-            <h2>{{ survey.title }}</h2>
-            <p>{{ survey.role }}</p>
-          </ion-label>
-          <ion-badge slot="end" [color]="statusColor(survey.status)">
-            {{ "survey." + survey.status | translate }}
-          </ion-badge>
-        </ion-item>
-      }
-    </ion-list>
-  }
+  <div class="list-container">
+    <!-- My surveys -->
+    @if (surveyService.surveys().length > 0) {
+      <h2 class="section-title">{{ "survey.my-surveys" | translate }}</h2>
+      <ion-list>
+        @for (survey of surveyService.surveys(); track survey.id) {
+          <ion-item [routerLink]="'/survey/' + survey.id" detail="true" button>
+            <ion-label>
+              <h2>{{ survey.title }}</h2>
+              <p class="survey-meta">
+                <span class="role">{{ survey.role }}</span>
+                @if (survey.total > 0 && survey.status === "active") {
+                  <span class="progress-info">
+                    @if (survey.voted >= survey.total) {
+                      ✓
+                    } @else {
+                      {{ survey.voted }}/{{ survey.total }}
+                    }
+                  </span>
+                }
+              </p>
+            </ion-label>
+            <ion-badge slot="end" [color]="statusColor(survey.status)">
+              {{ "survey." + survey.status | translate }}
+            </ion-badge>
+          </ion-item>
+        }
+      </ion-list>
+    }
+
+    <!-- Public surveys to join -->
+    @if (surveyService.publicSurveys().length > 0) {
+      <h2 class="section-title">{{ "survey.discover" | translate }}</h2>
+      <ion-list>
+        @for (survey of surveyService.publicSurveys(); track survey.id) {
+          <ion-item [routerLink]="'/survey/' + survey.id" detail="true" button>
+            <ion-label>
+              <h2>{{ survey.title }}</h2>
+            </ion-label>
+            <ion-badge slot="end" color="primary">
+              {{ "survey.join" | translate }}
+            </ion-badge>
+          </ion-item>
+        }
+      </ion-list>
+    }
+
+    <!-- Empty state only if both lists are empty -->
+    @if (surveyService.surveys().length === 0 && surveyService.publicSurveys().length === 0) {
+      <div class="empty-state">
+        <ion-text color="medium">
+          <p>{{ "survey.no-surveys" | translate }}</p>
+        </ion-text>
+      </div>
+    }
+  </div>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button routerLink="/survey/create">

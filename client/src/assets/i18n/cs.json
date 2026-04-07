@@ -43,6 +43,8 @@
     "join": "Připojit se k průzkumu",
     "settings": "Nastavení",
     "participants": "Účastníci",
+    "my-surveys": "Moje průzkumy",
+    "discover": "Objevte",
     "no-surveys": "Zatím žádné průzkumy"
   },
   "statement": {
@@ -72,7 +74,12 @@
   "results": {
     "results": "Výsledky",
     "total-votes": "Celkem hlasů",
-    "importance": "Důležitost"
+    "importance": "Důležitost",
+    "no-results": "Zatím žádné výsledky",
+    "participants": "Účastníci",
+    "statements": "Výroky",
+    "votes-cast": "Odevzdáno hlasů",
+    "completion": "Dokončeno"
   },
   "language": {
     "language": "Jazyk",

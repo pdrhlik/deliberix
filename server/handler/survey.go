@@ -101,6 +101,17 @@ func (h *Handler) ListSurveys() AppHandlerFunc {
 	}
 }
 
+func (h *Handler) ListPublicSurveys() AppHandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) error {
+		user := identity.GetUserFromContext(r.Context())
+		items, err := h.Store.ListPublicSurveys(r.Context(), user.ID)
+		if err != nil {
+			return err
+		}
+		return writeJSON(w, http.StatusOK, items)
+	}
+}
+
 func (h *Handler) GetSurvey() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		id, err := parseIDParam(r, "id")

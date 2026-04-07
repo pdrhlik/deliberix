@@ -23,6 +23,8 @@ export interface SurveyListItem {
   title: string;
   status: string;
   role: string;
+  voted: number;
+  total: number;
   createdAt: string;
 }
 

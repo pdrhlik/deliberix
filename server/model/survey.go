@@ -59,5 +59,7 @@ type SurveyListItem struct {
 	Title     string    `db:"title" json:"title"`
 	Status    string    `db:"status" json:"status"`
 	Role      string    `db:"role" json:"role"`
+	Voted     int       `db:"voted" json:"voted"`
+	Total     int       `db:"total" json:"total"`
 	CreatedAt time.Time `db:"created_at" json:"createdAt"`
 }

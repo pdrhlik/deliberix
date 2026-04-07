@@ -1,4 +1,4 @@
-import { Component, inject, OnInit } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import {
@@ -22,15 +22,16 @@ import { SurveyService } from "../../services/survey.service";
   templateUrl: "./survey-list.page.html",
   styleUrls: ["./survey-list.page.scss"]
 })
-export class SurveyListPage implements OnInit {
+export class SurveyListPage {
   surveyService = inject(SurveyService);
 
   constructor() {
     addIcons({ addOutline });
   }
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.surveyService.loadSurveys();
+    this.surveyService.loadPublicSurveys();
   }
 
   statusColor(status: string): string {

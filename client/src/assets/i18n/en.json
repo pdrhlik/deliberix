@@ -43,6 +43,8 @@
     "join": "Join survey",
     "settings": "Settings",
     "participants": "Participants",
+    "my-surveys": "My surveys",
+    "discover": "Discover",
     "no-surveys": "No surveys yet"
   },
   "statement": {
@@ -72,7 +74,12 @@
   "results": {
     "results": "Results",
     "total-votes": "Total votes",
-    "importance": "Importance"
+    "importance": "Importance",
+    "no-results": "No results yet",
+    "participants": "Participants",
+    "statements": "Statements",
+    "votes-cast": "Votes cast",
+    "completion": "Completed"
   },
   "language": {
     "language": "Language",

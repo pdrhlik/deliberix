@@ -1,0 +1,91 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button [defaultHref]="'/survey/' + surveyId"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ "results.results" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="results-container">
+    @if (error(); as err) {
+      <div class="error-state">
+        <ion-text color="medium">
+          <p>{{ err }}</p>
+        </ion-text>
+      </div>
+    } @else if (results().length === 0 && !stats()) {
+      <div class="empty-state">
+        <ion-text color="medium">
+          <p>{{ "results.no-results" | translate }}</p>
+        </ion-text>
+      </div>
+    } @else {
+      <!-- Stats overview -->
+      @if (stats(); as s) {
+        <div class="stats-grid">
+          <div class="stat-card">
+            <span class="stat-value">{{ s.totalParticipants }}</span>
+            <span class="stat-label">{{ "results.participants" | translate }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ s.totalStatements }}</span>
+            <span class="stat-label">{{ "results.statements" | translate }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ s.totalVotes }}</span>
+            <span class="stat-label">{{ "results.votes-cast" | translate }}</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ s.completionRate | number:"1.0-0" }}%</span>
+            <span class="stat-label">{{ "results.completion" | translate }}</span>
+          </div>
+        </div>
+      }
+
+      <ion-segment [value]="sortBy()" (ionChange)="onSortChange($event)">
+        <ion-segment-button value="votes">
+          <ion-label>{{ "results.total-votes" | translate }}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="agree">
+          <ion-label>{{ "statement.agree" | translate }}</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="importance">
+          <ion-label>{{ "results.importance" | translate }}</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+
+      @for (r of sortedResults; track r.id) {
+        <div class="result-card">
+          <p class="statement-text">{{ r.text }}</p>
+
+          <div class="vote-bar">
+            <div class="bar-segment agree" [style.width.%]="agreePercent(r)"></div>
+            <div class="bar-segment disagree" [style.width.%]="disagreePercent(r)"></div>
+            <div class="bar-segment abstain" [style.width.%]="abstainPercent(r)"></div>
+          </div>
+
+          <div class="vote-legend">
+            <span class="legend-item agree-text">
+              {{ "statement.agree" | translate }} {{ agreePercent(r) | number:"1.0-0" }}%
+            </span>
+            <span class="legend-item disagree-text">
+              {{ "statement.disagree" | translate }} {{ disagreePercent(r) | number:"1.0-0" }}%
+            </span>
+            <span class="legend-item abstain-text">
+              {{ "statement.abstain" | translate }} {{ abstainPercent(r) | number:"1.0-0" }}%
+            </span>
+          </div>
+
+          <div class="meta-row">
+            <span>{{ "results.total-votes" | translate }}: {{ r.totalVotes }}</span>
+            @if (r.importantCount > 0) {
+              <ion-badge color="warning">{{ "results.importance" | translate }}: {{ r.importantCount }}</ion-badge>
+            }
+          </div>
+        </div>
+      }
+    }
+  </div>
+</ion-content>

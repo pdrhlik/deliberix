@@ -17,3 +17,13 @@ type Statement struct {
 type CreateStatementRequest struct {
 	Text string `json:"text"`
 }
+
+type StatementResult struct {
+	ID             uint   `db:"id" json:"id"`
+	Text           string `db:"text" json:"text"`
+	AgreeCount     int    `db:"agree_count" json:"agreeCount"`
+	DisagreeCount  int    `db:"disagree_count" json:"disagreeCount"`
+	AbstainCount   int    `db:"abstain_count" json:"abstainCount"`
+	ImportantCount int    `db:"important_count" json:"importantCount"`
+	TotalVotes     int    `db:"total_votes" json:"totalVotes"`
+}

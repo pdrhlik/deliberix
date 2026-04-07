@@ -1,3 +1,19 @@
+.list-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.section-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem 0;
+  color: var(--ion-color-medium-shade);
+
+  &:first-child {
+    margin-top: 0;
+  }
+}
+
 .empty-state {
   display: flex;
   align-items: center;
@@ -19,8 +35,19 @@ ion-item {
     font-size: 1rem;
   }
 
-  p {
+  .survey-meta {
     font-size: 0.85rem;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  .role {
     text-transform: capitalize;
+  }
+
+  .progress-info {
+    color: var(--ion-color-primary);
+    font-weight: 500;
   }
 }

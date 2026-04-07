@@ -52,6 +52,7 @@ func main() {
 		// Survey routes
 		r.Get("/api/v1/survey", handler.ErrorHandler(h.ListSurveys()))
 		r.Post("/api/v1/survey", handler.ErrorHandler(h.CreateSurvey()))
+		r.Get("/api/v1/survey/public", handler.ErrorHandler(h.ListPublicSurveys()))
 		r.Get("/api/v1/survey/{id}", handler.ErrorHandler(h.GetSurvey()))
 		r.Patch("/api/v1/survey/{id}", handler.ErrorHandler(h.UpdateSurvey()))
 		r.Post("/api/v1/survey/{id}/join", handler.ErrorHandler(h.JoinSurvey()))
@@ -66,6 +67,10 @@ func main() {
 		// Moderation routes
 		r.Get("/api/v1/survey/{id}/moderation", handler.ErrorHandler(h.GetModerationQueue()))
 		r.Patch("/api/v1/statement/{id}/moderate", handler.ErrorHandler(h.ModerateStatement()))
+
+		// Results routes
+		r.Get("/api/v1/survey/{id}/results", handler.ErrorHandler(h.GetResults()))
+		r.Get("/api/v1/survey/{id}/stats", handler.ErrorHandler(h.GetSurveyStats()))
 
 		// Response routes
 		r.Post("/api/v1/statement/{id}/response", handler.ErrorHandler(h.SubmitResponse()))

@@ -10,10 +10,16 @@ export class SurveyService {
   private api = inject(ApiService);
 
   readonly surveys = signal<SurveyListItem[]>([]);
+  readonly publicSurveys = signal<SurveyListItem[]>([]);
 
   async loadSurveys() {
     const items = await firstValueFrom(this.api.get<SurveyListItem[]>("/survey"));
     this.surveys.set(items);
+  }
+
+  async loadPublicSurveys() {
+    const items = await firstValueFrom(this.api.get<SurveyListItem[]>("/survey/public"));
+    this.publicSurveys.set(items);
   }
 
   async getSurvey(id: number): Promise<Survey> {
