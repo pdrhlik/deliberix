@@ -1,0 +1,76 @@
+{
+  "common": {
+    "app-name": "eDemOS",
+    "loading": "Načítání…",
+    "save": "Uložit",
+    "cancel": "Zrušit",
+    "delete": "Smazat",
+    "edit": "Upravit",
+    "close": "Zavřít",
+    "back": "Zpět",
+    "error": "Došlo k chybě",
+    "confirm": "Potvrdit",
+    "yes": "Ano",
+    "no": "Ne"
+  },
+  "auth": {
+    "login": "Přihlásit se",
+    "register": "Registrovat se",
+    "logout": "Odhlásit se",
+    "email": "E-mail",
+    "password": "Heslo",
+    "confirm-password": "Potvrzení hesla",
+    "name": "Jméno",
+    "no-account": "Nemáte účet?",
+    "have-account": "Již máte účet?",
+    "login-failed": "Nesprávný e-mail nebo heslo",
+    "register-failed": "Registrace se nezdařila"
+  },
+  "survey": {
+    "surveys": "Průzkumy",
+    "create": "Vytvořit průzkum",
+    "title": "Název",
+    "description": "Popis",
+    "status": "Stav",
+    "draft": "Koncept",
+    "active": "Aktivní",
+    "closed": "Uzavřený",
+    "activate": "Aktivovat",
+    "close-survey": "Uzavřít průzkum",
+    "join": "Připojit se k průzkumu",
+    "settings": "Nastavení",
+    "participants": "Účastníci",
+    "no-surveys": "Zatím žádné průzkumy"
+  },
+  "statement": {
+    "statements": "Výroky",
+    "submit": "Odeslat výrok",
+    "agree": "Souhlasím",
+    "disagree": "Nesouhlasím",
+    "abstain": "Přeskočit",
+    "important": "Označit jako důležité",
+    "all-done": "Ohodnotili jste všechny výroky!",
+    "start-voting": "Začít hlasovat",
+    "continue-voting": "Pokračovat v hlasování",
+    "seed-statements": "Počáteční výroky",
+    "add-seed": "Přidat počáteční výrok",
+    "char-count": "{{count}} / {{max}} znaků"
+  },
+  "moderation": {
+    "queue": "Fronta moderace",
+    "approve": "Schválit",
+    "reject": "Zamítnout",
+    "pending": "Čekající",
+    "no-pending": "Žádné výroky k posouzení"
+  },
+  "results": {
+    "results": "Výsledky",
+    "total-votes": "Celkem hlasů",
+    "importance": "Důležitost"
+  },
+  "language": {
+    "language": "Jazyk",
+    "czech": "Čeština",
+    "english": "Angličtina"
+  }
+}
