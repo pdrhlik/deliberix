@@ -16,6 +16,11 @@ export const routes: Routes = [
     loadComponent: () => import("./pages/survey-list/survey-list.page").then(m => m.SurveyListPage),
   },
   {
+    path: "settings",
+    canActivate: [authGuard],
+    loadComponent: () => import("./pages/settings/settings.page").then(m => m.SettingsPage),
+  },
+  {
     path: "survey/create",
     canActivate: [authGuard],
     loadComponent: () => import("./pages/survey-create/survey-create.page").then(m => m.SurveyCreatePage),
@@ -49,5 +54,9 @@ export const routes: Routes = [
     path: "",
     redirectTo: "surveys",
     pathMatch: "full",
+  },
+  {
+    path: "**",
+    loadComponent: () => import("./pages/not-found/not-found.page").then(m => m.NotFoundPage),
   },
 ];

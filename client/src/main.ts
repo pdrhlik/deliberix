@@ -12,6 +12,7 @@ import { AppComponent } from './app/app.component';
 import { LocaleService } from './app/services/locale.service';
 import { AuthService } from './app/services/auth.service';
 import { authInterceptor } from './app/interceptors/auth.interceptor';
+import { ThemeService } from './app/services/theme.service';
 
 bootstrapApplication(AppComponent, {
   providers: [
@@ -26,6 +27,7 @@ bootstrapApplication(AppComponent, {
         suffix: '.json'
       })
     }),
+    provideAppInitializer(() => inject(ThemeService).init()),
     provideAppInitializer(() => inject(LocaleService).init()),
     provideAppInitializer(() => inject(AuthService).init()),
   ],

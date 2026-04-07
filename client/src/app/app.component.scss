@@ -1,0 +1,22 @@
+ion-menu {
+  --width: 280px;
+
+  ion-item.selected {
+    --color: var(--ion-color-primary);
+    font-weight: 600;
+  }
+}
+
+.user-info {
+  --min-height: auto;
+
+  p {
+    font-size: 0.85rem;
+    margin: 0;
+  }
+
+  .user-email {
+    font-size: 0.75rem;
+    color: var(--ion-color-medium);
+  }
+}

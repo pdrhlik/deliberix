@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{ "settings.settings" | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="settings-container">
+    <ion-list>
+      <ion-item>
+        <ion-select
+          [label]="'language.language' | translate"
+          labelPlacement="stacked"
+          [value]="currentLang()"
+          (ionChange)="onLanguageChange($event)"
+          interface="popover"
+        >
+          <ion-select-option value="en">{{ "language.english" | translate }}</ion-select-option>
+          <ion-select-option value="cs">{{ "language.czech" | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+
+      <ion-item>
+        <ion-select
+          [label]="'settings.theme' | translate"
+          labelPlacement="stacked"
+          [value]="themeService.mode()"
+          (ionChange)="onThemeChange($event)"
+          interface="popover"
+        >
+          <ion-select-option value="auto">{{ "settings.theme-auto" | translate }}</ion-select-option>
+          <ion-select-option value="light">{{ "settings.theme-light" | translate }}</ion-select-option>
+          <ion-select-option value="dark">{{ "settings.theme-dark" | translate }}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </ion-list>
+  </div>
+</ion-content>

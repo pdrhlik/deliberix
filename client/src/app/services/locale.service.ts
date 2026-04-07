@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { registerLocaleData } from '@angular/common';
 import cs from '@angular/common/locales/cs';
 import en from '@angular/common/locales/en';
@@ -13,6 +13,7 @@ import { StorageService } from './storage.service';
 export class LocaleService {
 
   availableLanguages = ['cs', 'en'];
+  readonly currentLang = signal('en');
 
   constructor(
     private storageService: StorageService,
@@ -34,6 +35,7 @@ export class LocaleService {
     this.translate.setFallbackLang('en');
     await lastValueFrom(this.translate.use(lang));
     this.loadLocaleData(lang);
+    this.currentLang.set(lang);
     await this.storageService.set('language', lang);
   }
 

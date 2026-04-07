@@ -1,11 +1,38 @@
-import { Component } from '@angular/core';
-import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
+import { Component, inject } from "@angular/core";
+import { RouterLink, RouterLinkActive } from "@angular/router";
+import { TranslatePipe } from "@ngx-translate/core";
+import {
+  IonApp, IonRouterOutlet, IonSplitPane,
+  IonMenu, IonHeader, IonToolbar, IonTitle,
+  IonContent, IonList, IonItem, IonIcon,
+  IonLabel, IonFooter, IonMenuToggle
+} from "@ionic/angular/standalone";
+import { addIcons } from "ionicons";
+import {
+  listOutline, settingsOutline, logOutOutline
+} from "ionicons/icons";
+import { AuthService } from "./services/auth.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: 'app.component.html',
-  imports: [IonApp, IonRouterOutlet],
+  selector: "app-root",
+  templateUrl: "app.component.html",
+  styleUrls: ["app.component.scss"],
+  imports: [
+    RouterLink, RouterLinkActive, TranslatePipe,
+    IonApp, IonRouterOutlet, IonSplitPane,
+    IonMenu, IonHeader, IonToolbar, IonTitle,
+    IonContent, IonList, IonItem, IonIcon,
+    IonLabel, IonFooter, IonMenuToggle
+  ],
 })
 export class AppComponent {
-  constructor() {}
+  auth = inject(AuthService);
+
+  constructor() {
+    addIcons({ listOutline, settingsOutline, logOutOutline });
+  }
+
+  async logout() {
+    await this.auth.logout();
+  }
 }

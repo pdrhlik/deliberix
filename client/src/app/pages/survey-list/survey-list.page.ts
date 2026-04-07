@@ -2,9 +2,9 @@ import { Component, inject } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import { TranslatePipe } from "@ngx-translate/core";
 import {
-  IonHeader, IonToolbar, IonTitle, IonContent,
-  IonList, IonItem, IonLabel, IonBadge, IonFab,
-  IonFabButton, IonIcon, IonText
+  IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,
+  IonMenuButton, IonList, IonItem, IonLabel, IonBadge,
+  IonFab, IonFabButton, IonIcon, IonText
 } from "@ionic/angular/standalone";
 import { addIcons } from "ionicons";
 import { addOutline } from "ionicons/icons";
@@ -15,9 +15,9 @@ import { SurveyService } from "../../services/survey.service";
   standalone: true,
   imports: [
     RouterLink, TranslatePipe,
-    IonHeader, IonToolbar, IonTitle, IonContent,
-    IonList, IonItem, IonLabel, IonBadge, IonFab,
-    IonFabButton, IonIcon, IonText
+    IonHeader, IonToolbar, IonTitle, IonContent, IonButtons,
+    IonMenuButton, IonList, IonItem, IonLabel, IonBadge,
+    IonFab, IonFabButton, IonIcon, IonText
   ],
   templateUrl: "./survey-list.page.html",
   styleUrls: ["./survey-list.page.scss"]

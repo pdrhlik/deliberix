@@ -11,7 +11,9 @@
     "error": "Došlo k chybě",
     "confirm": "Potvrdit",
     "yes": "Ano",
-    "no": "Ne"
+    "no": "Ne",
+    "not-found": "Stránka nenalezena",
+    "go-home": "Přejít na průzkumy"
   },
   "auth": {
     "login": "Přihlásit se",
@@ -85,5 +87,12 @@
     "language": "Jazyk",
     "czech": "Čeština",
     "english": "Angličtina"
+  },
+  "settings": {
+    "settings": "Nastavení",
+    "theme": "Motiv",
+    "theme-auto": "Automatický (systém)",
+    "theme-light": "Světlý",
+    "theme-dark": "Tmavý"
   }
 }
