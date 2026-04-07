@@ -11,7 +11,11 @@
   <div class="vote-container">
     <ion-progress-bar [value]="progressFraction"></ion-progress-bar>
 
-    @if (allDone()) {
+    @if (loading()) {
+      <div class="loading-state">
+        <ion-spinner name="crescent"></ion-spinner>
+      </div>
+    } @else if (allDone()) {
       <div class="done-state">
         <ion-text color="success">
           <h2>{{ "statement.all-done" | translate }}</h2>
@@ -20,9 +24,7 @@
           {{ "common.back" | translate }}
         </ion-button>
       </div>
-    }
-
-    @if (currentStatement(); as st) {
+    } @else if (currentStatement(); as st) {
       <ion-card class="statement-card">
         <ion-card-content>
           <p class="statement-text">{{ st.text }}</p>
@@ -40,6 +42,7 @@
           expand="block"
           color="success"
           (click)="vote('agree')"
+          [disabled]="voting()"
           class="vote-btn"
         >
           <ion-icon name="thumbs-up-outline" slot="start"></ion-icon>
@@ -50,6 +53,7 @@
           expand="block"
           color="danger"
           (click)="vote('disagree')"
+          [disabled]="voting()"
           class="vote-btn"
         >
           <ion-icon name="thumbs-down-outline" slot="start"></ion-icon>
@@ -61,6 +65,7 @@
           color="medium"
           fill="outline"
           (click)="vote('abstain')"
+          [disabled]="voting()"
           class="vote-btn"
         >
           <ion-icon name="remove-outline" slot="start"></ion-icon>

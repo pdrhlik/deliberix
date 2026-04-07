@@ -27,14 +27,12 @@
         [label]="'auth.password' | translate"
       ></ion-input>
 
-      @if (error()) {
-        <ion-text color="danger">
-          <p class="error-message">{{ "auth.login-failed" | translate }}</p>
-        </ion-text>
-      }
-
-      <ion-button expand="block" type="submit">
-        {{ "auth.login" | translate }}
+      <ion-button expand="block" type="submit" [disabled]="submitting()">
+        @if (submitting()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          {{ "auth.login" | translate }}
+        }
       </ion-button>
     </form>
 

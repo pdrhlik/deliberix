@@ -5,16 +5,18 @@ import {
   IonHeader, IonToolbar, IonTitle, IonContent,
   IonButtons, IonBackButton, IonButton, IonIcon,
   IonCard, IonCardContent, IonToggle, IonProgressBar,
-  IonText
+  IonText, IonSpinner
 } from "@ionic/angular/standalone";
 import { FormsModule } from "@angular/forms";
 import { addIcons } from "ionicons";
 import {
   thumbsUpOutline, thumbsDownOutline, removeOutline
 } from "ionicons/icons";
+import { Haptics, ImpactStyle } from "@capacitor/haptics";
 import { Statement } from "../../models/statement.model";
 import { StatementService } from "../../services/statement.service";
 import { ResponseService, VoteProgress } from "../../services/response.service";
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: "app-survey-vote",
@@ -24,7 +26,7 @@ import { ResponseService, VoteProgress } from "../../services/response.service";
     IonHeader, IonToolbar, IonTitle, IonContent,
     IonButtons, IonBackButton, IonButton, IonIcon,
     IonCard, IonCardContent, IonToggle, IonProgressBar,
-    IonText
+    IonText, IonSpinner
   ],
   templateUrl: "./survey-vote.page.html",
   styleUrls: ["./survey-vote.page.scss"]
@@ -33,12 +35,15 @@ export class SurveyVotePage implements OnInit {
   private route = inject(ActivatedRoute);
   private statementService = inject(StatementService);
   private responseService = inject(ResponseService);
+  private toast = inject(ToastService);
 
   surveySlug = "";
   currentStatement = signal<Statement | null>(null);
   progress = signal<VoteProgress>({ voted: 0, total: 0 });
   isImportant = false;
   allDone = signal(false);
+  loading = signal(true);
+  voting = signal(false);
 
   constructor() {
     addIcons({ thumbsUpOutline, thumbsDownOutline, removeOutline });
@@ -47,9 +52,14 @@ export class SurveyVotePage implements OnInit {
   ngOnInit() {
     this.surveySlug = this.route.snapshot.paramMap.get("slug") || "";
     if (this.surveySlug) {
-      this.loadNext();
-      this.loadProgress();
+      this.init();
     }
+  }
+
+  private async init() {
+    this.loading.set(true);
+    await Promise.all([this.loadNext(), this.loadProgress()]);
+    this.loading.set(false);
   }
 
   async loadNext() {
@@ -76,10 +86,21 @@ export class SurveyVotePage implements OnInit {
 
   async vote(vote: string) {
     const st = this.currentStatement();
-    if (!st) return;
+    if (!st || this.voting()) return;
 
-    await this.responseService.submitResponse(st.id, vote, this.isImportant);
-    await this.loadProgress();
-    await this.loadNext();
+    this.voting.set(true);
+    try {
+      await Haptics.impact({ style: ImpactStyle.Light });
+    } catch {}
+
+    try {
+      await this.responseService.submitResponse(st.id, vote, this.isImportant);
+      await this.loadProgress();
+      await this.loadNext();
+    } catch (e) {
+      this.toast.apiError(e);
+    } finally {
+      this.voting.set(false);
+    }
   }
 }

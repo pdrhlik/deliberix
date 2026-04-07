@@ -17,6 +17,7 @@ import { AuthService } from "../../services/auth.service";
 import { SeedStatementsComponent } from "../../components/seed-statements/seed-statements.component";
 import { SubmitStatementComponent } from "../../components/submit-statement/submit-statement.component";
 import { ModerationService } from "../../services/moderation.service";
+import { ToastService } from "../../services/toast.service";
 import { firstValueFrom } from "rxjs";
 
 @Component({
@@ -42,6 +43,7 @@ export class SurveyDetailPage {
   private api = inject(ApiService);
   private auth = inject(AuthService);
   private moderationService = inject(ModerationService);
+  private toast = inject(ToastService);
 
   survey = signal<Survey | null>(null);
   participant = signal<SurveyParticipant | null>(null);
@@ -105,8 +107,13 @@ export class SurveyDetailPage {
 
     const s = this.survey();
     if (!s) return;
-    const updated = await this.surveyService.updateSurvey(s.slug, { status: "active" });
-    this.survey.set(updated);
+    try {
+      const updated = await this.surveyService.updateSurvey(s.slug, { status: "active" });
+      this.survey.set(updated);
+      this.toast.success("survey.activated");
+    } catch (e) {
+      this.toast.apiError(e);
+    }
   }
 
   async closeSurvey() {
@@ -118,8 +125,13 @@ export class SurveyDetailPage {
 
     const s = this.survey();
     if (!s) return;
-    const updated = await this.surveyService.updateSurvey(s.slug, { status: "closed" });
-    this.survey.set(updated);
+    try {
+      const updated = await this.surveyService.updateSurvey(s.slug, { status: "closed" });
+      this.survey.set(updated);
+      this.toast.success("survey.closed-success");
+    } catch (e) {
+      this.toast.apiError(e);
+    }
   }
 
   private async confirmAction(header: string, message: string): Promise<boolean> {

@@ -27,7 +27,9 @@
     "have-account": "Již máte účet?",
     "login-failed": "Nesprávný e-mail nebo heslo",
     "register-failed": "Registrace se nezdařila",
-    "passwords-no-match": "Hesla se neshodují"
+    "passwords-no-match": "Hesla se neshodují",
+    "login-success": "Přihlášení proběhlo úspěšně",
+    "logged-out": "Byli jste odhlášeni"
   },
   "survey": {
     "surveys": "Průzkumy",
@@ -47,7 +49,9 @@
     "participants": "Účastníci",
     "my-surveys": "Moje průzkumy",
     "discover": "Objevte",
-    "no-surveys": "Zatím žádné průzkumy"
+    "no-surveys": "Zatím žádné průzkumy",
+    "activated": "Průzkum aktivován",
+    "closed-success": "Průzkum uzavřen"
   },
   "statement": {
     "statements": "Výroky",
@@ -71,7 +75,9 @@
     "approve": "Schválit",
     "reject": "Zamítnout",
     "pending": "Čekající",
-    "no-pending": "Žádné výroky k posouzení"
+    "no-pending": "Žádné výroky k posouzení",
+    "approved": "Výrok schválen",
+    "rejected": "Výrok zamítnut"
   },
   "results": {
     "results": "Výsledky",

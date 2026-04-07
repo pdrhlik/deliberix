@@ -11,6 +11,7 @@ import { addIcons } from "ionicons";
 import { checkmarkOutline, closeOutline } from "ionicons/icons";
 import { Statement } from "../../models/statement.model";
 import { ModerationService } from "../../services/moderation.service";
+import { ToastService } from "../../services/toast.service";
 
 @Component({
   selector: "app-survey-moderation",
@@ -28,6 +29,7 @@ import { ModerationService } from "../../services/moderation.service";
 export class SurveyModerationPage implements OnInit {
   private route = inject(ActivatedRoute);
   private moderationService = inject(ModerationService);
+  private toast = inject(ToastService);
 
   surveySlug = "";
   queue = signal<Statement[]>([]);
@@ -49,12 +51,22 @@ export class SurveyModerationPage implements OnInit {
   }
 
   async approve(st: Statement) {
-    await this.moderationService.moderate(st.id, "approved");
-    this.queue.update(q => q.filter(s => s.id !== st.id));
+    try {
+      await this.moderationService.moderate(st.id, "approved");
+      this.queue.update(q => q.filter(s => s.id !== st.id));
+      this.toast.success("moderation.approved");
+    } catch (e) {
+      this.toast.apiError(e);
+    }
   }
 
   async reject(st: Statement) {
-    await this.moderationService.moderate(st.id, "rejected");
-    this.queue.update(q => q.filter(s => s.id !== st.id));
+    try {
+      await this.moderationService.moderate(st.id, "rejected");
+      this.queue.update(q => q.filter(s => s.id !== st.id));
+      this.toast.success("moderation.rejected");
+    } catch (e) {
+      this.toast.apiError(e);
+    }
   }
 }

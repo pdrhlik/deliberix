@@ -12,6 +12,7 @@ import {
   listOutline, settingsOutline, logOutOutline
 } from "ionicons/icons";
 import { AuthService } from "./services/auth.service";
+import { ToastService } from "./services/toast.service";
 
 @Component({
   selector: "app-root",
@@ -27,6 +28,7 @@ import { AuthService } from "./services/auth.service";
 })
 export class AppComponent {
   auth = inject(AuthService);
+  private toast = inject(ToastService);
 
   constructor() {
     addIcons({ listOutline, settingsOutline, logOutOutline });
@@ -34,5 +36,6 @@ export class AppComponent {
 
   async logout() {
     await this.auth.logout();
+    this.toast.success("auth.logged-out");
   }
 }

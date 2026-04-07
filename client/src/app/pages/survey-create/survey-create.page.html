@@ -29,14 +29,12 @@
         [rows]="3"
       ></ion-textarea>
 
-      @if (error()) {
-        <ion-text color="danger">
-          <p class="error-message">{{ "common.error" | translate }}</p>
-        </ion-text>
-      }
-
-      <ion-button expand="block" type="submit">
-        {{ "survey.create" | translate }}
+      <ion-button expand="block" type="submit" [disabled]="submitting()">
+        @if (submitting()) {
+          <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+          {{ "survey.create" | translate }}
+        }
       </ion-button>
     </form>
   </div>

@@ -27,7 +27,9 @@
     "have-account": "Already have an account?",
     "login-failed": "Invalid email or password",
     "register-failed": "Registration failed",
-    "passwords-no-match": "Passwords do not match"
+    "passwords-no-match": "Passwords do not match",
+    "login-success": "Successfully logged in",
+    "logged-out": "You have been logged out"
   },
   "survey": {
     "surveys": "Surveys",
@@ -47,7 +49,9 @@
     "participants": "Participants",
     "my-surveys": "My surveys",
     "discover": "Discover",
-    "no-surveys": "No surveys yet"
+    "no-surveys": "No surveys yet",
+    "activated": "Survey activated",
+    "closed-success": "Survey closed"
   },
   "statement": {
     "statements": "Statements",
@@ -71,7 +75,9 @@
     "approve": "Approve",
     "reject": "Reject",
     "pending": "Pending",
-    "no-pending": "No statements to review"
+    "no-pending": "No statements to review",
+    "approved": "Statement approved",
+    "rejected": "Statement rejected"
   },
   "results": {
     "results": "Results",
