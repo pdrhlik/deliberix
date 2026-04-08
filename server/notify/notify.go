@@ -21,6 +21,7 @@ import (
 const (
 	typeEmailVerification = "email-verification"
 	typePasswordReset     = "password-reset"
+	typeMagicLink         = "magic-link"
 )
 
 type Notification interface {
@@ -57,6 +58,20 @@ func (n *PasswordReset) getUserID() uint        { return n.UserID }
 func (n *PasswordReset) getRcpt() *mail.Address { return n.Email }
 func (n *PasswordReset) getLang() string         { return n.Language }
 func (n *PasswordReset) getType() string         { return typePasswordReset }
+
+// MagicLink is queued when a user requests passwordless sign-in.
+type MagicLink struct {
+	UserID   uint              `json:"-"`
+	Email    *mail.Address     `json:"-"`
+	Language string            `json:"-"`
+	Link     string            `json:"link"`
+	T        map[string]string `json:"-"`
+}
+
+func (n *MagicLink) getUserID() uint        { return n.UserID }
+func (n *MagicLink) getRcpt() *mail.Address { return n.Email }
+func (n *MagicLink) getLang() string         { return n.Language }
+func (n *MagicLink) getType() string         { return typeMagicLink }
 
 // MailSender sends a composed email message.
 type MailSender interface {
@@ -200,6 +215,24 @@ func (s *Service) sendPendingEmail(sender MailSender) error {
 		}
 		msg.HTMLBody = func(w io.Writer) error {
 			return passwordResetHTML.Execute(w, tmplData)
+		}
+	case typeMagicLink:
+		msg.Subject = translator.T("email.magicLink.title")
+		var tmplData MagicLink
+		if err := json.Unmarshal(en.RawData, &tmplData); err != nil {
+			return err
+		}
+		tmplData.Language = en.Language
+		tmplData.T = map[string]string{
+			"title":   translator.T("email.magicLink.title"),
+			"heading": translator.T("email.magicLink.heading"),
+			"info":    translator.T("email.magicLink.info"),
+			"button":  translator.T("email.magicLink.button"),
+			"info2":   translator.T("email.magicLink.info2"),
+			"sent":    translator.T("email.sent"),
+		}
+		msg.HTMLBody = func(w io.Writer) error {
+			return magicLinkHTML.Execute(w, tmplData)
 		}
 	default:
 		log.Printf("unknown notification type: %q (id=%d)", en.Type, en.ID)

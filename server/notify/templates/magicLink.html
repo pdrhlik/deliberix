@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="{{ .Language }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>{{ .T.title }}</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: Arial, sans-serif; background-color: #f4f4f4;">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color: #f4f4f4; padding: 20px 0;">
+    <tr>
+      <td align="center">
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width: 600px; background-color: #ffffff; border-radius: 8px;">
+          <tr>
+            <td align="center" style="padding: 20px; padding-bottom: 10px;">
+              <h1 style="font-size: 24px; color: #333333; margin: 0 0 20px;">{{ .T.heading }}</h1>
+              <p style="font-size: 16px; color: #666666; line-height: 1.5; margin: 0 0 10px;">
+                {{ .T.info }}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 20px; padding-top: 0px;">
+              <a href="{{ .Link }}" style="display: inline-block; width: 100%; max-width: 300px; padding: 15px; background-color: #3880ff; color: #fff; text-decoration: none; text-align: center; font-size: 16px; border-radius: 5px;">
+                {{ .T.button }}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td align="center">
+              <a href="{{ .Link }}" style="display: inline-block; font-size: 8px; width: 100%; text-decoration: underline; color: #337ab7; text-align: center;">
+                {{ .Link }}
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td align="center">
+              <p style="font-size: 14px; color: #999999; line-height: 1.5; margin: 10px 0 10px 0;">
+                {{ .T.info2 }}
+              </p>
+            </td>
+          </tr>
+          <tr>
+            <td align="center" style="padding: 20px;">
+              <p style="font-size: 12px; color: #666666; margin: 0;">
+                {{ .T.sent }} <strong>eDemOS</strong>
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>

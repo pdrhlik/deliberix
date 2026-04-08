@@ -46,7 +46,15 @@
     "check-spam": "Nenašli jste e-mail? Zkontrolujte složku se spamem.",
     "resend-verification": "Znovu odeslat ověřovací e-mail",
     "verification-sent": "Ověřovací e-mail odeslán",
-    "back-to-login": "Zpět na přihlášení"
+    "back-to-login": "Zpět na přihlášení",
+    "email-required": "Nejdříve zadejte svůj e-mail",
+    "magic-link": "Přihlásit se odkazem",
+    "magic-link-info": "Zadejte svůj e-mail a pošleme vám odkaz pro přihlášení — bez hesla.",
+    "magic-link-sent": "Pokud existuje účet s tímto e-mailem, byl odeslán přihlašovací odkaz. Zkontrolujte svou schránku.",
+    "send-magic-link": "Odeslat přihlašovací odkaz",
+    "magic-link-success": "Přihlášení proběhlo úspěšně!",
+    "magic-link-failed": "Neplatný nebo prošlý přihlašovací odkaz.",
+    "or-use-password": "Přihlásit se heslem"
   },
   "survey": {
     "surveys": "Průzkumy",

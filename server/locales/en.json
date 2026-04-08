@@ -10,5 +10,10 @@
   "email.passwordReset.heading": "Password reset request",
   "email.passwordReset.info": "Click the button below to set a new password for your eDemOS account:",
   "email.passwordReset.button": "SET NEW PASSWORD",
-  "email.passwordReset.info2": "If you did not request a password reset, you can safely ignore this email."
+  "email.passwordReset.info2": "If you did not request a password reset, you can safely ignore this email.",
+  "email.magicLink.title": "Sign in to eDemOS",
+  "email.magicLink.heading": "Sign in to eDemOS",
+  "email.magicLink.info": "Click the button below to sign in to your account. This link expires in 15 minutes and can only be used once.",
+  "email.magicLink.button": "SIGN IN",
+  "email.magicLink.info2": "If you didn't request this, you can safely ignore this email."
 }

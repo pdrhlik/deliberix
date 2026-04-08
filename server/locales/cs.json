@@ -10,5 +10,10 @@
   "email.passwordReset.heading": "Žádost o obnovení hesla",
   "email.passwordReset.info": "Kliknutím na tlačítko níže nastavíte nové heslo ke svému účtu eDemOS:",
   "email.passwordReset.button": "NASTAVIT NOVÉ HESLO",
-  "email.passwordReset.info2": "Pokud jste o obnovení hesla nežádali, můžete tento e-mail ignorovat."
+  "email.passwordReset.info2": "Pokud jste o obnovení hesla nežádali, můžete tento e-mail ignorovat.",
+  "email.magicLink.title": "Přihlášení do eDemOS",
+  "email.magicLink.heading": "Přihlášení do eDemOS",
+  "email.magicLink.info": "Kliknutím na tlačítko níže se přihlásíte ke svému účtu. Odkaz vyprší za 15 minut a lze jej použít pouze jednou.",
+  "email.magicLink.button": "PŘIHLÁSIT SE",
+  "email.magicLink.info2": "Pokud jste o přihlášení nežádali, můžete tento e-mail ignorovat."
 }

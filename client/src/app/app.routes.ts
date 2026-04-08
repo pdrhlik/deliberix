@@ -26,6 +26,10 @@ export const routes: Routes = [
       import("./pages/reset-password/reset-password.page").then((m) => m.ResetPasswordPage),
   },
   {
+    path: "magic-link/:token",
+    loadComponent: () => import("./pages/magic-link/magic-link.page").then((m) => m.MagicLinkPage),
+  },
+  {
     path: "registration-success",
     loadComponent: () =>
       import("./pages/registration-success/registration-success.page").then(

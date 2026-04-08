@@ -5,7 +5,7 @@ import { AuthService } from "../../services/auth.service";
 import { ToastService } from "../../services/toast.service";
 
 @Component({
-  selector: "app-verify-email",
+  selector: "app-magic-link",
   standalone: true,
   imports: [IonContent, IonSpinner],
   template: `<ion-content class="ion-padding"
@@ -21,7 +21,7 @@ import { ToastService } from "../../services/toast.service";
     `,
   ],
 })
-export class VerifyEmailPage implements OnInit {
+export class MagicLinkPage implements OnInit {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private auth = inject(AuthService);
@@ -38,15 +38,16 @@ export class VerifyEmailPage implements OnInit {
       return;
     }
     try {
-      await this.auth.verifyEmail(token);
-      this.toast.success("auth.verify-email-success");
+      await this.auth.verifyMagicLink(token);
+      this.toast.success("auth.magic-link-success");
       this.router.navigateByUrl("/surveys", { replaceUrl: true });
     } catch {
+      // If already authenticated (first call succeeded), just navigate
       if (this.auth.isAuthenticated()) {
         this.router.navigateByUrl("/surveys", { replaceUrl: true });
         return;
       }
-      this.toast.error("auth.verify-email-failed");
+      this.toast.error("auth.magic-link-failed");
       this.router.navigateByUrl("/login", { replaceUrl: true });
     }
   }

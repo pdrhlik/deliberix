@@ -46,7 +46,15 @@
     "check-spam": "Can't find it? Check your spam folder.",
     "resend-verification": "Resend verification email",
     "verification-sent": "Verification email sent",
-    "back-to-login": "Back to login"
+    "back-to-login": "Back to login",
+    "email-required": "Please enter your email first",
+    "magic-link": "Log in with email link",
+    "magic-link-info": "Enter your email and we'll send you a link to log in — no password needed.",
+    "magic-link-sent": "If an account exists with this email, a login link has been sent. Check your inbox.",
+    "send-magic-link": "Send login link",
+    "magic-link-success": "Logged in successfully!",
+    "magic-link-failed": "Invalid or expired login link.",
+    "or-use-password": "Log in with password"
   },
   "survey": {
     "surveys": "Surveys",

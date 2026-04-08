@@ -40,8 +40,9 @@ export class LoginPage {
   email = "";
   password = "";
   submitting = signal(false);
+  mode = signal<"password" | "magic-link" | "magic-link-sent">("password");
 
-  async onSubmit() {
+  async onPasswordLogin() {
     if (!this.email || !this.password) return;
     this.submitting.set(true);
     try {
@@ -50,6 +51,19 @@ export class LoginPage {
       this.router.navigateByUrl("/surveys", { replaceUrl: true });
     } catch {
       this.toast.error("auth.login-failed");
+    } finally {
+      this.submitting.set(false);
+    }
+  }
+
+  async onMagicLink() {
+    if (!this.email) return;
+    this.submitting.set(true);
+    try {
+      await this.auth.requestMagicLink(this.email);
+      this.mode.set("magic-link-sent");
+    } catch (e) {
+      this.toast.apiError(e);
     } finally {
       this.submitting.set(false);
     }

@@ -67,6 +67,8 @@ func main() {
 	r.Post("/api/v1/auth/register", handler.ErrorHandler(h.Register()))
 	r.Post("/api/v1/auth/login", handler.ErrorHandler(h.Login()))
 	r.Post("/api/v1/auth/verify-email", handler.ErrorHandler(h.VerifyEmail()))
+	r.Post("/api/v1/auth/magic-link", handler.ErrorHandler(h.RequestMagicLink()))
+	r.Post("/api/v1/auth/magic-link/verify", handler.ErrorHandler(h.VerifyMagicLink()))
 	r.Post("/api/v1/auth/forgot-password", handler.ErrorHandler(h.ForgotPassword()))
 	r.Post("/api/v1/auth/reset-password", handler.ErrorHandler(h.ResetPassword()))
 

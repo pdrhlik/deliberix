@@ -26,14 +26,31 @@
   font-size: 0.875rem;
 }
 
+.magic-link-info {
+  text-align: center;
+  color: var(--ion-color-medium-shade);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.sent-message {
+  text-align: center;
+  font-size: 1rem;
+  line-height: 1.5;
+  color: var(--ion-color-medium-shade);
+}
+
 .auth-link {
   text-align: center;
   margin-top: 1.5rem;
   font-size: 0.9rem;
 
-  a {
+  a,
+  .toggle-link {
     color: var(--ion-color-primary);
     text-decoration: none;
     font-weight: 500;
+    cursor: pointer;
   }
 }

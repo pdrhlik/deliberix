@@ -79,6 +79,18 @@ export class AuthService {
     await firstValueFrom(this.api.post("/auth/resend-verification", {}));
   }
 
+  async requestMagicLink(email: string) {
+    await firstValueFrom(this.api.post("/auth/magic-link", { email }));
+  }
+
+  async verifyMagicLink(token: string) {
+    const res = await firstValueFrom(
+      this.api.post<AuthResponse>("/auth/magic-link/verify", { token }),
+    );
+    await this.setSession(res);
+    return res;
+  }
+
   private async setSession(res: AuthResponse) {
     this._token.set(res.token);
     this._currentUser.set(res.user);

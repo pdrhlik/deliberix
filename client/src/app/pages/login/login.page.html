@@ -8,7 +8,8 @@
   <div class="auth-container">
     <h1 class="auth-title">{{ "common.app-name" | translate }}</h1>
 
-    <form (ngSubmit)="onSubmit()" class="auth-form">
+    @switch (mode()) { @case ("password") {
+    <form (ngSubmit)="onPasswordLogin()" class="auth-form">
       <ion-input
         type="email"
         labelPlacement="stacked"
@@ -39,8 +40,47 @@
     </p>
 
     <p class="auth-link">
+      <a (click)="mode.set('magic-link')" class="toggle-link"
+        >{{ "auth.magic-link" | translate }}</a
+      >
+    </p>
+
+    <p class="auth-link">
       {{ "auth.no-account" | translate }}
       <a routerLink="/register">{{ "auth.register" | translate }}</a>
     </p>
+    } @case ("magic-link") {
+    <p class="magic-link-info">{{ "auth.magic-link-info" | translate }}</p>
+
+    <form (ngSubmit)="onMagicLink()" class="auth-form">
+      <ion-input
+        type="email"
+        labelPlacement="stacked"
+        fill="outline"
+        [(ngModel)]="email"
+        name="emailMagic"
+        [label]="'auth.email' | translate"
+      ></ion-input>
+
+      <ion-button expand="block" type="submit" [disabled]="submitting()">
+        @if (submitting()) {
+        <ion-spinner name="crescent"></ion-spinner>
+        } @else { {{ "auth.send-magic-link" | translate }} }
+      </ion-button>
+    </form>
+
+    <p class="auth-link">
+      <a (click)="mode.set('password')" class="toggle-link"
+        >{{ "auth.or-use-password" | translate }}</a
+      >
+    </p>
+    } @case ("magic-link-sent") {
+    <p class="sent-message">{{ "auth.magic-link-sent" | translate }}</p>
+    <p class="auth-link">
+      <a (click)="mode.set('password')" class="toggle-link"
+        >{{ "auth.back-to-login" | translate }}</a
+      >
+    </p>
+    } }
   </div>
 </ion-content>
