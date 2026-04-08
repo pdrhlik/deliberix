@@ -115,6 +115,19 @@
     "czech": "Czech",
     "english": "English"
   },
+  "participants": {
+    "title": "Participants",
+    "no-participants": "No participants yet",
+    "joined": "Joined",
+    "votes": "Votes",
+    "role-admin": "Admin",
+    "role-moderator": "Moderator",
+    "role-participant": "Participant",
+    "role-updated": "Role updated",
+    "remove-confirm-title": "Remove participant",
+    "remove-confirm-message": "Are you sure you want to remove {{name}} from this survey?",
+    "removed": "Participant removed"
+  },
   "settings": {
     "settings": "Settings",
     "theme": "Theme",

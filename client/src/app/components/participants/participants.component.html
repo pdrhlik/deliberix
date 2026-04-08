@@ -1,0 +1,46 @@
+<div class="participants-section">
+  <h3>{{ "participants.title" | translate }} ({{ participants().length }})</h3>
+
+  @if (participants().length === 0) {
+    <ion-text color="medium">
+      <p>{{ "participants.no-participants" | translate }}</p>
+    </ion-text>
+  } @else {
+    <ion-list>
+      @for (p of participants(); track p.id) {
+        <ion-item>
+          <ion-label>
+            <h2>{{ p.name }}</h2>
+            <p>
+              {{ "participants.joined" | translate }} {{ p.joinedAt | date: "mediumDate" }} &middot;
+              {{ "participants.votes" | translate }}: {{ p.voted }} / {{ p.total }}
+            </p>
+          </ion-label>
+          @if (p.role === "admin") {
+            <ion-badge slot="end" [color]="roleBadgeColor(p.role)">
+              {{ "participants.role-" + p.role | translate }}
+            </ion-badge>
+          } @else {
+            <ion-select
+              slot="end"
+              [value]="p.role"
+              (ionChange)="changeRole(p, $event.detail.value)"
+              interface="popover"
+              [aria-label]="'participants.title' | translate"
+            >
+              <ion-select-option value="participant">
+                {{ "participants.role-participant" | translate }}
+              </ion-select-option>
+              <ion-select-option value="moderator">
+                {{ "participants.role-moderator" | translate }}
+              </ion-select-option>
+            </ion-select>
+            <ion-button slot="end" fill="clear" color="danger" (click)="removeParticipant(p)">
+              <ion-icon name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          }
+        </ion-item>
+      }
+    </ion-list>
+  }
+</div>

@@ -58,6 +58,11 @@ func main() {
 		r.Post("/api/v1/survey/{slug}/join", handler.ErrorHandler(h.JoinSurvey()))
 		r.Get("/api/v1/survey/{slug}/participant/me", handler.ErrorHandler(h.GetMyParticipation()))
 
+		// Participant management routes
+		r.Get("/api/v1/survey/{slug}/participants", handler.ErrorHandler(h.ListParticipants()))
+		r.Patch("/api/v1/survey/{slug}/participant/{userId}/role", handler.ErrorHandler(h.UpdateParticipantRole()))
+		r.Delete("/api/v1/survey/{slug}/participant/{userId}", handler.ErrorHandler(h.RemoveParticipant()))
+
 		// Statement routes
 		r.Get("/api/v1/survey/{slug}/statement", handler.ErrorHandler(h.ListStatements()))
 		r.Post("/api/v1/survey/{slug}/statement", handler.ErrorHandler(h.SubmitStatement()))

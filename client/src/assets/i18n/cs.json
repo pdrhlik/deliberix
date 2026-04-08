@@ -115,6 +115,19 @@
     "czech": "Čeština",
     "english": "Angličtina"
   },
+  "participants": {
+    "title": "Účastníci",
+    "no-participants": "Zatím žádní účastníci",
+    "joined": "Připojil/a se",
+    "votes": "Hlasy",
+    "role-admin": "Administrátor",
+    "role-moderator": "Moderátor",
+    "role-participant": "Účastník",
+    "role-updated": "Role aktualizována",
+    "remove-confirm-title": "Odebrat účastníka",
+    "remove-confirm-message": "Opravdu chcete odebrat uživatele {{name}} z tohoto průzkumu?",
+    "removed": "Účastník odebrán"
+  },
   "settings": {
     "settings": "Nastavení",
     "theme": "Motiv",

@@ -28,6 +28,7 @@ import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
 import { closeOutline, playOutline, shieldCheckmarkOutline } from "ionicons/icons";
 import { firstValueFrom } from "rxjs";
+import { ParticipantsComponent } from "../../components/participants/participants.component";
 import { SeedStatementsComponent } from "../../components/seed-statements/seed-statements.component";
 import { SubmitStatementComponent } from "../../components/submit-statement/submit-statement.component";
 import { SurveyParticipant } from "../../models/participant.model";
@@ -65,6 +66,7 @@ import { ToastService } from "../../services/toast.service";
     IonSelectOption,
     IonSpinner,
     DatePipe,
+    ParticipantsComponent,
     SeedStatementsComponent,
     SubmitStatementComponent,
   ],

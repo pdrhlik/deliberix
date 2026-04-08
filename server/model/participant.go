@@ -5,6 +5,17 @@ import (
 	"time"
 )
 
+type ParticipantListItem struct {
+	ID       uint      `db:"id" json:"id"`
+	UserID   uint      `db:"user_id" json:"userId"`
+	Name     string    `db:"name" json:"name"`
+	Email    string    `db:"email" json:"email"`
+	Role     string    `db:"role" json:"role"`
+	Voted    int       `db:"voted" json:"voted"`
+	Total    int       `db:"total" json:"total"`
+	JoinedAt time.Time `db:"joined_at" json:"joinedAt"`
+}
+
 type SurveyParticipant struct {
 	ID            uint             `db:"id,selectonly" json:"id"`
 	SurveyID      uint             `db:"survey_id" json:"surveyId"`

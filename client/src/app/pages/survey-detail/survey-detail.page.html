@@ -242,7 +242,11 @@
       [charMin]="s.statementCharMin"
       [charMax]="s.statementCharMax"
     ></app-seed-statements>
-    } }
+    }
+
+    <!-- Participants management -->
+    <app-participants [surveySlug]="s.slug"></app-participants>
+    }
 
     <!-- Join button for non-participants -->
     @if (!isParticipantOrAdmin && s.status === "active") {

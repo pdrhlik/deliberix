@@ -1,3 +1,14 @@
+export interface ParticipantListItem {
+  id: number;
+  userId: number;
+  name: string;
+  email: string;
+  role: string;
+  voted: number;
+  total: number;
+  joinedAt: string;
+}
+
 export interface SurveyParticipant {
   id: number;
   surveyId: number;
