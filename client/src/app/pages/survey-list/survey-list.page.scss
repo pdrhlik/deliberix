@@ -36,18 +36,44 @@ ion-item {
   }
 
   .survey-meta {
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     display: flex;
     gap: 0.5rem;
     align-items: center;
+    margin-top: 0.25rem;
+
+    .status-badge {
+      font-size: 0.7rem;
+    }
+
+    .role-label {
+      text-transform: capitalize;
+      color: var(--ion-color-medium);
+    }
+
+    .date-label {
+      color: var(--ion-color-medium);
+    }
   }
 
-  .role {
-    text-transform: capitalize;
-  }
+  .progress-row {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-top: 0.25rem;
+    font-size: 0.85rem;
 
-  .progress-info {
-    color: var(--ion-color-primary);
-    font-weight: 500;
+    .progress-text {
+      color: var(--ion-color-medium);
+    }
+
+    .progress-text.done {
+      color: var(--ion-color-success);
+      font-weight: 500;
+    }
+
+    ion-icon {
+      font-size: 1rem;
+    }
   }
 }

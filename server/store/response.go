@@ -96,6 +96,28 @@ func (s *Store) GetSurveyStats(ctx context.Context, surveyID uint) (model.Survey
 	return stats, nil
 }
 
+func (s *Store) GetUserVotesForSurvey(ctx context.Context, surveyID, userID uint) (map[uint]model.UserVote, error) {
+	type row struct {
+		StatementID uint   `db:"statement_id"`
+		Vote        string `db:"vote"`
+		IsImportant bool   `db:"is_important"`
+	}
+	var rows []row
+	q := s.DB.Query(`
+		SELECT r.statement_id, r.vote, r.is_important
+		FROM response r
+		JOIN statement s ON s.id = r.statement_id
+		WHERE s.survey_id = ? AND r.user_id = ?`, surveyID, userID)
+	if err := q.All(&rows); err != nil {
+		return nil, err
+	}
+	result := make(map[uint]model.UserVote, len(rows))
+	for _, r := range rows {
+		result[r.StatementID] = model.UserVote{Vote: r.Vote, IsImportant: r.IsImportant}
+	}
+	return result, nil
+}
+
 func (s *Store) GetStatementSurveyID(ctx context.Context, statementID uint) (uint, error) {
 	var surveyID uint
 	q := s.DB.Query(`SELECT survey_id FROM statement WHERE id = ?`, statementID)

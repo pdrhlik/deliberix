@@ -17,7 +17,13 @@ export interface SurveyStats {
   pendingStatements: number;
 }
 
+export interface UserVote {
+  vote: string;
+  isImportant: boolean;
+}
+
 export interface ResultsResponse {
   stats: SurveyStats;
   statements: StatementResult[];
+  myVotes: Record<number, UserVote>;
 }

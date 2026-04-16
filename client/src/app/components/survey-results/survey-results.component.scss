@@ -1,0 +1,141 @@
+.center {
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.message-state {
+  text-align: center;
+  padding: 2rem;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-card {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.stat-value {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--ion-color-primary);
+}
+
+.stat-label {
+  font-size: 0.75rem;
+  color: var(--ion-color-medium-shade);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+ion-segment {
+  margin-bottom: 1rem;
+}
+
+.result-card {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.statement-text {
+  font-size: 1rem;
+  line-height: 1.5;
+  margin: 0 0 0.75rem 0;
+}
+
+.vote-bar {
+  display: flex;
+  height: 8px;
+  border-radius: 4px;
+  overflow: hidden;
+  background: var(--ion-color-light-shade);
+  margin-bottom: 0.5rem;
+}
+
+.bar-segment {
+  transition: width 0.3s ease;
+
+  &.agree {
+    background: var(--ion-color-success);
+  }
+  &.disagree {
+    background: var(--ion-color-danger);
+  }
+  &.abstain {
+    background: var(--ion-color-medium);
+  }
+}
+
+.vote-legend {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.8rem;
+  margin-bottom: 0.5rem;
+}
+
+.legend-item {
+  &.agree-text {
+    color: var(--ion-color-success-shade);
+  }
+  &.disagree-text {
+    color: var(--ion-color-danger-shade);
+  }
+  &.abstain-text {
+    color: var(--ion-color-medium-shade);
+  }
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--ion-color-medium-shade);
+}
+
+.my-vote {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+  padding: 0.4rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 500;
+
+  &.my-vote-agree {
+    background: rgba(var(--ion-color-success-rgb), 0.1);
+    color: var(--ion-color-success-shade);
+  }
+
+  &.my-vote-disagree {
+    background: rgba(var(--ion-color-danger-rgb), 0.1);
+    color: var(--ion-color-danger-shade);
+  }
+
+  &.my-vote-abstain {
+    background: rgba(var(--ion-color-medium-rgb), 0.1);
+    color: var(--ion-color-medium-shade);
+  }
+
+  ion-icon {
+    font-size: 1rem;
+  }
+
+  .important-icon {
+    margin-left: auto;
+  }
+}

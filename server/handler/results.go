@@ -8,8 +8,9 @@ import (
 )
 
 type ResultsResponse struct {
-	Stats      model.SurveyStats       `json:"stats"`
-	Statements []model.StatementResult `json:"statements"`
+	Stats      model.SurveyStats            `json:"stats"`
+	Statements []model.StatementResult      `json:"statements"`
+	MyVotes    map[uint]model.UserVote      `json:"myVotes"`
 }
 
 func (h *Handler) GetResults() AppHandlerFunc {
@@ -27,7 +28,7 @@ func (h *Handler) GetResults() AppHandlerFunc {
 		switch survey.ResultVisibility {
 		case "after_close":
 			if survey.Status != "closed" {
-				return writeError(w, http.StatusForbidden, "results available after survey closes")
+				return writeError(w, http.StatusForbidden, "Results are available after the survey closes.")
 			}
 		case "after_completion":
 			progress, err := h.Store.GetVoteProgress(r.Context(), survey.ID, user.ID)
@@ -35,7 +36,7 @@ func (h *Handler) GetResults() AppHandlerFunc {
 				return err
 			}
 			if progress.Total > 0 && progress.Voted < progress.Total {
-				return writeError(w, http.StatusForbidden, "complete all votes to see results")
+				return writeError(w, http.StatusForbidden, "Please complete all votes to see results.")
 			}
 		case "continuous":
 			// Always visible
@@ -51,9 +52,15 @@ func (h *Handler) GetResults() AppHandlerFunc {
 			return err
 		}
 
+		myVotes, err := h.Store.GetUserVotesForSurvey(r.Context(), survey.ID, user.ID)
+		if err != nil {
+			return err
+		}
+
 		return writeJSON(w, http.StatusOK, ResultsResponse{
 			Stats:      stats,
 			Statements: statements,
+			MyVotes:    myVotes,
 		})
 	}
 }

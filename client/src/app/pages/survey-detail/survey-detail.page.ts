@@ -18,6 +18,10 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonNote,
+  IonProgressBar,
+  IonSegment,
+  IonSegmentButton,
   IonSelect,
   IonSelectOption,
   IonSpinner,
@@ -26,11 +30,22 @@ import {
 } from "@ionic/angular/standalone";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
-import { closeOutline, playOutline, shieldCheckmarkOutline } from "ionicons/icons";
+import {
+  barChartOutline,
+  chatbubblesOutline,
+  closeOutline,
+  handLeftOutline,
+  informationCircleOutline,
+  peopleOutline,
+  playOutline,
+  settingsOutline,
+  shieldCheckmarkOutline,
+} from "ionicons/icons";
 import { firstValueFrom } from "rxjs";
 import { IntakeConfigBuilderComponent } from "../../components/intake-config-builder/intake-config-builder.component";
 import { IntakeConfig } from "../../models/intake-config.model";
 import { ParticipantsComponent } from "../../components/participants/participants.component";
+import { SurveyResultsComponent } from "../../components/survey-results/survey-results.component";
 import { SeedStatementsComponent } from "../../components/seed-statements/seed-statements.component";
 import { SubmitStatementComponent } from "../../components/submit-statement/submit-statement.component";
 import { SurveyParticipant } from "../../models/participant.model";
@@ -38,6 +53,7 @@ import { Survey } from "../../models/survey.model";
 import { ApiService } from "../../services/api.service";
 import { AuthService } from "../../services/auth.service";
 import { ModerationService } from "../../services/moderation.service";
+import { ResponseService, VoteProgress } from "../../services/response.service";
 import { SurveyService } from "../../services/survey.service";
 import { ToastService } from "../../services/toast.service";
 
@@ -64,12 +80,17 @@ import { ToastService } from "../../services/toast.service";
     IonItem,
     IonLabel,
     IonList,
+    IonNote,
+    IonProgressBar,
+    IonSegment,
+    IonSegmentButton,
     IonSelect,
     IonSelectOption,
     IonSpinner,
     DatePipe,
     IntakeConfigBuilderComponent,
     ParticipantsComponent,
+    SurveyResultsComponent,
     SeedStatementsComponent,
     SubmitStatementComponent,
   ],
@@ -84,11 +105,14 @@ export class SurveyDetailPage {
   private api = inject(ApiService);
   private auth = inject(AuthService);
   private moderationService = inject(ModerationService);
+  private responseService = inject(ResponseService);
   private toast = inject(ToastService);
 
   survey = signal<Survey | null>(null);
   participant = signal<SurveyParticipant | null>(null);
   pendingCount = signal(0);
+  voteProgress = signal<VoteProgress>({ voted: 0, total: 0 });
+  activeSegment = signal<string>("overview");
 
   editVisibility = signal("private");
   editPrivacyMode = signal("anonymous");
@@ -101,7 +125,17 @@ export class SurveyDetailPage {
   savingSettings = signal(false);
 
   constructor() {
-    addIcons({ playOutline, closeOutline, shieldCheckmarkOutline });
+    addIcons({
+      informationCircleOutline,
+      chatbubblesOutline,
+      handLeftOutline,
+      shieldCheckmarkOutline,
+      settingsOutline,
+      peopleOutline,
+      playOutline,
+      closeOutline,
+      barChartOutline,
+    });
   }
 
   ionViewWillEnter() {
@@ -131,6 +165,14 @@ export class SurveyDetailPage {
       );
       this.participant.set(p);
 
+      // Load vote progress for participants
+      if (survey.status === "active" || survey.status === "closed") {
+        try {
+          const progress = await this.responseService.getProgress(slug);
+          this.voteProgress.set(progress);
+        } catch {}
+      }
+
       // Load pending moderation count for admins/moderators
       if (p.role === "admin" || p.role === "moderator") {
         try {
@@ -154,6 +196,15 @@ export class SurveyDetailPage {
 
   get isParticipantOrAdmin(): boolean {
     return this.participant() !== null;
+  }
+
+  get locale(): string {
+    return this.translate.currentLang || "en";
+  }
+
+  get allVoted(): boolean {
+    const p = this.voteProgress();
+    return p.total > 0 && p.voted >= p.total;
   }
 
   settingLabel(prefix: string, value: string): string {

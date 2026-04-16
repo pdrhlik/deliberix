@@ -75,6 +75,8 @@
     "my-surveys": "Moje průzkumy",
     "discover": "Objevte",
     "no-surveys": "Zatím žádné průzkumy",
+    "overview": "Přehled",
+    "participate": "Účast",
     "activated": "Průzkum byl aktivován.",
     "closed-success": "Průzkum byl uzavřen.",
     "advanced-settings": "Pokročilá nastavení",
@@ -133,7 +135,10 @@
     "participants": "Účastníci",
     "statements": "Výroky",
     "votes-cast": "Odevzdáno hlasů",
-    "completion": "Dokončeno"
+    "completion": "Dokončeno",
+    "you-agreed": "Souhlasili jste",
+    "you-disagreed": "Nesouhlasili jste",
+    "you-skipped": "Přeskočili jste"
   },
   "language": {
     "language": "Jazyk",

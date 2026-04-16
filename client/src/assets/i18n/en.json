@@ -75,6 +75,8 @@
     "my-surveys": "My surveys",
     "discover": "Discover",
     "no-surveys": "No surveys yet",
+    "overview": "Overview",
+    "participate": "Participate",
     "activated": "Survey has been activated.",
     "closed-success": "Survey has been closed.",
     "advanced-settings": "Advanced settings",
@@ -133,7 +135,10 @@
     "participants": "Participants",
     "statements": "Statements",
     "votes-cast": "Votes cast",
-    "completion": "Completed"
+    "completion": "Completed",
+    "you-agreed": "You agreed",
+    "you-disagreed": "You disagreed",
+    "you-skipped": "You skipped"
   },
   "language": {
     "language": "Language",

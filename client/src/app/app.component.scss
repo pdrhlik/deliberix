@@ -1,5 +1,6 @@
 ion-menu {
   --width: 280px;
+  --max-width: 300px;
 
   ion-item.selected {
     --color: var(--ion-color-primary);

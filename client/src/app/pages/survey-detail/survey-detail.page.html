@@ -5,11 +5,63 @@
     </ion-buttons>
     <ion-title>{{ survey()?.title }}</ion-title>
   </ion-toolbar>
+
+  @if (survey(); as s) {
+  <ion-toolbar>
+    <ion-segment
+      [value]="activeSegment()"
+      (ionChange)="activeSegment.set('' + $event.detail.value)"
+      scrollable="true"
+    >
+      <ion-segment-button value="overview">
+        <ion-icon name="information-circle-outline"></ion-icon>
+        <ion-label>{{ "survey.overview" | translate }}</ion-label>
+      </ion-segment-button>
+
+      @if (isAdmin && s.status === "draft") {
+      <ion-segment-button value="statements">
+        <ion-icon name="chatbubbles-outline"></ion-icon>
+        <ion-label>{{ "statement.statements" | translate }}</ion-label>
+      </ion-segment-button>
+      } @if (isParticipantOrAdmin && s.status === "active") {
+      <ion-segment-button value="participate">
+        <ion-icon name="hand-left-outline"></ion-icon>
+        <ion-label>{{ "survey.participate" | translate }}</ion-label>
+      </ion-segment-button>
+      } @if (isParticipantOrAdmin && (s.status === "active" || s.status === "closed")) {
+      <ion-segment-button value="results">
+        <ion-icon name="bar-chart-outline"></ion-icon>
+        <ion-label>{{ "results.results" | translate }}</ion-label>
+      </ion-segment-button>
+      } @if (isAdminOrModerator && pendingCount() > 0) {
+      <ion-segment-button value="moderation">
+        <ion-icon name="shield-checkmark-outline"></ion-icon>
+        <ion-label
+          >{{ "moderation.queue" | translate }}
+          <ion-badge color="warning" class="segment-badge">{{ pendingCount() }}</ion-badge>
+        </ion-label>
+      </ion-segment-button>
+      } @if (isAdmin) {
+      <ion-segment-button value="settings">
+        <ion-icon name="settings-outline"></ion-icon>
+        <ion-label>{{ "survey.settings" | translate }}</ion-label>
+      </ion-segment-button>
+
+      <ion-segment-button value="participants">
+        <ion-icon name="people-outline"></ion-icon>
+        <ion-label>{{ "participants.title" | translate }}</ion-label>
+      </ion-segment-button>
+      }
+    </ion-segment>
+  </ion-toolbar>
+  }
 </ion-header>
 
 <ion-content class="ion-padding">
   @if (survey(); as s) {
   <div class="detail-container">
+    <!-- OVERVIEW -->
+    @if (activeSegment() === "overview") {
     <ion-card>
       <ion-card-header>
         <div class="card-header-row">
@@ -19,230 +71,96 @@
           </ion-badge>
         </div>
       </ion-card-header>
+      @if (s.description) {
       <ion-card-content>
-        @if (s.description) {
         <p class="description">{{ s.description }}</p>
-        }
       </ion-card-content>
+      }
     </ion-card>
 
-    <!-- Admin actions -->
+    <!-- Vote progress for participants -->
+    @if (isParticipantOrAdmin && (s.status === "active" || s.status === "closed") &&
+    voteProgress().total > 0) {
+    <div class="progress-section">
+      <div class="progress-header">
+        <span>{{ voteProgress().voted }} / {{ voteProgress().total }}</span>
+        @if (allVoted) {
+        <ion-badge color="success">{{ "statement.all-done" | translate }}</ion-badge>
+        }
+      </div>
+      <ion-progress-bar
+        [value]="voteProgress().voted / voteProgress().total"
+        [color]="allVoted ? 'success' : 'primary'"
+      ></ion-progress-bar>
+    </div>
+    }
+
+    <!-- Admin status actions -->
     @if (isAdmin) {
-    <div class="actions">
+    <div class="admin-actions">
       @if (s.status === "draft") {
-      <ion-button expand="block" color="success" (click)="activate()">
+      <ion-button size="small" color="success" (click)="activate()">
         <ion-icon name="play-outline" slot="start"></ion-icon>
         {{ "survey.activate" | translate }}
       </ion-button>
       } @if (s.status === "active") {
-      <ion-button expand="block" color="danger" (click)="closeSurvey()">
+      <ion-button size="small" color="danger" fill="outline" (click)="closeSurvey()">
         <ion-icon name="close-outline" slot="start"></ion-icon>
         {{ "survey.close-survey" | translate }}
       </ion-button>
       }
     </div>
+    }
 
-    <!-- Moderation link for admins/moderators -->
-    @if (s.status === "active" && pendingCount() > 0) {
-    <ion-button expand="block" fill="outline" [routerLink]="'/survey/' + s.slug + '/moderation'">
-      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
-      {{ "moderation.queue" | translate }}
-      <ion-badge slot="end" color="warning">{{ pendingCount() }}</ion-badge>
+    <!-- Join button for non-participants -->
+    @if (!isParticipantOrAdmin && s.status === "active") {
+    <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/join'">
+      {{ "survey.join" | translate }}
     </ion-button>
     }
 
-    <!-- Settings for draft surveys -->
-    @if (s.status === "draft") {
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{ "survey.settings" | translate }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <ion-select
-              [label]="'survey.visibility' | translate"
-              labelPlacement="stacked"
-              [value]="editVisibility()"
-              (ionChange)="editVisibility.set($event.detail.value)"
-              interface="popover"
-            >
-              <ion-select-option value="private"
-                >{{ "survey.visibility-private" | translate }}</ion-select-option
-              >
-              <ion-select-option value="public"
-                >{{ "survey.visibility-public" | translate }}</ion-select-option
-              >
-              <ion-select-option value="unlisted"
-                >{{ "survey.visibility-unlisted" | translate }}</ion-select-option
-              >
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-select
-              [label]="'survey.privacy-mode' | translate"
-              labelPlacement="stacked"
-              [value]="editPrivacyMode()"
-              (ionChange)="editPrivacyMode.set($event.detail.value)"
-              interface="popover"
-            >
-              <ion-select-option value="anonymous"
-                >{{ "survey.privacy-anonymous" | translate }}</ion-select-option
-              >
-              <ion-select-option value="public"
-                >{{ "survey.privacy-public" | translate }}</ion-select-option
-              >
-              <ion-select-option value="participant_choice"
-                >{{ "survey.privacy-participant-choice" | translate }}</ion-select-option
-              >
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-select
-              [label]="'survey.result-visibility' | translate"
-              labelPlacement="stacked"
-              [value]="editResultVisibility()"
-              (ionChange)="editResultVisibility.set($event.detail.value)"
-              interface="popover"
-            >
-              <ion-select-option value="after_completion"
-                >{{ "survey.result-after-completion" | translate }}</ion-select-option
-              >
-              <ion-select-option value="continuous"
-                >{{ "survey.result-continuous" | translate }}</ion-select-option
-              >
-              <ion-select-option value="after_close"
-                >{{ "survey.result-after-close" | translate }}</ion-select-option
-              >
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-select
-              [label]="'survey.statement-order' | translate"
-              labelPlacement="stacked"
-              [value]="editStatementOrder()"
-              (ionChange)="editStatementOrder.set($event.detail.value)"
-              interface="popover"
-            >
-              <ion-select-option value="random"
-                >{{ "survey.order-random" | translate }}</ion-select-option
-              >
-              <ion-select-option value="sequential"
-                >{{ "survey.order-sequential" | translate }}</ion-select-option
-              >
-              <ion-select-option value="least_voted"
-                >{{ "survey.order-least-voted" | translate }}</ion-select-option
-              >
-            </ion-select>
-          </ion-item>
-
-          <ion-item>
-            <ion-input
-              type="number"
-              labelPlacement="stacked"
-              [label]="'survey.statement-char-min' | translate"
-              [value]="editStatementCharMin()"
-              (ionChange)="editStatementCharMin.set(+$event.detail.value!)"
-              [min]="1"
-            ></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-input
-              type="number"
-              labelPlacement="stacked"
-              [label]="'survey.statement-char-max' | translate"
-              [value]="editStatementCharMax()"
-              (ionChange)="editStatementCharMax.set(+$event.detail.value!)"
-              [min]="1"
-            ></ion-input>
-          </ion-item>
-
-          <ion-item>
-            <ion-input
-              type="datetime-local"
-              labelPlacement="stacked"
-              [label]="'survey.closes-at' | translate"
-              [value]="editClosesAt()"
-              (ionChange)="editClosesAt.set($event.detail.value ?? '')"
-            ></ion-input>
-          </ion-item>
-        </ion-list>
-
-        <h3 class="ion-padding-start ion-padding-top">{{ "intake.intake-form" | translate }}</h3>
-        <app-intake-config-builder
-          [config]="editIntakeConfig()"
-          (configChange)="editIntakeConfig.set($event)"
-        ></app-intake-config-builder>
-
-        <ion-button expand="block" (click)="saveSettings()" [disabled]="savingSettings()">
-          @if (savingSettings()) {
-          <ion-spinner name="crescent"></ion-spinner>
-          } @else { {{ "common.save" | translate }} }
-        </ion-button>
-      </ion-card-content>
-    </ion-card>
+    <!-- Quick vote action for participants -->
+    @if (isParticipantOrAdmin && s.status === "active" && !allVoted) {
+    <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/vote'">
+      <ion-icon name="hand-left-outline" slot="start"></ion-icon>
+      {{ "statement.start-voting" | translate }}
+    </ion-button>
     }
 
-    <!-- Read-only settings for active/closed surveys (admin/moderator) -->
+    <!-- Read-only settings summary (active/closed admin/moderator) -->
     @if (s.status !== "draft" && isAdminOrModerator) {
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>{{ "survey.settings" | translate }}</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        <ion-list>
-          <ion-item>
-            <ion-label>
-              <p>{{ "survey.visibility" | translate }}</p>
-              <h3>{{ settingLabel("visibility", s.visibility) }}</h3>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p>{{ "survey.privacy-mode" | translate }}</p>
-              <h3>{{ settingLabel("privacy", s.privacyMode) }}</h3>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p>{{ "survey.result-visibility" | translate }}</p>
-              <h3>{{ settingLabel("result", s.resultVisibility) }}</h3>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p>{{ "survey.statement-order" | translate }}</p>
-              <h3>{{ settingLabel("order", s.statementOrder) }}</h3>
-            </ion-label>
-          </ion-item>
-          <ion-item>
-            <ion-label>
-              <p>
-                {{ "survey.statement-char-min" | translate }} / {{ "survey.statement-char-max" |
-                translate }}
-              </p>
-              <h3>{{ s.statementCharMin }} / {{ s.statementCharMax }}</h3>
-            </ion-label>
-          </ion-item>
-          @if (s.closesAt) {
-          <ion-item>
-            <ion-label>
-              <p>{{ "survey.closes-at" | translate }}</p>
-              <h3>{{ s.closesAt | date: "medium" }}</h3>
-            </ion-label>
-          </ion-item>
-          }
-        </ion-list>
-      </ion-card-content>
-    </ion-card>
-    }
+    <ion-list class="settings-summary">
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.visibility" | translate }}</p>
+          <h3>{{ settingLabel("visibility", s.visibility) }}</h3></ion-label
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.result-visibility" | translate }}</p>
+          <h3>{{ settingLabel("result", s.resultVisibility) }}</h3></ion-label
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.statement-order" | translate }}</p>
+          <h3>{{ settingLabel("order", s.statementOrder) }}</h3></ion-label
+        >
+      </ion-item>
+      @if (s.closesAt) {
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.closes-at" | translate }}</p>
+          <h3>{{ s.closesAt | date: "mediumDate":"":locale }}</h3></ion-label
+        >
+      </ion-item>
+      }
+    </ion-list>
+    } }
 
-    <!-- Seed statements for draft surveys -->
-    @if (s.status === "draft") {
+    <!-- STATEMENTS (admin, draft) -->
+    @if (activeSegment() === "statements") {
     <app-seed-statements
       [surveySlug]="s.slug"
       [charMin]="s.statementCharMin"
@@ -250,26 +168,34 @@
     ></app-seed-statements>
     }
 
-    <!-- Participants management -->
-    <app-participants [surveySlug]="s.slug"></app-participants>
-    }
-
-    <!-- Join button for non-participants -->
-    @if (!isParticipantOrAdmin && s.status === "active") {
-    <div class="actions">
-      <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/join'">
-        {{ "survey.join" | translate }}
-      </ion-button>
-    </div>
-    }
-
-    <!-- Participant actions -->
-    @if (isParticipantOrAdmin && s.status === "active") {
-    <div class="actions">
-      <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/vote'">
-        {{ "statement.start-voting" | translate }}
-      </ion-button>
-    </div>
+    <!-- PARTICIPATE -->
+    @if (activeSegment() === "participate") {
+    <ion-card class="completion-card">
+      <ion-card-content>
+        <div class="progress-section">
+          <div class="progress-header">
+            <span>{{ voteProgress().voted }} / {{ voteProgress().total }}</span>
+            @if (allVoted) {
+            <ion-badge color="success">{{ "statement.all-done" | translate }}</ion-badge>
+            }
+          </div>
+          <ion-progress-bar
+            [value]="voteProgress().total > 0 ? voteProgress().voted / voteProgress().total : 0"
+            [color]="allVoted ? 'success' : 'primary'"
+          ></ion-progress-bar>
+        </div>
+        @if (!allVoted) {
+        <ion-button
+          expand="block"
+          [routerLink]="'/survey/' + s.slug + '/vote'"
+          class="ion-margin-top"
+        >
+          <ion-icon name="hand-left-outline" slot="start"></ion-icon>
+          {{ "statement.start-voting" | translate }}
+        </ion-button>
+        }
+      </ion-card-content>
+    </ion-card>
 
     <app-submit-statement
       [surveySlug]="s.slug"
@@ -279,13 +205,190 @@
     ></app-submit-statement>
     }
 
-    <!-- Results button -->
-    @if (isParticipantOrAdmin && (s.status === "active" || s.status === "closed")) {
-    <div class="actions">
-      <ion-button expand="block" fill="outline" [routerLink]="'/survey/' + s.slug + '/results'">
-        {{ "results.results" | translate }}
-      </ion-button>
-    </div>
+    <!-- RESULTS -->
+    @if (activeSegment() === "results") {
+    <app-survey-results [surveySlug]="s.slug"></app-survey-results>
+    }
+
+    <!-- MODERATION -->
+    @if (activeSegment() === "moderation") {
+    <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/moderation'">
+      <ion-icon name="shield-checkmark-outline" slot="start"></ion-icon>
+      {{ "moderation.queue" | translate }}
+      <ion-badge slot="end" color="warning">{{ pendingCount() }}</ion-badge>
+    </ion-button>
+    }
+
+    <!-- SETTINGS (admin) -->
+    @if (activeSegment() === "settings") { @if (s.status === "draft") {
+    <ion-list>
+      <ion-item>
+        <ion-select
+          [label]="'survey.visibility' | translate"
+          labelPlacement="stacked"
+          [value]="editVisibility()"
+          (ionChange)="editVisibility.set($event.detail.value)"
+          interface="popover"
+        >
+          <ion-select-option value="private"
+            >{{ "survey.visibility-private" | translate }}</ion-select-option
+          >
+          <ion-select-option value="public"
+            >{{ "survey.visibility-public" | translate }}</ion-select-option
+          >
+          <ion-select-option value="unlisted"
+            >{{ "survey.visibility-unlisted" | translate }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          [label]="'survey.privacy-mode' | translate"
+          labelPlacement="stacked"
+          [value]="editPrivacyMode()"
+          (ionChange)="editPrivacyMode.set($event.detail.value)"
+          interface="popover"
+        >
+          <ion-select-option value="anonymous"
+            >{{ "survey.privacy-anonymous" | translate }}</ion-select-option
+          >
+          <ion-select-option value="public"
+            >{{ "survey.privacy-public" | translate }}</ion-select-option
+          >
+          <ion-select-option value="participant_choice"
+            >{{ "survey.privacy-participant-choice" | translate }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          [label]="'survey.result-visibility' | translate"
+          labelPlacement="stacked"
+          [value]="editResultVisibility()"
+          (ionChange)="editResultVisibility.set($event.detail.value)"
+          interface="popover"
+        >
+          <ion-select-option value="after_completion"
+            >{{ "survey.result-after-completion" | translate }}</ion-select-option
+          >
+          <ion-select-option value="continuous"
+            >{{ "survey.result-continuous" | translate }}</ion-select-option
+          >
+          <ion-select-option value="after_close"
+            >{{ "survey.result-after-close" | translate }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select
+          [label]="'survey.statement-order' | translate"
+          labelPlacement="stacked"
+          [value]="editStatementOrder()"
+          (ionChange)="editStatementOrder.set($event.detail.value)"
+          interface="popover"
+        >
+          <ion-select-option value="random"
+            >{{ "survey.order-random" | translate }}</ion-select-option
+          >
+          <ion-select-option value="sequential"
+            >{{ "survey.order-sequential" | translate }}</ion-select-option
+          >
+          <ion-select-option value="least_voted"
+            >{{ "survey.order-least-voted" | translate }}</ion-select-option
+          >
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          type="number"
+          labelPlacement="stacked"
+          [label]="'survey.statement-char-min' | translate"
+          [value]="editStatementCharMin()"
+          (ionChange)="editStatementCharMin.set(+$event.detail.value!)"
+          [min]="1"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          type="number"
+          labelPlacement="stacked"
+          [label]="'survey.statement-char-max' | translate"
+          [value]="editStatementCharMax()"
+          (ionChange)="editStatementCharMax.set(+$event.detail.value!)"
+          [min]="1"
+        ></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input
+          type="datetime-local"
+          labelPlacement="stacked"
+          [label]="'survey.closes-at' | translate"
+          [value]="editClosesAt()"
+          (ionChange)="editClosesAt.set($event.detail.value ?? '')"
+        ></ion-input>
+      </ion-item>
+    </ion-list>
+
+    <h3 class="section-heading">{{ "intake.intake-form" | translate }}</h3>
+    <app-intake-config-builder
+      [config]="editIntakeConfig()"
+      (configChange)="editIntakeConfig.set($event)"
+    ></app-intake-config-builder>
+
+    <ion-button expand="block" (click)="saveSettings()" [disabled]="savingSettings()">
+      @if (savingSettings()) {
+      <ion-spinner name="crescent"></ion-spinner>
+      } @else { {{ "common.save" | translate }} }
+    </ion-button>
+    } @else {
+    <ion-list>
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.visibility" | translate }}</p>
+          <h3>{{ settingLabel("visibility", s.visibility) }}</h3></ion-label
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.privacy-mode" | translate }}</p>
+          <h3>{{ settingLabel("privacy", s.privacyMode) }}</h3></ion-label
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.result-visibility" | translate }}</p>
+          <h3>{{ settingLabel("result", s.resultVisibility) }}</h3></ion-label
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.statement-order" | translate }}</p>
+          <h3>{{ settingLabel("order", s.statementOrder) }}</h3></ion-label
+        >
+      </ion-item>
+      <ion-item>
+        <ion-label>
+          <p>
+            {{ "survey.statement-char-min" | translate }} / {{ "survey.statement-char-max" |
+            translate }}
+          </p>
+          <h3>{{ s.statementCharMin }} / {{ s.statementCharMax }}</h3>
+        </ion-label>
+      </ion-item>
+      @if (s.closesAt) {
+      <ion-item>
+        <ion-label
+          ><p>{{ "survey.closes-at" | translate }}</p>
+          <h3>{{ s.closesAt | date: "mediumDate":"":locale }}</h3></ion-label
+        >
+      </ion-item>
+      }
+    </ion-list>
+    } }
+
+    <!-- PARTICIPANTS (admin) -->
+    @if (activeSegment() === "participants") {
+    <app-participants [surveySlug]="s.slug"></app-participants>
     }
   </div>
   }

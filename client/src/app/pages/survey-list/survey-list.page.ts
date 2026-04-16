@@ -1,3 +1,4 @@
+import { DatePipe } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
@@ -17,15 +18,16 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/angular/standalone";
-import { TranslatePipe } from "@ngx-translate/core";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
-import { addOutline } from "ionicons/icons";
+import { addOutline, checkmarkCircle } from "ionicons/icons";
 import { SurveyService } from "../../services/survey.service";
 
 @Component({
   selector: "app-survey-list",
   standalone: true,
   imports: [
+    DatePipe,
     RouterLink,
     TranslatePipe,
     IonHeader,
@@ -49,10 +51,15 @@ import { SurveyService } from "../../services/survey.service";
 })
 export class SurveyListPage {
   surveyService = inject(SurveyService);
+  private translate = inject(TranslateService);
   loading = signal(true);
 
+  get locale(): string {
+    return this.translate.currentLang || "en";
+  }
+
   constructor() {
-    addIcons({ addOutline });
+    addIcons({ addOutline, checkmarkCircle });
   }
 
   async ionViewWillEnter() {

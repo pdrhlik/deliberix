@@ -1,6 +1,18 @@
 .detail-container {
   max-width: 600px;
   margin: 0 auto;
+
+  > ion-button,
+  > ion-list,
+  > ion-card,
+  > .admin-actions,
+  > app-survey-results,
+  > app-seed-statements,
+  > app-submit-statement,
+  > app-participants {
+    display: block;
+    margin-bottom: 1rem;
+  }
 }
 
 .card-header-row {
@@ -16,9 +28,45 @@
   color: var(--ion-color-medium-shade);
 }
 
-.actions {
-  margin-top: 1.5rem;
+.admin-actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.completion-card {
+  .progress-section {
+    margin-bottom: 0;
+  }
+}
+
+.progress-section {
+  .progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--ion-color-medium-shade);
+  }
+}
+
+.settings-summary {
+  margin-top: 1rem;
+}
+
+.section-heading {
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.5rem;
+}
+
+ion-segment {
+  --background: transparent;
+}
+
+.segment-badge {
+  margin-left: 0.25rem;
+  font-size: 0.65rem;
+  vertical-align: super;
 }

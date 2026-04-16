@@ -20,3 +20,8 @@ type VoteProgress struct {
 	Voted int `json:"voted"`
 	Total int `json:"total"`
 }
+
+type UserVote struct {
+	Vote        string `json:"vote"`
+	IsImportant bool   `json:"isImportant"`
+}
