@@ -25,11 +25,9 @@
       </ion-button>
     </div>
     } @else if (currentStatement(); as st) {
-    <ion-card class="statement-card">
-      <ion-card-content>
-        <p class="statement-text">{{ st.text }}</p>
-      </ion-card-content>
-    </ion-card>
+    <div class="statement-card">
+      <p class="statement-text">{{ st.text }}</p>
+    </div>
 
     <div class="important-toggle">
       <ion-toggle [(ngModel)]="isImportant" labelPlacement="start">

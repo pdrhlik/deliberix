@@ -15,24 +15,20 @@
         <p>{{ "moderation.no-pending" | translate }}</p>
       </ion-text>
     </div>
-    } @else {
-    <ion-list>
-      @for (st of queue(); track st.id) {
-      <div class="moderation-card">
-        <p class="statement-text">{{ st.text }}</p>
-        <div class="action-buttons">
-          <ion-button color="success" fill="outline" size="small" (click)="approve(st)">
-            <ion-icon name="checkmark-outline" slot="start"></ion-icon>
-            {{ "moderation.approve" | translate }}
-          </ion-button>
-          <ion-button color="danger" fill="outline" size="small" (click)="reject(st)">
-            <ion-icon name="close-outline" slot="start"></ion-icon>
-            {{ "moderation.reject" | translate }}
-          </ion-button>
-        </div>
+    } @else { @for (st of queue(); track st.id) {
+    <div class="moderation-card">
+      <p class="statement-text">{{ st.text }}</p>
+      <div class="action-buttons">
+        <ion-button color="success" fill="outline" size="small" (click)="approve(st)">
+          <ion-icon name="checkmark-outline" slot="start"></ion-icon>
+          {{ "moderation.approve" | translate }}
+        </ion-button>
+        <ion-button color="danger" fill="outline" size="small" (click)="reject(st)">
+          <ion-icon name="close-outline" slot="start"></ion-icon>
+          {{ "moderation.reject" | translate }}
+        </ion-button>
       </div>
-      }
-    </ion-list>
-    }
+    </div>
+    } }
   </div>
 </ion-content>

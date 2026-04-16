@@ -4,9 +4,9 @@
 
 - **Server error messages are raw English strings.** They appear in toasts via `apiError()`. Need a system where server returns error codes and client maps them to i18n keys. Currently ~70 `writeError()` calls with hardcoded English. Temporary fix: at least make them proper sentences with periods.
 
-- **Spacing/alignment inconsistencies across pages.** Buttons, cards, inputs all have different margins and padding. Each page was built independently with different patterns (some use `ion-list > ion-item`, some use standalone inputs with `fill="outline"`, some use cards). Need a consistent approach — preferably standalone inputs with `fill="outline"` everywhere, no `ion-list` wrappers, and a shared `.page-container` class for consistent max-width and spacing.
+- ~~**Spacing/alignment inconsistencies across pages.**~~ DONE — Replaced `ion-card` and `ion-list > ion-item` with custom `.content-card` / `.readonly-field` / `.survey-card` divs everywhere. All inputs use `fill="outline"`, all containers use 600px max-width. Consistent card pattern: `background: var(--ion-color-light)`, `border-radius: 8px`, `padding: 0.75-1rem`.
 
-- **Survey detail page admin buttons** are still too prominent. The activate/close buttons should be secondary actions, not the first thing you see. Consider moving them to a toolbar or making them smaller/outline.
+- ~~**Survey detail page admin buttons**~~ DONE — Moved activate/close buttons to the settings tab.
 
 - **Double join step for public surveys.** Survey detail shows a "Join" button that navigates to `/survey/:slug/join` which then shows another join button. For surveys without an intake form, joining should be a single click. Only show the join page if there's an intake form to fill out.
 
@@ -44,7 +44,7 @@
 
 - **Security audit** — rate limiting on auth endpoints (login, register, magic link), CSRF protection, input sanitization audit, JWT refresh token rotation, account lockout after failed attempts, CORS tightening for production.
 
-- **Production deployment** — `Caddyfile.prod` is ready, `docker-compose.yml` has correct ports (3407, 8180, 4280). Need to: set up on server, configure SMTP, run migrations, verify Caddy routing.
+- ~~**Production deployment**~~ DONE — `DEPLOY.md` has full instructions. Schema auto-applied on first start, no manual migrations needed.
 
 - **Survey categories/tags** for better browsing.
 
@@ -60,3 +60,4 @@
 - Admin is automatically a participant and can vote. Do we want that or does he have to join as well?
 - Should the intake config builder support reordering options within a field via drag-and-drop?
 - For the anonymous survey mode: what's the minimum acceptable duplicate prevention? Cookie-only? Email uniqueness check?
+- Name suggestion - Deliberix

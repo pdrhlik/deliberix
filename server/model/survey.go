@@ -56,12 +56,15 @@ type UpdateSurveyRequest struct {
 }
 
 type SurveyListItem struct {
-	ID        uint      `db:"id" json:"id"`
-	Title     string    `db:"title" json:"title"`
-	Slug      string    `db:"slug" json:"slug"`
-	Status    string    `db:"status" json:"status"`
-	Role      string    `db:"role" json:"role"`
-	Voted     int       `db:"voted" json:"voted"`
-	Total     int       `db:"total" json:"total"`
-	CreatedAt time.Time `db:"created_at" json:"createdAt"`
+	ID               uint      `db:"id" json:"id"`
+	Title            string    `db:"title" json:"title"`
+	Slug             string    `db:"slug" json:"slug"`
+	Description      *string   `db:"description" json:"description,omitempty"`
+	Status           string    `db:"status" json:"status"`
+	Role             string    `db:"role" json:"role"`
+	Voted            int       `db:"voted" json:"voted"`
+	Total            int       `db:"total" json:"total"`
+	ParticipantCount int       `db:"participant_count" json:"participantCount"`
+	StatementCount   int       `db:"statement_count" json:"statementCount"`
+	CreatedAt        time.Time `db:"created_at" json:"createdAt"`
 }

@@ -25,10 +25,13 @@ export interface SurveyListItem {
   id: number;
   title: string;
   slug: string;
+  description?: string;
   status: string;
   role: string;
   voted: number;
   total: number;
+  participantCount: number;
+  statementCount: number;
   createdAt: string;
 }
 

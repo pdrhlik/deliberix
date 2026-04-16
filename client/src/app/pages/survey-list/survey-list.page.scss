@@ -26,54 +26,95 @@
   }
 }
 
-ion-item {
-  --padding-top: 12px;
-  --padding-bottom: 12px;
+.survey-card {
+  display: block;
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.15s ease;
 
-  h2 {
-    font-weight: 600;
-    font-size: 1rem;
+  &:hover {
+    background: var(--ion-color-light-shade);
   }
 
-  .survey-meta {
-    font-size: 0.8rem;
+  &:active {
+    background: var(--ion-color-light-shade);
+  }
+
+  &.skeleton-card {
     display: flex;
+    flex-direction: column;
     gap: 0.5rem;
-    align-items: center;
-    margin-top: 0.25rem;
+    cursor: default;
 
-    .status-badge {
-      font-size: 0.7rem;
-    }
-
-    .role-label {
-      text-transform: capitalize;
-      color: var(--ion-color-medium);
-    }
-
-    .date-label {
-      color: var(--ion-color-medium);
+    &:hover {
+      background: var(--ion-color-light);
     }
   }
+}
 
-  .progress-row {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    margin-top: 0.25rem;
-    font-size: 0.85rem;
+.survey-description {
+  font-size: 0.85rem;
+  color: var(--ion-color-medium-shade);
+  margin: 0.25rem 0 0;
+  line-height: 1.4;
+}
 
-    .progress-text {
-      color: var(--ion-color-medium);
-    }
+.survey-card-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
 
-    .progress-text.done {
-      color: var(--ion-color-success);
-      font-weight: 500;
-    }
+.survey-title {
+  font-weight: 600;
+  font-size: 1rem;
+  margin: 0;
+}
 
-    ion-icon {
-      font-size: 1rem;
-    }
+.survey-meta {
+  font-size: 0.8rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-top: 0.25rem;
+
+  .status-badge {
+    font-size: 0.7rem;
+  }
+
+  .role-label {
+    text-transform: capitalize;
+    color: var(--ion-color-medium);
+  }
+
+  .date-label {
+    color: var(--ion-color-medium);
+  }
+}
+
+.progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.25rem;
+  font-size: 0.85rem;
+
+  .progress-text {
+    color: var(--ion-color-medium);
+  }
+
+  .progress-text.done {
+    color: var(--ion-color-success);
+    font-weight: 500;
+  }
+
+  ion-icon {
+    font-size: 1rem;
   }
 }

@@ -40,12 +40,16 @@ func (s *Store) SlugExists(ctx context.Context, slug string) (bool, error) {
 func (s *Store) ListSurveysByUser(ctx context.Context, userID uint) ([]model.SurveyListItem, error) {
 	items := make([]model.SurveyListItem, 0)
 	q := s.DB.Query(`
-		SELECT s.id, s.title, s.slug, s.status, sp.role,
+		SELECT s.id, s.title, s.slug, s.description, s.status, sp.role,
 			(SELECT COUNT(*) FROM response r
 				JOIN statement st ON st.id = r.statement_id
 				WHERE st.survey_id = s.id AND r.user_id = sp.user_id) AS voted,
 			(SELECT COUNT(*) FROM statement st
 				WHERE st.survey_id = s.id AND st.status = 'approved') AS total,
+			(SELECT COUNT(*) FROM survey_participant sp2
+				WHERE sp2.survey_id = s.id) AS participant_count,
+			(SELECT COUNT(*) FROM statement st2
+				WHERE st2.survey_id = s.id AND st2.status = 'approved') AS statement_count,
 			s.created_at
 		FROM survey s
 		JOIN survey_participant sp ON sp.survey_id = s.id
@@ -60,7 +64,13 @@ func (s *Store) ListSurveysByUser(ctx context.Context, userID uint) ([]model.Sur
 func (s *Store) ListPublicSurveys(ctx context.Context, userID uint) ([]model.SurveyListItem, error) {
 	items := make([]model.SurveyListItem, 0)
 	q := s.DB.Query(`
-		SELECT s.id, s.title, s.slug, s.status, '' AS role, 0 AS voted, 0 AS total, s.created_at
+		SELECT s.id, s.title, s.slug, s.description, s.status,
+			'' AS role, 0 AS voted, 0 AS total,
+			(SELECT COUNT(*) FROM survey_participant sp2
+				WHERE sp2.survey_id = s.id) AS participant_count,
+			(SELECT COUNT(*) FROM statement st
+				WHERE st.survey_id = s.id AND st.status = 'approved') AS statement_count,
+			s.created_at
 		FROM survey s
 		WHERE s.status = 'active'
 			AND s.visibility IN ('public', 'unlisted')

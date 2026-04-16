@@ -3,9 +3,11 @@
   margin: 0 auto;
 
   > ion-button,
-  > ion-list,
-  > ion-card,
-  > .admin-actions,
+  > .overview-card,
+  > .content-card,
+  > .completion-card,
+  > .settings-form,
+  > .settings-readonly,
   > app-survey-results,
   > app-seed-statements,
   > app-submit-statement,
@@ -15,6 +17,14 @@
   }
 }
 
+.overview-card,
+.content-card,
+.completion-card {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 1rem;
+}
+
 .card-header-row {
   display: flex;
   align-items: center;
@@ -22,20 +32,30 @@
   gap: 0.75rem;
 }
 
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 0;
+}
+
 .description {
   font-size: 1rem;
   line-height: 1.5;
   color: var(--ion-color-medium-shade);
+  margin: 0.75rem 0 0;
 }
 
-.admin-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
+.content-card,
 .completion-card {
   .progress-section {
+    margin-bottom: 0;
+  }
+
+  .vote-action {
+    margin-top: 1rem;
+  }
+
+  > ion-button:last-child {
     margin-bottom: 0;
   }
 }
@@ -51,8 +71,33 @@
   }
 }
 
-.settings-summary {
-  margin-top: 1rem;
+.settings-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.settings-readonly {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.readonly-field {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+
+  .readonly-label {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--ion-color-medium);
+    margin-bottom: 0.25rem;
+  }
+
+  .readonly-value {
+    font-size: 0.95rem;
+  }
 }
 
 .section-heading {

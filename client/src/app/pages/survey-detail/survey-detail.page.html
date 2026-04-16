@@ -62,51 +62,38 @@
   <div class="detail-container">
     <!-- OVERVIEW -->
     @if (activeSegment() === "overview") {
-    <ion-card>
-      <ion-card-header>
-        <div class="card-header-row">
-          <ion-card-title>{{ s.title }}</ion-card-title>
-          <ion-badge [color]="statusColor(s.status)">
-            {{ "survey." + s.status | translate }}
-          </ion-badge>
-        </div>
-      </ion-card-header>
+    <div class="overview-card">
+      <div class="card-header-row">
+        <h2 class="card-title">{{ s.title }}</h2>
+        <ion-badge [color]="statusColor(s.status)">
+          {{ "survey." + s.status | translate }}
+        </ion-badge>
+      </div>
       @if (s.description) {
-      <ion-card-content>
-        <p class="description">{{ s.description }}</p>
-      </ion-card-content>
+      <p class="description">{{ s.description }}</p>
       }
-    </ion-card>
+    </div>
 
     <!-- Vote progress for participants -->
     @if (isParticipantOrAdmin && (s.status === "active" || s.status === "closed") &&
     voteProgress().total > 0) {
-    <div class="progress-section">
-      <div class="progress-header">
-        <span>{{ voteProgress().voted }} / {{ voteProgress().total }}</span>
-        @if (allVoted) {
-        <ion-badge color="success">{{ "statement.all-done" | translate }}</ion-badge>
-        }
+    <div class="content-card">
+      <div class="progress-section">
+        <div class="progress-header">
+          <span>{{ voteProgress().voted }} / {{ voteProgress().total }}</span>
+          @if (allVoted) {
+          <ion-badge color="success">{{ "statement.all-done" | translate }}</ion-badge>
+          }
+        </div>
+        <ion-progress-bar
+          [value]="voteProgress().voted / voteProgress().total"
+          [color]="allVoted ? 'success' : 'primary'"
+        ></ion-progress-bar>
       </div>
-      <ion-progress-bar
-        [value]="voteProgress().voted / voteProgress().total"
-        [color]="allVoted ? 'success' : 'primary'"
-      ></ion-progress-bar>
-    </div>
-    }
-
-    <!-- Admin status actions -->
-    @if (isAdmin) {
-    <div class="admin-actions">
-      @if (s.status === "draft") {
-      <ion-button size="small" color="success" (click)="activate()">
-        <ion-icon name="play-outline" slot="start"></ion-icon>
-        {{ "survey.activate" | translate }}
-      </ion-button>
-      } @if (s.status === "active") {
-      <ion-button size="small" color="danger" fill="outline" (click)="closeSurvey()">
-        <ion-icon name="close-outline" slot="start"></ion-icon>
-        {{ "survey.close-survey" | translate }}
+      @if (!allVoted && s.status === "active") {
+      <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/vote'" class="vote-action">
+        <ion-icon name="hand-left-outline" slot="start"></ion-icon>
+        {{ "statement.start-voting" | translate }}
       </ion-button>
       }
     </div>
@@ -114,49 +101,11 @@
 
     <!-- Join button for non-participants -->
     @if (!isParticipantOrAdmin && s.status === "active") {
-    <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/join'">
-      {{ "survey.join" | translate }}
-    </ion-button>
-    }
-
-    <!-- Quick vote action for participants -->
-    @if (isParticipantOrAdmin && s.status === "active" && !allVoted) {
-    <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/vote'">
-      <ion-icon name="hand-left-outline" slot="start"></ion-icon>
-      {{ "statement.start-voting" | translate }}
-    </ion-button>
-    }
-
-    <!-- Read-only settings summary (active/closed admin/moderator) -->
-    @if (s.status !== "draft" && isAdminOrModerator) {
-    <ion-list class="settings-summary">
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.visibility" | translate }}</p>
-          <h3>{{ settingLabel("visibility", s.visibility) }}</h3></ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.result-visibility" | translate }}</p>
-          <h3>{{ settingLabel("result", s.resultVisibility) }}</h3></ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.statement-order" | translate }}</p>
-          <h3>{{ settingLabel("order", s.statementOrder) }}</h3></ion-label
-        >
-      </ion-item>
-      @if (s.closesAt) {
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.closes-at" | translate }}</p>
-          <h3>{{ s.closesAt | date: "mediumDate":"":locale }}</h3></ion-label
-        >
-      </ion-item>
-      }
-    </ion-list>
+    <div class="content-card">
+      <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/join'">
+        {{ "survey.join" | translate }}
+      </ion-button>
+    </div>
     } }
 
     <!-- STATEMENTS (admin, draft) -->
@@ -170,40 +119,35 @@
 
     <!-- PARTICIPATE -->
     @if (activeSegment() === "participate") {
-    <ion-card class="completion-card">
-      <ion-card-content>
-        <div class="progress-section">
-          <div class="progress-header">
-            <span>{{ voteProgress().voted }} / {{ voteProgress().total }}</span>
-            @if (allVoted) {
-            <ion-badge color="success">{{ "statement.all-done" | translate }}</ion-badge>
-            }
-          </div>
-          <ion-progress-bar
-            [value]="voteProgress().total > 0 ? voteProgress().voted / voteProgress().total : 0"
-            [color]="allVoted ? 'success' : 'primary'"
-          ></ion-progress-bar>
+    <div class="completion-card">
+      <div class="progress-section">
+        <div class="progress-header">
+          <span>{{ voteProgress().voted }} / {{ voteProgress().total }}</span>
+          @if (allVoted) {
+          <ion-badge color="success">{{ "statement.all-done" | translate }}</ion-badge>
+          }
         </div>
-        @if (!allVoted) {
-        <ion-button
-          expand="block"
-          [routerLink]="'/survey/' + s.slug + '/vote'"
-          class="ion-margin-top"
-        >
-          <ion-icon name="hand-left-outline" slot="start"></ion-icon>
-          {{ "statement.start-voting" | translate }}
-        </ion-button>
-        }
-      </ion-card-content>
-    </ion-card>
+        <ion-progress-bar
+          [value]="voteProgress().total > 0 ? voteProgress().voted / voteProgress().total : 0"
+          [color]="allVoted ? 'success' : 'primary'"
+        ></ion-progress-bar>
+      </div>
+      @if (!allVoted) {
+      <ion-button expand="block" [routerLink]="'/survey/' + s.slug + '/vote'" class="vote-action">
+        <ion-icon name="hand-left-outline" slot="start"></ion-icon>
+        {{ "statement.start-voting" | translate }}
+      </ion-button>
+      }
+    </div>
 
+    @if (allVoted) {
     <app-submit-statement
       [surveySlug]="s.slug"
       [charMin]="s.statementCharMin"
       [charMax]="s.statementCharMax"
       (statementSubmitted)="loadSurvey(s.slug)"
     ></app-submit-statement>
-    }
+    } }
 
     <!-- RESULTS -->
     @if (activeSegment() === "results") {
@@ -220,114 +164,126 @@
     }
 
     <!-- SETTINGS (admin) -->
-    @if (activeSegment() === "settings") { @if (s.status === "draft") {
-    <ion-list>
-      <ion-item>
-        <ion-select
-          [label]="'survey.visibility' | translate"
-          labelPlacement="stacked"
-          [value]="editVisibility()"
-          (ionChange)="editVisibility.set($event.detail.value)"
-          interface="popover"
+    @if (activeSegment() === "settings") {
+
+    <!-- Admin status actions -->
+    @if (s.status === "draft") {
+    <ion-button expand="block" color="success" (click)="activate()">
+      <ion-icon name="play-outline" slot="start"></ion-icon>
+      {{ "survey.activate" | translate }}
+    </ion-button>
+    } @if (s.status === "active") {
+    <ion-button expand="block" color="danger" fill="outline" (click)="closeSurvey()">
+      <ion-icon name="close-outline" slot="start"></ion-icon>
+      {{ "survey.close-survey" | translate }}
+    </ion-button>
+    } @if (s.status === "draft") {
+    <div class="settings-form">
+      <ion-select
+        [label]="'survey.visibility' | translate"
+        labelPlacement="stacked"
+        fill="outline"
+        [value]="editVisibility()"
+        (ionChange)="editVisibility.set($event.detail.value)"
+        interface="popover"
+      >
+        <ion-select-option value="private"
+          >{{ "survey.visibility-private" | translate }}</ion-select-option
         >
-          <ion-select-option value="private"
-            >{{ "survey.visibility-private" | translate }}</ion-select-option
-          >
-          <ion-select-option value="public"
-            >{{ "survey.visibility-public" | translate }}</ion-select-option
-          >
-          <ion-select-option value="unlisted"
-            >{{ "survey.visibility-unlisted" | translate }}</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-select
-          [label]="'survey.privacy-mode' | translate"
-          labelPlacement="stacked"
-          [value]="editPrivacyMode()"
-          (ionChange)="editPrivacyMode.set($event.detail.value)"
-          interface="popover"
+        <ion-select-option value="public"
+          >{{ "survey.visibility-public" | translate }}</ion-select-option
         >
-          <ion-select-option value="anonymous"
-            >{{ "survey.privacy-anonymous" | translate }}</ion-select-option
-          >
-          <ion-select-option value="public"
-            >{{ "survey.privacy-public" | translate }}</ion-select-option
-          >
-          <ion-select-option value="participant_choice"
-            >{{ "survey.privacy-participant-choice" | translate }}</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-select
-          [label]="'survey.result-visibility' | translate"
-          labelPlacement="stacked"
-          [value]="editResultVisibility()"
-          (ionChange)="editResultVisibility.set($event.detail.value)"
-          interface="popover"
+        <ion-select-option value="unlisted"
+          >{{ "survey.visibility-unlisted" | translate }}</ion-select-option
         >
-          <ion-select-option value="after_completion"
-            >{{ "survey.result-after-completion" | translate }}</ion-select-option
-          >
-          <ion-select-option value="continuous"
-            >{{ "survey.result-continuous" | translate }}</ion-select-option
-          >
-          <ion-select-option value="after_close"
-            >{{ "survey.result-after-close" | translate }}</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-select
-          [label]="'survey.statement-order' | translate"
-          labelPlacement="stacked"
-          [value]="editStatementOrder()"
-          (ionChange)="editStatementOrder.set($event.detail.value)"
-          interface="popover"
+      </ion-select>
+
+      <ion-select
+        [label]="'survey.privacy-mode' | translate"
+        labelPlacement="stacked"
+        fill="outline"
+        [value]="editPrivacyMode()"
+        (ionChange)="editPrivacyMode.set($event.detail.value)"
+        interface="popover"
+      >
+        <ion-select-option value="anonymous"
+          >{{ "survey.privacy-anonymous" | translate }}</ion-select-option
         >
-          <ion-select-option value="random"
-            >{{ "survey.order-random" | translate }}</ion-select-option
-          >
-          <ion-select-option value="sequential"
-            >{{ "survey.order-sequential" | translate }}</ion-select-option
-          >
-          <ion-select-option value="least_voted"
-            >{{ "survey.order-least-voted" | translate }}</ion-select-option
-          >
-        </ion-select>
-      </ion-item>
-      <ion-item>
-        <ion-input
-          type="number"
-          labelPlacement="stacked"
-          [label]="'survey.statement-char-min' | translate"
-          [value]="editStatementCharMin()"
-          (ionChange)="editStatementCharMin.set(+$event.detail.value!)"
-          [min]="1"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input
-          type="number"
-          labelPlacement="stacked"
-          [label]="'survey.statement-char-max' | translate"
-          [value]="editStatementCharMax()"
-          (ionChange)="editStatementCharMax.set(+$event.detail.value!)"
-          [min]="1"
-        ></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input
-          type="datetime-local"
-          labelPlacement="stacked"
-          [label]="'survey.closes-at' | translate"
-          [value]="editClosesAt()"
-          (ionChange)="editClosesAt.set($event.detail.value ?? '')"
-        ></ion-input>
-      </ion-item>
-    </ion-list>
+        <ion-select-option value="public"
+          >{{ "survey.privacy-public" | translate }}</ion-select-option
+        >
+        <ion-select-option value="participant_choice"
+          >{{ "survey.privacy-participant-choice" | translate }}</ion-select-option
+        >
+      </ion-select>
+
+      <ion-select
+        [label]="'survey.result-visibility' | translate"
+        labelPlacement="stacked"
+        fill="outline"
+        [value]="editResultVisibility()"
+        (ionChange)="editResultVisibility.set($event.detail.value)"
+        interface="popover"
+      >
+        <ion-select-option value="after_completion"
+          >{{ "survey.result-after-completion" | translate }}</ion-select-option
+        >
+        <ion-select-option value="continuous"
+          >{{ "survey.result-continuous" | translate }}</ion-select-option
+        >
+        <ion-select-option value="after_close"
+          >{{ "survey.result-after-close" | translate }}</ion-select-option
+        >
+      </ion-select>
+
+      <ion-select
+        [label]="'survey.statement-order' | translate"
+        labelPlacement="stacked"
+        fill="outline"
+        [value]="editStatementOrder()"
+        (ionChange)="editStatementOrder.set($event.detail.value)"
+        interface="popover"
+      >
+        <ion-select-option value="random"
+          >{{ "survey.order-random" | translate }}</ion-select-option
+        >
+        <ion-select-option value="sequential"
+          >{{ "survey.order-sequential" | translate }}</ion-select-option
+        >
+        <ion-select-option value="least_voted"
+          >{{ "survey.order-least-voted" | translate }}</ion-select-option
+        >
+      </ion-select>
+
+      <ion-input
+        type="number"
+        labelPlacement="stacked"
+        fill="outline"
+        [label]="'survey.statement-char-min' | translate"
+        [value]="editStatementCharMin()"
+        (ionChange)="editStatementCharMin.set(+$event.detail.value!)"
+        [min]="1"
+      ></ion-input>
+
+      <ion-input
+        type="number"
+        labelPlacement="stacked"
+        fill="outline"
+        [label]="'survey.statement-char-max' | translate"
+        [value]="editStatementCharMax()"
+        (ionChange)="editStatementCharMax.set(+$event.detail.value!)"
+        [min]="1"
+      ></ion-input>
+
+      <ion-input
+        type="datetime-local"
+        labelPlacement="stacked"
+        fill="outline"
+        [label]="'survey.closes-at' | translate"
+        [value]="editClosesAt()"
+        (ionChange)="editClosesAt.set($event.detail.value ?? '')"
+      ></ion-input>
+    </div>
 
     <h3 class="section-heading">{{ "intake.intake-form" | translate }}</h3>
     <app-intake-config-builder
@@ -341,49 +297,37 @@
       } @else { {{ "common.save" | translate }} }
     </ion-button>
     } @else {
-    <ion-list>
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.visibility" | translate }}</p>
-          <h3>{{ settingLabel("visibility", s.visibility) }}</h3></ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.privacy-mode" | translate }}</p>
-          <h3>{{ settingLabel("privacy", s.privacyMode) }}</h3></ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.result-visibility" | translate }}</p>
-          <h3>{{ settingLabel("result", s.resultVisibility) }}</h3></ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.statement-order" | translate }}</p>
-          <h3>{{ settingLabel("order", s.statementOrder) }}</h3></ion-label
-        >
-      </ion-item>
-      <ion-item>
-        <ion-label>
-          <p>
-            {{ "survey.statement-char-min" | translate }} / {{ "survey.statement-char-max" |
-            translate }}
-          </p>
-          <h3>{{ s.statementCharMin }} / {{ s.statementCharMax }}</h3>
-        </ion-label>
-      </ion-item>
+    <div class="settings-readonly">
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.visibility" | translate }}</span>
+        <span class="readonly-value">{{ settingLabel("visibility", s.visibility) }}</span>
+      </div>
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.privacy-mode" | translate }}</span>
+        <span class="readonly-value">{{ settingLabel("privacy", s.privacyMode) }}</span>
+      </div>
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.result-visibility" | translate }}</span>
+        <span class="readonly-value">{{ settingLabel("result", s.resultVisibility) }}</span>
+      </div>
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.statement-order" | translate }}</span>
+        <span class="readonly-value">{{ settingLabel("order", s.statementOrder) }}</span>
+      </div>
+      <div class="readonly-field">
+        <span class="readonly-label">
+          {{ "survey.statement-char-min" | translate }} / {{ "survey.statement-char-max" | translate
+          }}
+        </span>
+        <span class="readonly-value">{{ s.statementCharMin }} / {{ s.statementCharMax }}</span>
+      </div>
       @if (s.closesAt) {
-      <ion-item>
-        <ion-label
-          ><p>{{ "survey.closes-at" | translate }}</p>
-          <h3>{{ s.closesAt | date: "mediumDate":"":locale }}</h3></ion-label
-        >
-      </ion-item>
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.closes-at" | translate }}</span>
+        <span class="readonly-value">{{ s.closesAt | date: "mediumDate":"":locale }}</span>
+      </div>
       }
-    </ion-list>
+    </div>
     } }
 
     <!-- PARTICIPANTS (admin) -->

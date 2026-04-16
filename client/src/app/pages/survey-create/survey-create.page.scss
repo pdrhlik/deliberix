@@ -13,6 +13,27 @@
   }
 }
 
+ion-accordion-group {
+  ion-accordion {
+    background: transparent;
+  }
+
+  ion-item[slot="header"] {
+    --background: var(--ion-color-light);
+    --border-radius: 8px;
+    --padding-start: 1rem;
+    --inner-padding-end: 1rem;
+    font-weight: 600;
+  }
+}
+
+.accordion-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+}
+
 .error-message {
   margin: 0;
   font-size: 0.875rem;

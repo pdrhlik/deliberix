@@ -21,12 +21,8 @@
   </div>
 
   @if (statements().length > 0) {
-    <ion-list>
-      @for (st of statements(); track st.id) {
-        <ion-item>
-          <ion-label class="ion-text-wrap">{{ st.text }}</ion-label>
-        </ion-item>
-      }
-    </ion-list>
+    @for (st of statements(); track st.id) {
+      <div class="statement-card">{{ st.text }}</div>
+    }
   }
 </div>

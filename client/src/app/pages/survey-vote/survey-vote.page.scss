@@ -9,11 +9,10 @@ ion-progress-bar {
 }
 
 .statement-card {
-  margin: 0 0 1.5rem 0;
-
-  ion-card-content {
-    padding: 2rem 1.5rem;
-  }
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 2rem 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .statement-text {

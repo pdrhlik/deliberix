@@ -4,8 +4,17 @@ import { ActivatedRoute, RouterLink } from "@angular/router";
 import { Haptics, ImpactStyle } from "@capacitor/haptics";
 import {
   IonBackButton,
-  IonButton, IonButtons, IonCard,
-  IonCardContent, IonContent, IonHeader, IonIcon, IonProgressBar, IonSpinner, IonText, IonTitle, IonToggle, IonToolbar
+  IonButton,
+  IonButtons,
+  IonContent,
+  IonHeader,
+  IonIcon,
+  IonProgressBar,
+  IonSpinner,
+  IonText,
+  IonTitle,
+  IonToggle,
+  IonToolbar,
 } from "@ionic/angular/standalone";
 import { TranslatePipe } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
@@ -30,8 +39,6 @@ import { ToastService } from "../../services/toast.service";
     IonBackButton,
     IonButton,
     IonIcon,
-    IonCard,
-    IonCardContent,
     IonToggle,
     IonProgressBar,
     IonText,

@@ -9,64 +9,62 @@
 
 <ion-content class="ion-padding">
   <div class="list-container">
-    @if (loading()) {
-    <ion-list>
-      @for (i of [1, 2, 3]; track i) {
-      <ion-item>
-        <ion-label>
-          <h2><ion-skeleton-text [animated]="true" style="width: 60%"></ion-skeleton-text></h2>
-          <p><ion-skeleton-text [animated]="true" style="width: 30%"></ion-skeleton-text></p>
-        </ion-label>
-      </ion-item>
-      }
-    </ion-list>
-    } @else {
+    @if (loading()) { @for (i of [1, 2, 3]; track i) {
+    <div class="survey-card skeleton-card">
+      <ion-skeleton-text [animated]="true" style="width: 60%; height: 1.1rem"></ion-skeleton-text>
+      <ion-skeleton-text [animated]="true" style="width: 30%; height: 0.8rem"></ion-skeleton-text>
+    </div>
+    } } @else {
 
     <!-- My surveys -->
     @if (surveyService.surveys().length > 0) {
     <h2 class="section-title">{{ "survey.my-surveys" | translate }}</h2>
-    <ion-list>
-      @for (survey of surveyService.surveys(); track survey.slug) {
-      <ion-item [routerLink]="'/survey/' + survey.slug" detail="true" button>
-        <ion-label>
-          <h2>{{ survey.title }}</h2>
-          <p class="survey-meta">
-            <ion-badge [color]="statusColor(survey.status)" class="status-badge">
-              {{ "survey." + survey.status | translate }}
-            </ion-badge>
-            <span class="role-label">{{ survey.role }}</span>
-            <span class="date-label">{{ survey.createdAt | date: "mediumDate":"":locale }}</span>
-          </p>
-          @if (survey.total > 0) {
-          <p class="progress-row">
-            @if (survey.voted >= survey.total) {
-            <ion-icon name="checkmark-circle" color="success"></ion-icon>
-            <span class="progress-text done">{{ survey.voted }}/{{ survey.total }}</span>
-            } @else {
-            <span class="progress-text">{{ survey.voted }}/{{ survey.total }}</span>
-            }
-          </p>
-          }
-        </ion-label>
-      </ion-item>
+    @for (survey of surveyService.surveys(); track survey.slug) {
+    <a class="survey-card" [routerLink]="'/survey/' + survey.slug">
+      <h3 class="survey-title">{{ survey.title }}</h3>
+      <div class="survey-meta">
+        <ion-badge [color]="statusColor(survey.status)" class="status-badge">
+          {{ "survey." + survey.status | translate }}
+        </ion-badge>
+        <span class="role-label">{{ survey.role }}</span>
+        <span class="date-label">{{ survey.createdAt | date: "mediumDate":"":locale }}</span>
+      </div>
+      @if (survey.total > 0) {
+      <div class="progress-row">
+        @if (survey.voted >= survey.total) {
+        <ion-icon name="checkmark-circle" color="success"></ion-icon>
+        <span class="progress-text done">{{ survey.voted }}/{{ survey.total }}</span>
+        } @else {
+        <span class="progress-text">{{ survey.voted }}/{{ survey.total }}</span>
+        }
+      </div>
       }
-    </ion-list>
-    }
+    </a>
+    } }
 
     <!-- Public surveys to join -->
     @if (surveyService.publicSurveys().length > 0) {
     <h2 class="section-title">{{ "survey.discover" | translate }}</h2>
-    <ion-list>
-      @for (survey of surveyService.publicSurveys(); track survey.slug) {
-      <ion-item [routerLink]="'/survey/' + survey.slug" detail="true" button>
-        <ion-label>
-          <h2>{{ survey.title }}</h2>
-        </ion-label>
-        <ion-badge slot="end" color="primary">{{ "survey.join" | translate }}</ion-badge>
-      </ion-item>
+    @for (survey of surveyService.publicSurveys(); track survey.slug) {
+    <a class="survey-card" [routerLink]="'/survey/' + survey.slug">
+      <div class="survey-card-row">
+        <h3 class="survey-title">{{ survey.title }}</h3>
+        <ion-badge color="primary">{{ "survey.join" | translate }}</ion-badge>
+      </div>
+      @if (survey.description) {
+      <p class="survey-description">{{ survey.description }}</p>
       }
-    </ion-list>
-    } @if (surveyService.surveys().length === 0 && surveyService.publicSurveys().length === 0) {
+      <div class="survey-meta">
+        <span class="date-label">{{ survey.createdAt | date: "mediumDate":"":locale }}</span>
+        <span class="date-label">
+          {{ survey.participantCount }} {{ "results.participants" | translate | lowercase }}
+        </span>
+        <span class="date-label">
+          {{ survey.statementCount }} {{ "results.statements" | translate | lowercase }}
+        </span>
+      </div>
+    </a>
+    } } @if (surveyService.surveys().length === 0 && surveyService.publicSurveys().length === 0) {
     <div class="empty-state">
       <ion-text color="medium">
         <p>{{ "survey.no-surveys" | translate }}</p>

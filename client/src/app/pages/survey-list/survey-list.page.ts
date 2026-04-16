@@ -1,4 +1,4 @@
-import { DatePipe } from "@angular/common";
+import { DatePipe, LowerCasePipe } from "@angular/common";
 import { Component, inject, signal } from "@angular/core";
 import { RouterLink } from "@angular/router";
 import {
@@ -9,9 +9,6 @@ import {
   IonFabButton,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
   IonMenuButton,
   IonSkeletonText,
   IonText,
@@ -28,6 +25,7 @@ import { SurveyService } from "../../services/survey.service";
   standalone: true,
   imports: [
     DatePipe,
+    LowerCasePipe,
     RouterLink,
     TranslatePipe,
     IonHeader,
@@ -36,9 +34,6 @@ import { SurveyService } from "../../services/survey.service";
     IonContent,
     IonButtons,
     IonMenuButton,
-    IonList,
-    IonItem,
-    IonLabel,
     IonBadge,
     IonFab,
     IonFabButton,

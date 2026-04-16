@@ -1,7 +1,40 @@
-.participants-section {
-  margin-top: 1.5rem;
+h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
 }
 
-h3 {
-  margin-bottom: 0.75rem;
+.participant-card {
+  background: var(--ion-color-light);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.participant-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.participant-name {
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+.participant-meta {
+  font-size: 0.8rem;
+  color: var(--ion-color-medium-shade);
+  margin-top: 0.15rem;
+}
+
+.participant-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  flex-shrink: 0;
 }
