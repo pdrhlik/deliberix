@@ -76,7 +76,7 @@ services:
       - ./website/src:/app/src
       - ./website/astro.config.mjs:/app/astro.config.mjs
     ports:
-      - "127.0.0.1:4321:4321"
+      - "127.0.0.1:4322:4322"
     networks:
       - edemos
 

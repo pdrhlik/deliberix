@@ -6,5 +6,5 @@ RUN npm ci
 
 COPY . .
 
-EXPOSE 4321
+EXPOSE 4322
 CMD ["npx", "astro", "dev", "--host", "0.0.0.0"]
