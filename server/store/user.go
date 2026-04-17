@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/pdrhlik/edemos/server/model"
+	"github.com/pdrhlik/deliberix/server/model"
 )
 
 func (s *Store) CreateUser(ctx context.Context, u *model.User) (uint, error) {

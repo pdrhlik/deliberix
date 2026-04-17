@@ -3,7 +3,7 @@ package handler
 import (
 	"net/http"
 
-	"github.com/pdrhlik/edemos/server/identity"
+	"github.com/pdrhlik/deliberix/server/identity"
 )
 
 func (h *Handler) GetModerationQueue() AppHandlerFunc {

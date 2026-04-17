@@ -8,7 +8,7 @@
   },
   "hero": {
     "title": "Deliberative surveys for better decisions",
-    "subtitle": "Give every voice a fair hearing. eDemOS helps communities, organizations, and researchers gather nuanced opinions through structured deliberation.",
+    "subtitle": "Give every voice a fair hearing. Deliberix helps communities, organizations, and researchers gather nuanced opinions through structured deliberation.",
     "cta-primary": "Get started for free",
     "cta-secondary": "Browse public surveys"
   },
@@ -38,18 +38,18 @@
     "button": "Create your survey"
   },
   "about": {
-    "title": "About eDemOS",
-    "intro": "eDemOS is a deliberative survey platform inspired by Pol.is and All Our Ideas. It helps groups discover consensus and understand disagreement through structured participation.",
+    "title": "About Deliberix",
+    "intro": "Deliberix is a deliberative survey platform inspired by Pol.is and All Our Ideas. It helps groups discover consensus and understand disagreement through structured participation.",
     "how-title": "How it works",
     "how-text": "Survey administrators create a set of seed statements on a topic. Participants rate each statement as agree, disagree, or skip, and can mark important ones. They can also submit new statements for moderation. Results show real-time vote distributions, agreement levels, and importance ratings.",
     "open-title": "Open and transparent",
-    "open-text": "eDemOS is designed to be deployed on-premise or used as a hosted service. Survey visibility, privacy, and result access are fully configurable per survey.",
+    "open-text": "Deliberix is designed to be deployed on-premise or used as a hosted service. Survey visibility, privacy, and result access are fully configurable per survey.",
     "who-title": "Who is it for?",
     "who-text": "Municipalities, universities, NGOs, companies, and anyone who wants to understand what a group really thinks. From classroom feedback to national consultations."
   },
   "contact": {
     "title": "Contact",
-    "intro": "Have questions about eDemOS? Want to set up an instance for your organization? Get in touch.",
+    "intro": "Have questions about Deliberix? Want to set up an instance for your organization? Get in touch.",
     "email-label": "Email us",
     "github-label": "GitHub",
     "web-label": "Academix ecosystem"

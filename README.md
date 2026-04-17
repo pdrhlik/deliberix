@@ -1,4 +1,4 @@
-# eDemOS
+# Deliberix
 
 Deliberative survey platform (wiki survey) where participants rate statements, mark them as important, and submit new ones for moderation.
 
@@ -34,12 +34,12 @@ docker-compose -f docker-compose-dev.yml up
 
 This starts:
 
-| Service  | URL                    | Description                    |
-|----------|------------------------|--------------------------------|
-| Client   | http://localhost:4200   | Angular dev server (ng serve)  |
-| Server   | http://localhost:8080   | Go API with hot reload (air)   |
-| MariaDB  | localhost:3307          | Database                       |
-| Adminer  | http://localhost:8081   | Database admin UI              |
+| Service | URL                   | Description                   |
+| ------- | --------------------- | ----------------------------- |
+| Client  | http://localhost:4200 | Angular dev server (ng serve) |
+| Server  | http://localhost:8080 | Go API with hot reload (air)  |
+| MariaDB | localhost:3307        | Database                      |
+| Adminer | http://localhost:8081 | Database admin UI             |
 
 ### Hot reload
 
@@ -75,9 +75,9 @@ The `-v` flag removes the MariaDB volume. Schema is re-applied from `db/schema.s
 
 - System: **MySQL**
 - Server: **mariadb**
-- Username: **edemos**
-- Password: *(MARIADB_PASSWORD from .env)*
-- Database: **edemos**
+- Username: **deliberix**
+- Password: _(MARIADB_PASSWORD from .env)_
+- Database: **deliberix**
 
 ## Production
 

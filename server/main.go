@@ -10,11 +10,11 @@ import (
 	"github.com/go-chi/chi/v5"
 	chimw "github.com/go-chi/chi/v5/middleware"
 	"github.com/go-chi/cors"
-	"github.com/pdrhlik/edemos/server/config"
-	"github.com/pdrhlik/edemos/server/handler"
-	"github.com/pdrhlik/edemos/server/middleware"
-	"github.com/pdrhlik/edemos/server/notify"
-	"github.com/pdrhlik/edemos/server/store"
+	"github.com/pdrhlik/deliberix/server/config"
+	"github.com/pdrhlik/deliberix/server/handler"
+	"github.com/pdrhlik/deliberix/server/middleware"
+	"github.com/pdrhlik/deliberix/server/notify"
+	"github.com/pdrhlik/deliberix/server/store"
 )
 
 func main() {
@@ -32,7 +32,7 @@ func main() {
 	if notify.SMTPConfigured(cfg.SMTPHost) {
 		port := notify.ParseSMTPPort(cfg.SMTPPort)
 		dialer := notify.NewDialer(cfg.SMTPHost, port, cfg.SMTPUser, cfg.SMTPPassword)
-		sender := notify.NewGomailSender(dialer, cfg.SMTPFrom, "eDemOS")
+		sender := notify.NewGomailSender(dialer, cfg.SMTPFrom, "Deliberix")
 
 		go func() {
 			for {

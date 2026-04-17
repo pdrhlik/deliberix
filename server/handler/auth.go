@@ -10,10 +10,10 @@ import (
 	"strings"
 	"time"
 
-	"github.com/pdrhlik/edemos/server/identity"
-	"github.com/pdrhlik/edemos/server/model"
-	"github.com/pdrhlik/edemos/server/notify"
-	"github.com/pdrhlik/edemos/server/service"
+	"github.com/pdrhlik/deliberix/server/identity"
+	"github.com/pdrhlik/deliberix/server/model"
+	"github.com/pdrhlik/deliberix/server/notify"
+	"github.com/pdrhlik/deliberix/server/service"
 )
 
 func generateToken() (string, error) {

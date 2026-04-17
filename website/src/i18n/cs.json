@@ -8,7 +8,7 @@
   },
   "hero": {
     "title": "Deliberativní průzkumy pro lepší rozhodování",
-    "subtitle": "Dejte každému hlasu spravedlivou šanci. eDemOS pomáhá komunitám, organizacím a výzkumníkům sbírat nuancované názory prostřednictvím strukturované deliberace.",
+    "subtitle": "Dejte každému hlasu spravedlivou šanci. Deliberix pomáhá komunitám, organizacím a výzkumníkům sbírat nuancované názory prostřednictvím strukturované deliberace.",
     "cta-primary": "Začít zdarma",
     "cta-secondary": "Procházet veřejné průzkumy"
   },
@@ -38,18 +38,18 @@
     "button": "Vytvořit průzkum"
   },
   "about": {
-    "title": "O eDemOS",
-    "intro": "eDemOS je deliberativní průzkumová platforma inspirovaná projekty Pol.is a All Our Ideas. Pomáhá skupinám objevovat konsenzus a porozumět neshodám prostřednictvím strukturované participace.",
+    "title": "O Deliberix",
+    "intro": "Deliberix je deliberativní průzkumová platforma inspirovaná projekty Pol.is a All Our Ideas. Pomáhá skupinám objevovat konsenzus a porozumět neshodám prostřednictvím strukturované participace.",
     "how-title": "Jak to funguje",
     "how-text": "Administrátoři průzkumu vytvoří sadu počátečních výroků k tématu. Účastníci hodnotí každý výrok jako souhlas, nesouhlas nebo přeskočení a mohou označit důležité. Mohou také navrhovat nové výroky k moderaci. Výsledky zobrazují rozložení hlasů, míru shody a hodnocení důležitosti v reálném čase.",
     "open-title": "Otevřený a transparentní",
-    "open-text": "eDemOS je navržen pro nasazení on-premise nebo jako hostovaná služba. Viditelnost průzkumu, soukromí a přístup k výsledkům jsou plně konfigurovatelné pro každý průzkum.",
+    "open-text": "Deliberix je navržen pro nasazení on-premise nebo jako hostovaná služba. Viditelnost průzkumu, soukromí a přístup k výsledkům jsou plně konfigurovatelné pro každý průzkum.",
     "who-title": "Pro koho je to?",
     "who-text": "Obce, univerzity, neziskové organizace, firmy a kdokoli, kdo chce porozumět tomu, co si skupina skutečně myslí. Od zpětné vazby ve třídě po národní konzultace."
   },
   "contact": {
     "title": "Kontakt",
-    "intro": "Máte otázky o eDemOS? Chcete nastavit instanci pro vaši organizaci? Ozvěte se nám.",
+    "intro": "Máte otázky o Deliberix? Chcete nastavit instanci pro vaši organizaci? Ozvěte se nám.",
     "email-label": "Napište nám",
     "github-label": "GitHub",
     "web-label": "Ekosystém Academix"

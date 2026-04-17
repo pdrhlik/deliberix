@@ -10,9 +10,9 @@ import (
 
 	"github.com/go-chi/chi/v5"
 	"github.com/mibk/dali"
-	"github.com/pdrhlik/edemos/server/identity"
-	"github.com/pdrhlik/edemos/server/model"
-	"github.com/pdrhlik/edemos/server/slug"
+	"github.com/pdrhlik/deliberix/server/identity"
+	"github.com/pdrhlik/deliberix/server/model"
+	"github.com/pdrhlik/deliberix/server/slug"
 )
 
 var (

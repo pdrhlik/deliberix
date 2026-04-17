@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: "com.edemos.app",
-  appName: "eDemOS",
+  appId: "com.deliberix.app",
+  appName: "Deliberix",
   webDir: "www",
 };
 

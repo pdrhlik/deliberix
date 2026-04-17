@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/pdrhlik/edemos/server/model"
+	"github.com/pdrhlik/deliberix/server/model"
 )
 
 func (s *Store) CreateStatement(ctx context.Context, st *model.Statement) (uint, error) {

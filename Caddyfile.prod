@@ -1,8 +1,8 @@
-a.edemos.patrio.dev {
+a.deliberix.com {
 	reverse_proxy localhost:4281
 }
 
-edemos.patrio.dev {
+deliberix.com {
 	# API routes → Go server
 	handle /api/* {
 		reverse_proxy localhost:8180

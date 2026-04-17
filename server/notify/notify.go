@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/mibk/dali"
-	"github.com/pdrhlik/edemos/server/locale"
+	"github.com/pdrhlik/deliberix/server/locale"
 	gomail "gopkg.in/gomail.v2"
 )
 

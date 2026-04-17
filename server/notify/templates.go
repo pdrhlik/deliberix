@@ -49,7 +49,7 @@ var magicLinkHTML = htmltmpl.Must(htmltmpl.New("email").Parse(`<!DOCTYPE html>
           <tr>
             <td align="center" style="padding: 20px;">
               <p style="font-size: 12px; color: #666666; margin: 0;">
-                {{ .T.sent }} <strong>eDemOS</strong>
+                {{ .T.sent }} <strong>Deliberix</strong>
               </p>
             </td>
           </tr>
@@ -106,7 +106,7 @@ var passwordResetHTML = htmltmpl.Must(htmltmpl.New("email").Parse(`<!DOCTYPE htm
           <tr>
             <td align="center" style="padding: 20px;">
               <p style="font-size: 12px; color: #666666; margin: 0;">
-                {{ .T.sent }} <strong>eDemOS</strong>
+                {{ .T.sent }} <strong>Deliberix</strong>
               </p>
             </td>
           </tr>
@@ -163,7 +163,7 @@ var verificationHTML = htmltmpl.Must(htmltmpl.New("email").Parse(`<!DOCTYPE html
           <tr>
             <td align="center" style="padding: 20px;">
               <p style="font-size: 12px; color: #666666; margin: 0;">
-                {{ .T.sent }} <strong>eDemOS</strong>
+                {{ .T.sent }} <strong>Deliberix</strong>
               </p>
             </td>
           </tr>

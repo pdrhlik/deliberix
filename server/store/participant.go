@@ -3,7 +3,7 @@ package store
 import (
 	"context"
 
-	"github.com/pdrhlik/edemos/server/model"
+	"github.com/pdrhlik/deliberix/server/model"
 )
 
 func (s *Store) JoinSurvey(ctx context.Context, p *model.SurveyParticipant) error {

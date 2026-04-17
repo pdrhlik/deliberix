@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/pdrhlik/edemos/server/identity"
-	"github.com/pdrhlik/edemos/server/model"
+	"github.com/pdrhlik/deliberix/server/identity"
+	"github.com/pdrhlik/deliberix/server/model"
 )
 
 func (h *Handler) SubmitResponse() AppHandlerFunc {

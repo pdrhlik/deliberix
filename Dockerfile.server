@@ -13,16 +13,16 @@ WORKDIR /app
 COPY server/go.mod server/go.sum ./
 RUN go mod download
 COPY server/ .
-RUN CGO_ENABLED=0 GOOS=linux go build -o edemos-server .
+RUN CGO_ENABLED=0 GOOS=linux go build -o deliberix-server .
 
 # Stage 3: Final image — no source code
 FROM alpine:3.23
 RUN apk add --no-cache ca-certificates tzdata
 WORKDIR /app
 
-COPY --from=server /app/edemos-server /usr/local/bin/edemos-server
+COPY --from=server /app/deliberix-server /usr/local/bin/deliberix-server
 COPY --from=server /app/locales /app/locales
 COPY --from=website /build/dist /app/website
 
 EXPOSE 8080
-CMD ["edemos-server"]
+CMD ["deliberix-server"]

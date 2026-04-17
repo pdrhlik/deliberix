@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/pdrhlik/edemos/server/identity"
-	"github.com/pdrhlik/edemos/server/service"
+	"github.com/pdrhlik/deliberix/server/identity"
+	"github.com/pdrhlik/deliberix/server/service"
 )
 
 func (h *Handler) Me() AppHandlerFunc {

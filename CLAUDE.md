@@ -1,8 +1,8 @@
-# eDemOS — Deliberative Survey Platform
+# Deliberix — Deliberative Survey Platform
 
 Deliberative survey platform (wiki survey) where participants rate statements as agree/disagree/abstain, mark them as important, and submit new ones for moderation. Inspired by Pol.is and All Our Ideas.
 
-Website: https://e-demos.com/ | Academix ecosystem: https://www.academix.cz/edemos
+Website: https://deliberix.com/ | Academix ecosystem: https://www.academix.cz/deliberix
 
 ## Tech Stack
 

@@ -32,9 +32,9 @@
 
 - **All server error messages need i18n.** Current approach of raw English strings in `writeError()` doesn't scale. Options: (a) server returns error codes, client maps to i18n keys, (b) server accepts `Accept-Language` header and returns translated messages. Option (a) is cleaner.
 
-- **Security audit** — rate limiting on auth endpoints (login, register, magic link), CSRF protection, input sanitization audit, JWT refresh token rotation, account lockout after failed attempts, CORS tightening for production.
+- **Login redirect** — when an unauthenticated user visits a deep link (e.g. an unlisted survey), the auth guard redirects to `/login` but loses the original URL. After login, the user should be redirected back to the page they originally requested. The auth guard should store the attempted URL (e.g. in a query param or service) and the login page should redirect there on success.
 
-- ~~**Production deployment**~~ DONE — `DEPLOY.md` has full instructions. Schema auto-applied on first start, no manual migrations needed.
+- **Security audit** — rate limiting on auth endpoints (login, register, magic link), CSRF protection, input sanitization audit, JWT refresh token rotation, account lockout after failed attempts, CORS tightening for production.
 
 - **Survey categories/tags** for better browsing.
 
@@ -51,3 +51,12 @@
 - Should the intake config builder support reordering options within a field via drag-and-drop?
 - For the anonymous survey mode: what's the minimum acceptable duplicate prevention? Cookie-only? Email uniqueness check?
 - Name suggestion - Deliberix
+
+## More TODO
+
+- Prepared intake form questions
+- Admin
+- When submitting a new statement, users should see right away the min characters of the statement, not just a red char limit
+- when I approve a statement in moderation and then click on particip or overview, I can't see it right away and have to refresh the page first. Participants probably have the same issue. We need fresh data when clicking on the particip/overview or other tabs in the survey detail
+- after survey is closed, not even admin can delete participants or change their role
+- think about integrating gemmatranslate into the docker image - optional feature

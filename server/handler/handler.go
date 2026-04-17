@@ -4,9 +4,9 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/pdrhlik/edemos/server/config"
-	"github.com/pdrhlik/edemos/server/notify"
-	"github.com/pdrhlik/edemos/server/store"
+	"github.com/pdrhlik/deliberix/server/config"
+	"github.com/pdrhlik/deliberix/server/notify"
+	"github.com/pdrhlik/deliberix/server/store"
 )
 
 type AppHandlerFunc func(http.ResponseWriter, *http.Request) error

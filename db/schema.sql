@@ -1,4 +1,4 @@
--- eDemOS database schema
+-- Deliberix database schema
 -- Applied automatically on first MariaDB container start
 
 SET NAMES utf8mb4;

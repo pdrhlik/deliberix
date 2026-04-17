@@ -5,7 +5,7 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/pdrhlik/edemos/server/identity"
+	"github.com/pdrhlik/deliberix/server/identity"
 )
 
 func parseUserIDParam(r *http.Request) (uint, error) {

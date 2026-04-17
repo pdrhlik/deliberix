@@ -4,7 +4,7 @@ import (
 	"context"
 
 	"github.com/mibk/dali"
-	"github.com/pdrhlik/edemos/server/model"
+	"github.com/pdrhlik/deliberix/server/model"
 )
 
 func (s *Store) CreateSurvey(ctx context.Context, survey *model.Survey) (uint, error) {

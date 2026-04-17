@@ -1,12 +1,12 @@
 services:
   mariadb:
     image: mariadb:12
-    container_name: edemos-mariadb
+    container_name: deliberix-mariadb
     restart: unless-stopped
     environment:
       MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
-      MARIADB_DATABASE: edemos
-      MARIADB_USER: edemos
+      MARIADB_DATABASE: deliberix
+      MARIADB_USER: deliberix
       MARIADB_PASSWORD: ${MARIADB_PASSWORD}
     volumes:
       - mariadb-data:/var/lib/mysql
@@ -14,16 +14,16 @@ services:
     ports:
       - "127.0.0.1:3407:3306"
     networks:
-      - edemos
+      - deliberix
 
   server:
     build:
       context: .
       dockerfile: Dockerfile.server
-    container_name: edemos-server
+    container_name: deliberix-server
     restart: unless-stopped
     environment:
-      DB_DSN: edemos:${MARIADB_PASSWORD}@tcp(mariadb:3306)/edemos?parseTime=true
+      DB_DSN: deliberix:${MARIADB_PASSWORD}@tcp(mariadb:3306)/deliberix?parseTime=true
       JWT_SECRET: ${JWT_SECRET}
       SMTP_HOST: ${SMTP_HOST}
       SMTP_PORT: ${SMTP_PORT}
@@ -36,7 +36,7 @@ services:
     ports:
       - "127.0.0.1:8180:8080"
     networks:
-      - edemos
+      - deliberix
     depends_on:
       - mariadb
 
@@ -44,26 +44,26 @@ services:
     build:
       context: ./client
       dockerfile: Dockerfile
-    container_name: edemos-client
+    container_name: deliberix-client
     restart: unless-stopped
     ports:
       - "127.0.0.1:4280:80"
     networks:
-      - edemos
+      - deliberix
 
   adminer:
     image: adminer:5-standalone
-    container_name: edemos-adminer
+    container_name: deliberix-adminer
     restart: unless-stopped
     ports:
       - "127.0.0.1:4281:8080"
     networks:
-      - edemos
+      - deliberix
     depends_on:
       - mariadb
 
 networks:
-  edemos:
+  deliberix:
     driver: bridge
 
 volumes:

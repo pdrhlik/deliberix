@@ -1,4 +1,4 @@
-module github.com/pdrhlik/edemos/server
+module github.com/pdrhlik/deliberix/server
 
 go 1.25.0
 
