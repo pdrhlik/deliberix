@@ -2,6 +2,7 @@ package store
 
 import (
 	"context"
+	"errors"
 
 	"github.com/pdrhlik/deliberix/server/identity"
 	"github.com/pdrhlik/deliberix/server/model"
@@ -129,6 +130,9 @@ func (s *Store) GetStatementSurveyID(ctx context.Context, statementID uint) (uin
 }
 
 func (s *Store) CreateResponseByActor(ctx context.Context, statementID uint, a *identity.Actor, vote string, isImportant bool) error {
+	if a == nil {
+		return errors.New("nil actor")
+	}
 	resp := &model.Response{
 		StatementID: statementID,
 		Vote:        vote,
@@ -146,6 +150,9 @@ func (s *Store) CreateResponseByActor(ctx context.Context, statementID uint, a *
 }
 
 func (s *Store) GetUserVotesForSurveyByActor(ctx context.Context, surveyID uint, a *identity.Actor) (map[uint]model.UserVote, error) {
+	if a == nil {
+		return nil, nil
+	}
 	type row struct {
 		StatementID uint   `db:"statement_id"`
 		Vote        string `db:"vote"`
@@ -172,6 +179,9 @@ func (s *Store) GetUserVotesForSurveyByActor(ctx context.Context, surveyID uint,
 }
 
 func (s *Store) GetVoteProgressByActor(ctx context.Context, surveyID uint, a *identity.Actor) (model.VoteProgress, error) {
+	if a == nil {
+		return model.VoteProgress{}, nil
+	}
 	var p model.VoteProgress
 	q := s.DB.Query(`
 		SELECT
