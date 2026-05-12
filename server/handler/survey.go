@@ -148,6 +148,11 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 			moderationEnabled = *in.ModerationEnabled
 		}
 
+		allowAnonymous := false
+		if in.AllowAnonymous != nil {
+			allowAnonymous = *in.AllowAnonymous
+		}
+
 		visibility := "private"
 		if in.Visibility != "" {
 			if !validVisibilities[in.Visibility] {
@@ -203,6 +208,7 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 			StatementCharMin:  charMin,
 			StatementCharMax:  charMax,
 			ModerationEnabled: moderationEnabled,
+			AllowAnonymous:    allowAnonymous,
 			IntakeConfig:      in.IntakeConfig,
 			ClosesAt:         in.ClosesAt,
 			CreatedBy:        user.ID,
@@ -352,6 +358,12 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 				return writeError(w, http.StatusBadRequest, "moderation_lock", "moderation_enabled can only be changed while survey is in draft")
 			}
 			fields["moderation_enabled"] = *in.ModerationEnabled
+		}
+		if in.AllowAnonymous != nil {
+			if survey.Status != "draft" {
+				return writeError(w, http.StatusBadRequest, "anon_lock", "allow_anonymous can only be changed while survey is in draft")
+			}
+			fields["allow_anonymous"] = *in.AllowAnonymous
 		}
 		// Validate charMin <= charMax (consider both new values and existing survey values)
 		charMin := survey.StatementCharMin

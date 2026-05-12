@@ -20,6 +20,7 @@ type Survey struct {
 	StatementCharMin  uint             `db:"statement_char_min" json:"statementCharMin"`
 	StatementCharMax  uint             `db:"statement_char_max" json:"statementCharMax"`
 	ModerationEnabled bool             `db:"moderation_enabled" json:"moderationEnabled"`
+	AllowAnonymous    bool             `db:"allow_anonymous" json:"allowAnonymous"`
 	IntakeConfig      *json.RawMessage `db:"intake_config" json:"intakeConfig,omitempty"`
 	ClosesAt          *time.Time       `db:"closes_at" json:"closesAt,omitempty"`
 	CreatedBy        uint             `db:"created_by" json:"createdBy"`
@@ -38,6 +39,7 @@ type CreateSurveyRequest struct {
 	StatementCharMin  *uint            `json:"statementCharMin,omitempty"`
 	StatementCharMax  *uint            `json:"statementCharMax,omitempty"`
 	ModerationEnabled *bool            `json:"moderationEnabled,omitempty"`
+	AllowAnonymous    *bool            `json:"allowAnonymous,omitempty"`
 	IntakeConfig      *json.RawMessage `json:"intakeConfig,omitempty"`
 	ClosesAt          *time.Time       `json:"closesAt,omitempty"`
 }
@@ -54,6 +56,7 @@ type UpdateSurveyRequest struct {
 	StatementCharMin  *uint            `json:"statementCharMin,omitempty"`
 	StatementCharMax  *uint            `json:"statementCharMax,omitempty"`
 	ModerationEnabled *bool            `json:"moderationEnabled,omitempty"`
+	AllowAnonymous    *bool            `json:"allowAnonymous,omitempty"`
 	IntakeConfig      *json.RawMessage `json:"intakeConfig,omitempty"`
 	ClosesAt          *time.Time       `json:"closesAt,omitempty"`
 }
