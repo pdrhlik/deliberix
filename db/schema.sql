@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS survey (
     statement_char_min INT UNSIGNED NOT NULL DEFAULT 20,
     statement_char_max INT UNSIGNED NOT NULL DEFAULT 150,
     moderation_enabled TINYINT(1) NOT NULL DEFAULT 1,
+    allow_anonymous TINYINT(1) NOT NULL DEFAULT 0,
     intake_config JSON DEFAULT NULL,
     closes_at TIMESTAMP NULL DEFAULT NULL,
     created_by INT UNSIGNED NOT NULL,
@@ -55,7 +56,8 @@ CREATE TABLE IF NOT EXISTS survey (
 CREATE TABLE IF NOT EXISTS survey_participant (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     survey_id INT UNSIGNED NOT NULL,
-    user_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED DEFAULT NULL,
+    anon_session_id CHAR(36) DEFAULT NULL,
     role ENUM('participant', 'admin', 'moderator') NOT NULL DEFAULT 'participant',
     intake_data JSON DEFAULT NULL,
     privacy_choice ENUM('anonymous', 'public') DEFAULT NULL,
@@ -63,6 +65,8 @@ CREATE TABLE IF NOT EXISTS survey_participant (
     joined_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     completed_at TIMESTAMP NULL DEFAULT NULL,
     UNIQUE KEY uq_survey_user (survey_id, user_id),
+    UNIQUE KEY uq_survey_anon (survey_id, anon_session_id),
+    CONSTRAINT chk_participant_identity CHECK ((user_id IS NULL) <> (anon_session_id IS NULL)),
     FOREIGN KEY (survey_id) REFERENCES survey(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     FOREIGN KEY (invited_by) REFERENCES user(id) ON DELETE SET NULL
@@ -87,11 +91,14 @@ CREATE TABLE IF NOT EXISTS statement (
 CREATE TABLE IF NOT EXISTS response (
     id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
     statement_id INT UNSIGNED NOT NULL,
-    user_id INT UNSIGNED NOT NULL,
+    user_id INT UNSIGNED DEFAULT NULL,
+    anon_session_id CHAR(36) DEFAULT NULL,
     vote ENUM('agree', 'disagree', 'abstain') NOT NULL,
     is_important TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     UNIQUE KEY uq_statement_user (statement_id, user_id),
+    UNIQUE KEY uq_statement_anon (statement_id, anon_session_id),
+    CONSTRAINT chk_response_identity CHECK ((user_id IS NULL) <> (anon_session_id IS NULL)),
     FOREIGN KEY (statement_id) REFERENCES statement(id) ON DELETE CASCADE,
     FOREIGN KEY (user_id) REFERENCES user(id) ON DELETE CASCADE,
     INDEX idx_user (user_id)
