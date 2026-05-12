@@ -195,12 +195,17 @@ participant, err := h.Store.GetParticipantByActor(r.Context(), survey.ID, actor)
 
 ### Store changes
 
-The store grows one shape of helper:
+The store grows a new family of `*ByActor` helpers that branch internally on `actor.UserID` vs `actor.AnonSessionID`:
 
-- `GetParticipantByActor(ctx, surveyID, *Actor) (*Participant, error)` — branches internally on `actor.UserID` vs `actor.AnonSessionID`.
-- Similar `IsParticipantByActor`, `GetUserVotesByActor`, `GetVoteProgressByActor`, etc., or simply pass the Actor through to existing methods that internally branch on which field is non-nil.
+- `GetParticipantByActor(ctx, surveyID, *Actor) (*Participant, error)`
+- `IsParticipantByActor(ctx, surveyID, *Actor) (bool, error)`
+- `GetUserVotesByActor(ctx, surveyID, *Actor) (map[uint]Vote, error)`
+- `GetVoteProgressByActor(ctx, surveyID, *Actor) (VoteProgress, error)`
+- `CreateAnonParticipant(ctx, surveyID, anonSessionID, intakeData) error`
+- `CreateResponseByActor(ctx, statementID, *Actor, vote, isImportant) error`
+- `CreateStatementByActor(ctx, surveyID, *Actor, text, type, status) error`
 
-Existing methods (`GetParticipant(surveyID, userID)`) stay for the JWT-only paths to avoid churning every callsite.
+Existing JWT-only methods (`GetParticipant(surveyID, userID)`, `IsParticipant(surveyID, userID)`, etc.) stay for callsites in admin handlers that already have a `userID` in hand — no churn there.
 
 ## § 4 · Client UX
 
@@ -225,9 +230,14 @@ Identical UI to a logged-in participant. The submit-statement component, voting 
 
 A small footer link on the survey page for anon participants: "End anonymous session". Calls `POST /api/v1/anon/logout` and reloads. Useful on shared devices.
 
-### Auth interceptor
+### Auth interceptor + credentials
 
-The HTTP interceptor that adds `Authorization: Bearer ...` already does so only when there's a JWT in storage. For anon callers there's no JWT, so no header — the cookie travels automatically (assuming `withCredentials: true` is set or Angular's `HttpClient` is configured to include credentials for same-origin). In production this is same-origin already; in dev (Angular on `:4200`, API on `:8180`) we'll need `withCredentials: true` on the `HttpClient` config plus a matching `AllowCredentials` on the server's CORS handler.
+The HTTP interceptor that adds `Authorization: Bearer ...` only does so when there's a JWT in storage. For anon callers there's no JWT, so no header — the anon cookie travels automatically when the request includes credentials.
+
+Concrete actions for the implementation plan:
+
+1. **Client**: switch `ApiService` (or each request) to include `withCredentials: true` so cross-origin requests carry cookies. The Angular `HttpClient` doesn't include credentials by default.
+2. **Server CORS**: `cors.Options` in `server/main.go` currently uses `AllowedOrigins: []string{"*"}` with no `AllowCredentials`. Add `AllowCredentials: true` and replace the wildcard origin with an explicit allowed origin (`BASE_URL` from config); the CORS spec forbids `*` + `AllowCredentials`. In production these collapse to the same origin so the only practical impact is the dev environment.
 
 ### i18n keys (new)
 
@@ -273,3 +283,10 @@ This is the explicit compatibility contract for the change set.
 ## Open questions
 
 None remaining at end of brainstorm. All design decisions captured above.
+
+## Self-review notes
+
+- The CORS + credentials change is a real prerequisite — without it the anon cookie can't reach the dev API on a different port. Captured in § 4.
+- The store helper plan is now decisive (a `*ByActor` family) rather than offering two patterns.
+- No TBDs or vague requirements remain in the body.
+- Scope is broad (~3 layers + a migration) but focused on one feature; appropriate for a single implementation plan with sub-steps.
