@@ -21,6 +21,7 @@ export class SubmitStatementComponent {
   surveySlug = input.required<string>();
   charMin = input<number>(20);
   charMax = input<number>(150);
+  moderationEnabled = input<boolean>(true);
 
   statementSubmitted = output<void>();
 
@@ -48,8 +49,11 @@ export class SubmitStatementComponent {
     this.submitted.set(true);
     this.statementSubmitted.emit();
 
+    const messageKey = this.moderationEnabled()
+      ? "statement.submitted-for-moderation"
+      : "statement.submitted-live";
     const toast = await this.toastController.create({
-      message: this.translate.instant("statement.submitted-for-moderation"),
+      message: this.translate.instant(messageKey),
       duration: 3000,
       color: "success",
       position: "bottom",

@@ -105,7 +105,11 @@
     "settings-saved": "Nastavení průzkumu byla uložena.",
     "delete": "Smazat průzkum",
     "delete-confirm": "Opravdu chcete smazat průzkum „{{title}}“? Tato akce je nevratná a smaže všechny výroky, hlasy a účastníky.",
-    "deleted": "Průzkum byl smazán."
+    "deleted": "Průzkum byl smazán.",
+    "moderation-enabled": "Vyžadovat moderaci výroků",
+    "moderation-enabled-help": "Nové výroky od účastníků čekají na schválení moderátorem. Lze nastavit pouze před aktivací průzkumu.",
+    "moderation-disabled-readonly": "Bez moderace — nové výroky se zobrazí ihned",
+    "moderation-enabled-readonly": "S moderací — nové výroky musí být schváleny"
   },
   "statement": {
     "statements": "Výroky",
@@ -122,6 +126,7 @@
     "char-count": "{{count}} / {{max}} znaků",
     "your-statement": "Váš výrok",
     "submitted-for-moderation": "Váš výrok byl odeslán k moderaci.",
+    "submitted-live": "Váš výrok byl přidán do průzkumu.",
     "moderation-hint": "Váš výrok bude posouzen moderátorem, než se objeví v průzkumu."
   },
   "moderation": {

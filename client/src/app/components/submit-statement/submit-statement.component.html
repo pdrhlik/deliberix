@@ -19,8 +19,10 @@
       <ion-icon name="send-outline" slot="start"></ion-icon>
       {{ "statement.submit" | translate }}
     </ion-button>
+    @if (moderationEnabled()) {
     <ion-note color="medium" class="moderation-hint">
       {{ "statement.moderation-hint" | translate }}
     </ion-note>
+    }
   </div>
 </div>

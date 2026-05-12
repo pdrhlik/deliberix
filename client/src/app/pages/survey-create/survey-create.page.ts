@@ -12,11 +12,13 @@ import {
   IonInput,
   IonItem,
   IonLabel,
+  IonNote,
   IonSelect,
   IonSelectOption,
   IonSpinner,
   IonTextarea,
   IonTitle,
+  IonToggle,
   IonToolbar,
 } from "@ionic/angular/standalone";
 import { TranslatePipe } from "@ngx-translate/core";
@@ -45,8 +47,10 @@ import { ToastService } from "../../services/toast.service";
     IonAccordionGroup,
     IonItem,
     IonLabel,
+    IonNote,
     IonSelect,
     IonSelectOption,
+    IonToggle,
     IntakeConfigBuilderComponent,
   ],
   templateUrl: "./survey-create.page.html",
@@ -65,6 +69,7 @@ export class SurveyCreatePage {
   statementOrder = "random";
   statementCharMin = 20;
   statementCharMax = 150;
+  moderationEnabled = true;
   closesAt = "";
   intakeConfig = signal<IntakeConfig | null>(null);
   submitting = signal(false);
@@ -83,6 +88,7 @@ export class SurveyCreatePage {
         statementOrder: this.statementOrder,
         statementCharMin: this.statementCharMin,
         statementCharMax: this.statementCharMax,
+        moderationEnabled: this.moderationEnabled,
         closesAt: this.closesAt ? new Date(this.closesAt).toISOString() : undefined,
         intakeConfig: this.intakeConfig()?.fields?.length ? this.intakeConfig()! : undefined,
       });

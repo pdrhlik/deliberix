@@ -42,6 +42,7 @@ CREATE TABLE IF NOT EXISTS survey (
     statement_order ENUM('random', 'sequential', 'least_voted') NOT NULL DEFAULT 'random',
     statement_char_min INT UNSIGNED NOT NULL DEFAULT 20,
     statement_char_max INT UNSIGNED NOT NULL DEFAULT 150,
+    moderation_enabled TINYINT(1) NOT NULL DEFAULT 1,
     intake_config JSON DEFAULT NULL,
     closes_at TIMESTAMP NULL DEFAULT NULL,
     created_by INT UNSIGNED NOT NULL,

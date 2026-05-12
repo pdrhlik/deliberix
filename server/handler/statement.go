@@ -119,11 +119,16 @@ func (h *Handler) SubmitStatement() AppHandlerFunc {
 			return writeError(w, http.StatusBadRequest, "statement text length out of range")
 		}
 
+		status := "pending"
+		if !survey.ModerationEnabled {
+			status = "approved"
+		}
+
 		st := &model.Statement{
 			SurveyID: survey.ID,
 			Text:     in.Text,
 			Type:     "user_submitted",
-			Status:   "pending",
+			Status:   status,
 			AuthorID: &user.ID,
 		}
 

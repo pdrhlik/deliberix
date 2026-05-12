@@ -105,7 +105,11 @@
     "settings-saved": "Survey settings have been saved.",
     "delete": "Delete survey",
     "delete-confirm": "Are you sure you want to delete the survey \"{{title}}\"? This action cannot be undone and will remove all statements, votes, and participants.",
-    "deleted": "Survey has been deleted."
+    "deleted": "Survey has been deleted.",
+    "moderation-enabled": "Require statement moderation",
+    "moderation-enabled-help": "New participant-submitted statements wait for moderator approval. Can only be changed before the survey is activated.",
+    "moderation-disabled-readonly": "No moderation — new statements appear immediately",
+    "moderation-enabled-readonly": "Moderated — new statements need approval"
   },
   "statement": {
     "statements": "Statements",
@@ -122,6 +126,7 @@
     "char-count": "{{count}} / {{max}} characters",
     "your-statement": "Your statement",
     "submitted-for-moderation": "Your statement has been submitted for moderation.",
+    "submitted-live": "Your statement has been added to the survey.",
     "moderation-hint": "Your statement will be reviewed by a moderator before appearing in the survey."
   },
   "moderation": {

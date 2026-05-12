@@ -33,7 +33,7 @@
         <ion-icon name="bar-chart-outline"></ion-icon>
         <ion-label>{{ "results.results" | translate }}</ion-label>
       </ion-segment-button>
-      } @if (isAdminOrModerator) {
+      } @if (isAdminOrModerator && s.moderationEnabled) {
       <ion-segment-button value="moderation">
         <ion-icon name="shield-checkmark-outline"></ion-icon>
         <ion-label>
@@ -117,6 +117,7 @@
       [surveySlug]="s.slug"
       [charMin]="s.statementCharMin"
       [charMax]="s.statementCharMax"
+      [moderationEnabled]="s.moderationEnabled"
       (statementSubmitted)="loadSurvey(s.slug)"
     ></app-submit-statement>
     } }
@@ -158,6 +159,7 @@
       [surveySlug]="s.slug"
       [charMin]="s.statementCharMin"
       [charMax]="s.statementCharMax"
+      [moderationEnabled]="s.moderationEnabled"
       (statementSubmitted)="loadSurvey(s.slug)"
     ></app-submit-statement>
     } }
@@ -327,6 +329,20 @@
         [value]="editClosesAt()"
         (ionChange)="editClosesAt.set($event.detail.value ?? '')"
       ></ion-input>
+
+      <ion-toggle
+        [checked]="editModerationEnabled()"
+        (ionChange)="editModerationEnabled.set($event.detail.checked)"
+        labelPlacement="start"
+        justify="space-between"
+      >
+        <div>
+          <div>{{ "survey.moderation-enabled" | translate }}</div>
+          <ion-note color="medium" class="toggle-hint">
+            {{ "survey.moderation-enabled-help" | translate }}
+          </ion-note>
+        </div>
+      </ion-toggle>
     </div>
 
     <h3 class="section-heading">{{ "intake.intake-form" | translate }}</h3>
@@ -371,6 +387,16 @@
         <span class="readonly-value">{{ s.closesAt | date: "mediumDate":"":locale }}</span>
       </div>
       }
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.moderation-enabled" | translate }}</span>
+        <span class="readonly-value">
+          @if (s.moderationEnabled) {
+          {{ "survey.moderation-enabled-readonly" | translate }}
+          } @else {
+          {{ "survey.moderation-disabled-readonly" | translate }}
+          }
+        </span>
+      </div>
     </div>
     }
 

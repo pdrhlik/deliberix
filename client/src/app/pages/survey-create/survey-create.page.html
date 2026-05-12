@@ -148,6 +148,20 @@
               [(ngModel)]="closesAt"
               name="closesAt"
             ></ion-input>
+
+            <ion-toggle
+              [(ngModel)]="moderationEnabled"
+              name="moderationEnabled"
+              labelPlacement="start"
+              justify="space-between"
+            >
+              <div>
+                <div>{{ "survey.moderation-enabled" | translate }}</div>
+                <ion-note color="medium" class="toggle-hint">
+                  {{ "survey.moderation-enabled-help" | translate }}
+                </ion-note>
+              </div>
+            </ion-toggle>
           </div>
         </ion-accordion>
         <ion-accordion value="intake">

@@ -14,6 +14,7 @@ export interface Survey {
   statementOrder: string;
   statementCharMin: number;
   statementCharMax: number;
+  moderationEnabled: boolean;
   intakeConfig?: IntakeConfig;
   closesAt?: string;
   createdBy: number;
@@ -45,6 +46,7 @@ export interface CreateSurveyRequest {
   statementOrder?: string;
   statementCharMin?: number;
   statementCharMax?: number;
+  moderationEnabled?: boolean;
   intakeConfig?: IntakeConfig;
   closesAt?: string;
 }
@@ -60,6 +62,7 @@ export interface UpdateSurveyRequest {
   statementOrder?: string;
   statementCharMin?: number;
   statementCharMax?: number;
+  moderationEnabled?: boolean;
   intakeConfig?: IntakeConfig;
   closesAt?: string;
 }

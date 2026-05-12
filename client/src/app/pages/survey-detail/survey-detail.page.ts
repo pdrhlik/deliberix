@@ -12,6 +12,7 @@ import {
   IonIcon,
   IonInput,
   IonLabel,
+  IonNote,
   IonProgressBar,
   IonSegment,
   IonSegmentButton,
@@ -20,8 +21,10 @@ import {
   IonSpinner,
   IonText,
   IonTitle,
+  IonToggle,
   IonToolbar,
 } from "@ionic/angular/standalone";
+import { FormsModule } from "@angular/forms";
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
 import {
@@ -58,6 +61,7 @@ import { ToastService } from "../../services/toast.service";
   selector: "app-survey-detail",
   standalone: true,
   imports: [
+    FormsModule,
     TranslatePipe,
     RouterLink,
     IonHeader,
@@ -71,6 +75,7 @@ import { ToastService } from "../../services/toast.service";
     IonIcon,
     IonInput,
     IonLabel,
+    IonNote,
     IonProgressBar,
     IonSegment,
     IonSegmentButton,
@@ -78,6 +83,7 @@ import { ToastService } from "../../services/toast.service";
     IonSelectOption,
     IonSpinner,
     IonText,
+    IonToggle,
     DatePipe,
     IntakeConfigBuilderComponent,
     ParticipantsComponent,
@@ -115,6 +121,7 @@ export class SurveyDetailPage {
   editStatementOrder = signal("random");
   editStatementCharMin = signal(20);
   editStatementCharMax = signal(150);
+  editModerationEnabled = signal(true);
   editClosesAt = signal("");
   editIntakeConfig = signal<IntakeConfig | null>(null);
   savingSettings = signal(false);
@@ -153,6 +160,7 @@ export class SurveyDetailPage {
     this.editStatementOrder.set(survey.statementOrder);
     this.editStatementCharMin.set(survey.statementCharMin);
     this.editStatementCharMax.set(survey.statementCharMax);
+    this.editModerationEnabled.set(survey.moderationEnabled);
     this.editClosesAt.set(survey.closesAt ?? "");
     this.editIntakeConfig.set(survey.intakeConfig ?? null);
 
@@ -303,6 +311,7 @@ export class SurveyDetailPage {
         statementOrder: this.editStatementOrder(),
         statementCharMin: this.editStatementCharMin(),
         statementCharMax: this.editStatementCharMax(),
+        moderationEnabled: this.editModerationEnabled(),
         closesAt: this.editClosesAt() ? new Date(this.editClosesAt()).toISOString() : undefined,
         intakeConfig: this.editIntakeConfig()?.fields?.length
           ? this.editIntakeConfig()!

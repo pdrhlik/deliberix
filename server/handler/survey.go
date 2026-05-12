@@ -143,6 +143,11 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 			return writeError(w, http.StatusBadRequest, "statement_char_min must be less than or equal to statement_char_max")
 		}
 
+		moderationEnabled := true
+		if in.ModerationEnabled != nil {
+			moderationEnabled = *in.ModerationEnabled
+		}
+
 		visibility := "private"
 		if in.Visibility != "" {
 			if !validVisibilities[in.Visibility] {
@@ -195,9 +200,10 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 			InvitationMode:   invitationMode,
 			ResultVisibility: resultVisibility,
 			StatementOrder:   statementOrder,
-			StatementCharMin: charMin,
-			StatementCharMax: charMax,
-			IntakeConfig: in.IntakeConfig,
+			StatementCharMin:  charMin,
+			StatementCharMax:  charMax,
+			ModerationEnabled: moderationEnabled,
+			IntakeConfig:      in.IntakeConfig,
 			ClosesAt:         in.ClosesAt,
 			CreatedBy:        user.ID,
 		}
@@ -340,6 +346,12 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 		}
 		if in.StatementCharMax != nil {
 			fields["statement_char_max"] = *in.StatementCharMax
+		}
+		if in.ModerationEnabled != nil {
+			if survey.Status != "draft" {
+				return writeError(w, http.StatusBadRequest, "moderation_enabled can only be changed while survey is in draft")
+			}
+			fields["moderation_enabled"] = *in.ModerationEnabled
 		}
 		// Validate charMin <= charMax (consider both new values and existing survey values)
 		charMin := survey.StatementCharMin
