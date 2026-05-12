@@ -32,9 +32,9 @@ func (h *Handler) AnonJoin() AppHandlerFunc {
 			return writeError(w, http.StatusForbidden, "survey_closed", "survey has closed")
 		}
 
-		// If the caller already has a valid anon cookie for *this* survey, treat as conflict.
-		if existing := identity.ReadAnonCookie(r, h.Config.JWTSecret); existing != "" {
-			p, err := h.Store.GetParticipantByActor(r.Context(), survey.ID, &identity.Actor{AnonSessionID: &existing})
+		// If the caller already has a participant row (via JWT or anon cookie), treat as conflict.
+		if actor := identity.GetActorFromContext(r.Context()); actor != nil {
+			p, err := h.Store.GetParticipantByActor(r.Context(), survey.ID, actor)
 			if err != nil {
 				return err
 			}
