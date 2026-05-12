@@ -71,6 +71,7 @@ export class ParticipantsComponent implements OnInit {
 
   async changeRole(p: ParticipantListItem, newRole: string) {
     if (newRole === p.role) return;
+    if (!p.userId) return;
     try {
       await this.participantService.updateRole(this.surveySlug(), p.userId, newRole);
       this.toast.success("participants.role-updated");
@@ -81,6 +82,7 @@ export class ParticipantsComponent implements OnInit {
   }
 
   async removeParticipant(p: ParticipantListItem) {
+    if (!p.userId) return;
     const alert = await this.alertController.create({
       header: this.translate.instant("participants.remove-confirm-title"),
       message: this.translate.instant("participants.remove-confirm-message", { name: p.name }),

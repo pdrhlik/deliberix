@@ -24,15 +24,20 @@ func (s *Store) IsParticipant(ctx context.Context, surveyID, userID uint) (bool,
 func (s *Store) ListParticipants(ctx context.Context, surveyID uint) ([]model.ParticipantListItem, error) {
 	items := make([]model.ParticipantListItem, 0)
 	q := s.DB.Query(`
-		SELECT sp.id, sp.user_id, u.name, u.email, sp.role,
+		SELECT sp.id, sp.user_id, sp.anon_session_id,
+			COALESCE(u.name, '') AS name,
+			COALESCE(u.email, '') AS email,
+			sp.role,
 			(SELECT COUNT(*) FROM response r
 				JOIN statement st ON st.id = r.statement_id
-				WHERE st.survey_id = sp.survey_id AND r.user_id = sp.user_id) AS voted,
+				WHERE st.survey_id = sp.survey_id
+					AND ((sp.user_id IS NOT NULL AND r.user_id = sp.user_id)
+						OR (sp.anon_session_id IS NOT NULL AND r.anon_session_id = sp.anon_session_id))) AS voted,
 			(SELECT COUNT(*) FROM statement st
 				WHERE st.survey_id = sp.survey_id AND st.status = 'approved') AS total,
 			sp.joined_at
 		FROM survey_participant sp
-		JOIN user u ON u.id = sp.user_id
+		LEFT JOIN user u ON u.id = sp.user_id
 		WHERE sp.survey_id = ?
 		ORDER BY sp.joined_at ASC`, surveyID)
 	if err := q.All(&items); err != nil {

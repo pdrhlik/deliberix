@@ -9,14 +9,24 @@
     @for (p of participants(); track p.id) {
       <div class="participant-card">
         <div class="participant-info">
-          <span class="participant-name">{{ p.name }}</span>
+          <span class="participant-name">
+            @if (p.userId) {
+              {{ p.name }}
+            } @else {
+              {{ "participants.anon-label" | translate }}
+            }
+          </span>
           <span class="participant-meta">
             {{ "participants.joined" | translate }} {{ p.joinedAt | date: "mediumDate" }} &middot;
             {{ "participants.votes" | translate }}: {{ p.voted }} / {{ p.total }}
           </span>
         </div>
         <div class="participant-actions">
-          @if (p.role === "admin") {
+          @if (!p.userId) {
+            <ion-badge [color]="roleBadgeColor(p.role)">
+              {{ "participants.role-" + p.role | translate }}
+            </ion-badge>
+          } @else if (p.role === "admin") {
             <ion-badge [color]="roleBadgeColor(p.role)">
               {{ "participants.role-" + p.role | translate }}
             </ion-badge>

@@ -1,6 +1,7 @@
 export interface ParticipantListItem {
   id: number;
-  userId: number;
+  userId?: number | null;
+  anonSessionId?: string | null;
   name: string;
   email: string;
   role: string;

@@ -212,6 +212,8 @@
     "title": "Účastníci",
     "no-participants": "Zatím žádní účastníci",
     "joined": "Připojil/a se",
+    "joined-at": "Připojen(a)",
+    "anon-label": "Anonymní účastník",
     "votes": "Hlasy",
     "role-admin": "Administrátor",
     "role-moderator": "Moderátor",
