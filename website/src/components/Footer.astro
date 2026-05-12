@@ -1,5 +1,5 @@
 ---
-import { t, localePath } from "../i18n/utils";
+import { localePath, t } from "../i18n/utils";
 
 interface Props {
   locale: string;
@@ -36,7 +36,7 @@ const year = new Date().getFullYear();
     </div>
 
     <div class="mt-8 pt-6 border-t border-gray-200 text-center text-xs text-gray-400">
-      &copy; {year} Deliberix. {t(locale, "footer.copyright")}
+      &copy; {year} Academix. {t(locale, "footer.copyright")}
     </div>
   </div>
 </footer>
