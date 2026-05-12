@@ -43,8 +43,10 @@ export class SurveyJoinPage implements OnInit {
   survey = signal<Survey | null>(null);
   intakeFields = signal<IntakeField[]>([]);
   formData = signal<Record<string, any>>({});
+  isAnonJoin = signal(false);
 
   ngOnInit() {
+    this.isAnonJoin.set(this.route.snapshot.queryParamMap.get("anon") === "1");
     const slug = this.route.snapshot.paramMap.get("slug");
     if (slug) {
       this.loadSurvey(slug);
@@ -78,9 +80,14 @@ export class SurveyJoinPage implements OnInit {
 
     const data = this.formData();
     const intakeData = Object.keys(data).length > 0 ? data : undefined;
-    await firstValueFrom(
-      this.api.post(`/survey/${s.slug}/join`, { intakeData: intakeData || null }),
-    );
+
+    if (this.isAnonJoin()) {
+      await this.surveyService.joinAnonymously(s.slug, intakeData ?? null);
+    } else {
+      await firstValueFrom(
+        this.api.post(`/survey/${s.slug}/join`, { intakeData: intakeData || null }),
+      );
+    }
     this.router.navigateByUrl(`/survey/${s.slug}`, { replaceUrl: true });
   }
 }

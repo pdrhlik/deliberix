@@ -12,7 +12,8 @@ export interface ParticipantListItem {
 export interface SurveyParticipant {
   id: number;
   surveyId: number;
-  userId: number;
+  userId?: number | null;
+  anonSessionId?: string | null;
   role: string;
   intakeData?: any;
   privacyChoice?: string;

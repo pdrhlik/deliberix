@@ -110,11 +110,30 @@
     <!-- Join button for non-participants -->
     @if (!isParticipantOrAdmin && s.status === "active") {
     <div class="content-card">
+      @if (auth.isAuthenticated()) {
       <ion-button expand="block" (click)="joinSurvey()" [disabled]="joining()">
         @if (joining()) {
         <ion-spinner name="crescent"></ion-spinner>
         } @else { {{ "survey.join" | translate }} }
       </ion-button>
+      } @else if (s.allowAnonymous) {
+      <ion-button expand="block" (click)="joinAnon()" [disabled]="joiningAnon()">
+        @if (joiningAnon()) {
+        <ion-spinner name="crescent"></ion-spinner>
+        } @else { {{ "survey.join-anon" | translate }} }
+      </ion-button>
+      <p class="auth-link">
+        <a [routerLink]="['/login']" [queryParams]="{ redirect: '/survey/' + s.slug }">
+          {{ "survey.join-anon-sign-in-instead" | translate }}
+        </a>
+      </p>
+      } @else {
+      <p class="auth-link">
+        <a [routerLink]="['/login']" [queryParams]="{ redirect: '/survey/' + s.slug }">
+          {{ "survey.join-sign-in-required" | translate }}
+        </a>
+      </p>
+      }
     </div>
     }
 
@@ -127,6 +146,13 @@
       [moderationEnabled]="s.moderationEnabled"
       (statementSubmitted)="loadSurvey(s.slug)"
     ></app-submit-statement>
+    }
+
+    <!-- End anonymous session affordance -->
+    @if (isAnonParticipant()) {
+    <p class="anon-end-session">
+      <a (click)="endAnonSession()">{{ "survey.anon-end-session" | translate }}</a>
+    </p>
     } }
 
     <!-- STATEMENTS (admin, draft) -->

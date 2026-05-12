@@ -105,7 +105,7 @@ export class SurveyDetailPage {
   private alertController = inject(AlertController);
   private modalController = inject(ModalController);
   private api = inject(ApiService);
-  private auth = inject(AuthService);
+  auth = inject(AuthService);
   private moderationService = inject(ModerationService);
   private responseService = inject(ResponseService);
   private toast = inject(ToastService);
@@ -118,6 +118,7 @@ export class SurveyDetailPage {
   activeSegment = signal<string>("overview");
 
   joining = signal(false);
+  joiningAnon = signal(false);
 
   editVisibility = signal("private");
   editPrivacyMode = signal("anonymous");
@@ -303,6 +304,40 @@ export class SurveyDetailPage {
     } finally {
       this.joining.set(false);
     }
+  }
+
+  async joinAnon() {
+    const s = this.survey();
+    if (!s) return;
+
+    if (s.intakeConfig?.fields?.length) {
+      this.router.navigateByUrl(`/survey/${s.slug}/join?anon=1`);
+      return;
+    }
+
+    this.joiningAnon.set(true);
+    try {
+      await this.surveyService.joinAnonymously(s.slug);
+      await this.loadSurvey(s.slug);
+    } catch (e) {
+      this.toast.apiError(e);
+    } finally {
+      this.joiningAnon.set(false);
+    }
+  }
+
+  async endAnonSession() {
+    try {
+      await this.surveyService.anonLogout();
+    } catch {
+      // If the cookie was already cleared server-side, still reload.
+    }
+    window.location.reload();
+  }
+
+  isAnonParticipant(): boolean {
+    const p = this.participant();
+    return !!p && !!p.anonSessionId && !this.auth.isAuthenticated();
   }
 
   async moderateStatement(st: Statement, status: "approved" | "rejected") {

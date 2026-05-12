@@ -45,4 +45,14 @@ export class SurveyService {
     await firstValueFrom(this.api.delete<void>(`/survey/${slug}`));
     await this.loadSurveys();
   }
+
+  async joinAnonymously(slug: string, intakeData?: unknown): Promise<void> {
+    await firstValueFrom(
+      this.api.post(`/survey/${slug}/anon/join`, { intakeData: intakeData ?? null }),
+    );
+  }
+
+  async anonLogout(): Promise<void> {
+    await firstValueFrom(this.api.post(`/anon/logout`, {}));
+  }
 }
