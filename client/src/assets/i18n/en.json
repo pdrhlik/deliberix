@@ -52,6 +52,9 @@
     "magic-link-info": "Enter your email and we'll send you a link to log in — no password needed.",
     "magic-link-sent": "If an account exists with this email, a login link has been sent. Check your inbox.",
     "send-magic-link": "Send login link",
+    "invalid-email": "Enter a valid email address.",
+    "required-fields": "Fill in all required fields.",
+    "password-too-short": "Password must be at least 8 characters.",
     "magic-link-success": "You have been logged in.",
     "magic-link-failed": "This login link is invalid or has expired.",
     "or-use-password": "Log in with password"

@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 import {
   IonButton,
@@ -40,8 +40,11 @@ export class ForgotPasswordPage {
   submitting = signal(false);
   sent = signal(false);
 
-  async onSubmit() {
-    if (!this.email) return;
+  async onSubmit(f: NgForm) {
+    if (f.controls["email"]?.invalid) {
+      this.toast.error("auth.invalid-email");
+      return;
+    }
     this.submitting.set(true);
     try {
       await this.auth.forgotPassword(this.email);

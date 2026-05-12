@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {
   IonButton,
@@ -13,6 +13,8 @@ import {
 import { TranslatePipe } from "@ngx-translate/core";
 import { AuthService } from "../../services/auth.service";
 import { ToastService } from "../../services/toast.service";
+import { firstFormErrorKey } from "../../utils/form-errors";
+import { MatchesDirective } from "../../validators/matches.directive";
 
 @Component({
   selector: "app-reset-password",
@@ -28,6 +30,7 @@ import { ToastService } from "../../services/toast.service";
     IonInput,
     IonButton,
     IonSpinner,
+    MatchesDirective,
   ],
   templateUrl: "./reset-password.page.html",
   styleUrls: ["./reset-password.page.scss"],
@@ -42,10 +45,10 @@ export class ResetPasswordPage {
   confirmPassword = "";
   submitting = signal(false);
 
-  async onSubmit() {
-    if (!this.password || !this.confirmPassword) return;
-    if (this.password !== this.confirmPassword) {
-      this.toast.error("auth.passwords-no-match");
+  async onSubmit(f: NgForm) {
+    const errKey = firstFormErrorKey(f);
+    if (errKey) {
+      this.toast.error(errKey);
       return;
     }
 

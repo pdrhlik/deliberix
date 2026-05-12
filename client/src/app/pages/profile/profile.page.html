@@ -83,7 +83,7 @@
 
     <!-- Password section -->
     @if (user; as u) {
-    <div class="section">
+    <form #passwordForm="ngForm" (ngSubmit)="savePassword(passwordForm)" class="section">
       <h2 class="section-title">
         <ion-icon name="lock-closed-outline"></ion-icon>
         {{ "profile.password" | translate }}
@@ -100,6 +100,7 @@
         [label]="'profile.current-password' | translate"
         [(ngModel)]="currentPassword"
         name="currentPassword"
+        required
       ></ion-input>
       }
 
@@ -111,6 +112,8 @@
         [label]="'profile.new-password' | translate"
         [(ngModel)]="newPassword"
         name="newPassword"
+        required
+        minlength="8"
       ></ion-input>
 
       <ion-input
@@ -121,9 +124,11 @@
         [label]="'profile.confirm-new-password' | translate"
         [(ngModel)]="confirmNewPassword"
         name="confirmNewPassword"
+        required
+        [matches]="newPassword"
       ></ion-input>
 
-      <ion-button expand="block" (click)="savePassword()" [disabled]="savingPassword()">
+      <ion-button expand="block" type="submit" [disabled]="savingPassword()">
         @if (savingPassword()) {
         <ion-spinner name="crescent"></ion-spinner>
         } @else if (u.hasPassword) { {{ "profile.change-password" | translate }} } @else { {{
@@ -135,7 +140,7 @@
         <a (click)="forgotPassword()">{{ "profile.forgot-password" | translate }}</a>
       </p>
       }
-    </div>
+    </form>
     }
   </div>
 </ion-content>

@@ -8,7 +8,7 @@
   <div class="auth-container">
     <h1 class="auth-title">{{ "common.app-name" | translate }}</h1>
 
-    <form (ngSubmit)="onSubmit()" class="auth-form">
+    <form #f="ngForm" (ngSubmit)="onSubmit(f)" class="auth-form">
       <ion-input
         type="text"
         labelPlacement="stacked"
@@ -16,6 +16,8 @@
         fill="outline"
         [(ngModel)]="name"
         name="name"
+        required
+        nonBlank
         [label]="'auth.name' | translate"
       ></ion-input>
 
@@ -26,6 +28,8 @@
         fill="outline"
         [(ngModel)]="email"
         name="email"
+        email
+        required
         [label]="'auth.email' | translate"
       ></ion-input>
 
@@ -36,6 +40,8 @@
         fill="outline"
         [(ngModel)]="password"
         name="password"
+        required
+        minlength="8"
         [label]="'auth.password' | translate"
       ></ion-input>
 
@@ -46,6 +52,8 @@
         fill="outline"
         [(ngModel)]="confirmPassword"
         name="confirmPassword"
+        required
+        [matches]="password"
         [label]="'auth.confirm-password' | translate"
       ></ion-input>
 

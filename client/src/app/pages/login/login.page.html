@@ -9,7 +9,7 @@
     <h1 class="auth-title">{{ "common.app-name" | translate }}</h1>
 
     @switch (mode()) { @case ("password") {
-    <form (ngSubmit)="onPasswordLogin()" class="auth-form">
+    <form #pwForm="ngForm" (ngSubmit)="onPasswordLogin(pwForm)" class="auth-form">
       <ion-input
         type="email"
         labelPlacement="stacked"
@@ -17,6 +17,8 @@
         fill="outline"
         [(ngModel)]="email"
         name="email"
+        email
+        required
         [label]="'auth.email' | translate"
       ></ion-input>
 
@@ -27,6 +29,7 @@
         fill="outline"
         [(ngModel)]="password"
         name="password"
+        required
         [label]="'auth.password' | translate"
       ></ion-input>
 
@@ -54,7 +57,7 @@
     } @case ("magic-link") {
     <p class="magic-link-info">{{ "auth.magic-link-info" | translate }}</p>
 
-    <form (ngSubmit)="onMagicLink()" class="auth-form">
+    <form #magicForm="ngForm" (ngSubmit)="onMagicLink(magicForm)" class="auth-form">
       <ion-input
         type="email"
         labelPlacement="stacked"
@@ -62,6 +65,8 @@
         fill="outline"
         [(ngModel)]="email"
         name="emailMagic"
+        email
+        required
         [label]="'auth.email' | translate"
       ></ion-input>
 

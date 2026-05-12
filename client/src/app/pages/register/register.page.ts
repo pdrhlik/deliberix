@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import {
   IonButton,
@@ -13,6 +13,9 @@ import {
 import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { AuthService } from "../../services/auth.service";
 import { ToastService } from "../../services/toast.service";
+import { firstFormErrorKey } from "../../utils/form-errors";
+import { MatchesDirective } from "../../validators/matches.directive";
+import { NonBlankDirective } from "../../validators/non-blank.directive";
 
 @Component({
   selector: "app-register",
@@ -28,6 +31,8 @@ import { ToastService } from "../../services/toast.service";
     IonInput,
     IonButton,
     IonSpinner,
+    MatchesDirective,
+    NonBlankDirective,
   ],
   templateUrl: "./register.page.html",
   styleUrls: ["./register.page.scss"],
@@ -44,15 +49,21 @@ export class RegisterPage {
   confirmPassword = "";
   submitting = signal(false);
 
-  async onSubmit() {
-    if (this.password !== this.confirmPassword) {
-      this.toast.error("auth.passwords-no-match");
+  async onSubmit(f: NgForm) {
+    const errKey = firstFormErrorKey(f);
+    if (errKey) {
+      this.toast.error(errKey);
       return;
     }
 
     this.submitting.set(true);
     try {
-      await this.auth.register(this.email, this.password, this.name, this.translate.currentLang);
+      await this.auth.register(
+        this.email,
+        this.password,
+        this.name.trim(),
+        this.translate.currentLang,
+      );
       this.router.navigateByUrl("/registration-success", { replaceUrl: true });
     } catch {
       this.toast.error("auth.register-failed");

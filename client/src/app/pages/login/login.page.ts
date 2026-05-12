@@ -1,5 +1,5 @@
 import { Component, inject, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { Router, RouterLink } from "@angular/router";
 import {
   IonButton,
@@ -13,6 +13,7 @@ import {
 import { TranslatePipe } from "@ngx-translate/core";
 import { AuthService } from "../../services/auth.service";
 import { ToastService } from "../../services/toast.service";
+import { firstFormErrorKey } from "../../utils/form-errors";
 
 @Component({
   selector: "app-login",
@@ -42,8 +43,12 @@ export class LoginPage {
   submitting = signal(false);
   mode = signal<"password" | "magic-link" | "magic-link-sent">("password");
 
-  async onPasswordLogin() {
-    if (!this.email || !this.password) return;
+  async onPasswordLogin(f: NgForm) {
+    const errKey = firstFormErrorKey(f);
+    if (errKey) {
+      this.toast.error(errKey);
+      return;
+    }
     this.submitting.set(true);
     try {
       await this.auth.login(this.email, this.password);
@@ -56,8 +61,12 @@ export class LoginPage {
     }
   }
 
-  async onMagicLink() {
-    if (!this.email) return;
+  async onMagicLink(f: NgForm) {
+    const errKey = firstFormErrorKey(f);
+    if (errKey) {
+      this.toast.error(errKey);
+      return;
+    }
     this.submitting.set(true);
     try {
       await this.auth.requestMagicLink(this.email);

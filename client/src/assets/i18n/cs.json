@@ -52,6 +52,9 @@
     "magic-link-info": "Zadejte svůj e-mail a pošleme vám odkaz pro přihlášení — bez hesla.",
     "magic-link-sent": "Pokud existuje účet s tímto e-mailem, byl odeslán přihlašovací odkaz. Zkontrolujte svou schránku.",
     "send-magic-link": "Odeslat přihlašovací odkaz",
+    "invalid-email": "Zadejte platnou e-mailovou adresu.",
+    "required-fields": "Vyplňte všechna povinná pole.",
+    "password-too-short": "Heslo musí mít alespoň 8 znaků.",
     "magic-link-success": "Byli jste přihlášeni.",
     "magic-link-failed": "Tento přihlašovací odkaz je neplatný nebo vypršel.",
     "or-use-password": "Přihlásit se heslem"

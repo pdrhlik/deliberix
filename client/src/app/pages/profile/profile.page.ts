@@ -1,6 +1,6 @@
 import { DatePipe } from "@angular/common";
 import { Component, inject, OnInit, signal } from "@angular/core";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import {
   IonButton,
   IonButtons,
@@ -22,6 +22,8 @@ import { AuthService } from "../../services/auth.service";
 import { LocaleService } from "../../services/locale.service";
 import { ThemeMode, ThemeService } from "../../services/theme.service";
 import { ToastService } from "../../services/toast.service";
+import { firstFormErrorKey } from "../../utils/form-errors";
+import { MatchesDirective } from "../../validators/matches.directive";
 
 @Component({
   selector: "app-profile",
@@ -42,6 +44,7 @@ import { ToastService } from "../../services/toast.service";
     IonButton,
     IonIcon,
     IonSpinner,
+    MatchesDirective,
   ],
   templateUrl: "./profile.page.html",
   styleUrls: ["./profile.page.scss"],
@@ -106,9 +109,10 @@ export class ProfilePage implements OnInit {
     }
   }
 
-  async savePassword() {
-    if (this.newPassword !== this.confirmNewPassword) {
-      this.toast.error("auth.passwords-no-match");
+  async savePassword(f: NgForm) {
+    const errKey = firstFormErrorKey(f);
+    if (errKey) {
+      this.toast.error(errKey);
       return;
     }
     this.savingPassword.set(true);
