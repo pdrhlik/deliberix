@@ -43,9 +43,9 @@ export const routes: Routes = [
       import("./pages/survey-list/survey-list.page").then((m) => m.SurveyListPage),
   },
   {
-    path: "settings",
+    path: "profile",
     canActivate: [authGuard],
-    loadComponent: () => import("./pages/settings/settings.page").then((m) => m.SettingsPage),
+    loadComponent: () => import("./pages/profile/profile.page").then((m) => m.ProfilePage),
   },
   {
     path: "survey/create",

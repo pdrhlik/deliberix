@@ -6,7 +6,7 @@ import {
 } from "@ionic/angular/standalone";
 import { TranslatePipe } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
-import { listOutline, logOutOutline, settingsOutline } from "ionicons/icons";
+import { addCircleOutline, listOutline, logOutOutline, personOutline } from "ionicons/icons";
 import { environment } from "../environments/environment";
 import { AuthService } from "./services/auth.service";
 import { LocaleService } from "./services/locale.service";
@@ -47,7 +47,7 @@ export class AppComponent {
   });
 
   constructor() {
-    addIcons({ listOutline, settingsOutline, logOutOutline });
+    addIcons({ listOutline, addCircleOutline, personOutline, logOutOutline });
   }
 
   async logout() {

@@ -24,7 +24,7 @@ import { ThemeMode, ThemeService } from "../../services/theme.service";
 import { ToastService } from "../../services/toast.service";
 
 @Component({
-  selector: "app-settings",
+  selector: "app-profile",
   standalone: true,
   imports: [
     DatePipe,
@@ -43,10 +43,10 @@ import { ToastService } from "../../services/toast.service";
     IonIcon,
     IonSpinner,
   ],
-  templateUrl: "./settings.page.html",
-  styleUrls: ["./settings.page.scss"],
+  templateUrl: "./profile.page.html",
+  styleUrls: ["./profile.page.scss"],
 })
-export class SettingsPage implements OnInit {
+export class ProfilePage implements OnInit {
   private localeService = inject(LocaleService);
   private auth = inject(AuthService);
   private toast = inject(ToastService);
