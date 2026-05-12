@@ -19,7 +19,8 @@ type ParticipantListItem struct {
 type SurveyParticipant struct {
 	ID            uint             `db:"id,selectonly" json:"id"`
 	SurveyID      uint             `db:"survey_id" json:"surveyId"`
-	UserID        uint             `db:"user_id" json:"userId"`
+	UserID        *uint            `db:"user_id" json:"userId,omitempty"`
+	AnonSessionID *string          `db:"anon_session_id" json:"anonSessionId,omitempty"`
 	Role          string           `db:"role" json:"role"`
 	IntakeData    *json.RawMessage `db:"intake_data" json:"intakeData,omitempty"`
 	PrivacyChoice *string          `db:"privacy_choice" json:"privacyChoice,omitempty"`

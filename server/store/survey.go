@@ -2,8 +2,10 @@ package store
 
 import (
 	"context"
+	"encoding/json"
 
 	"github.com/mibk/dali"
+	"github.com/pdrhlik/deliberix/server/identity"
 	"github.com/pdrhlik/deliberix/server/model"
 )
 
@@ -105,4 +107,40 @@ func (s *Store) AddParticipant(ctx context.Context, p *model.SurveyParticipant) 
 func (s *Store) GetParticipant(ctx context.Context, surveyID, userID uint) (*model.SurveyParticipant, error) {
 	return queryOne[model.SurveyParticipant](s.DB.Query(
 		`SELECT * FROM survey_participant WHERE survey_id = ? AND user_id = ?`, surveyID, userID))
+}
+
+func (s *Store) GetParticipantByActor(ctx context.Context, surveyID uint, a *identity.Actor) (*model.SurveyParticipant, error) {
+	if a == nil {
+		return nil, nil
+	}
+	if a.UserID != nil {
+		return s.GetParticipant(ctx, surveyID, *a.UserID)
+	}
+	if a.AnonSessionID != nil {
+		return queryOne[model.SurveyParticipant](s.DB.Query(
+			`SELECT * FROM survey_participant WHERE survey_id = ? AND anon_session_id = ?`,
+			surveyID, *a.AnonSessionID,
+		))
+	}
+	return nil, nil
+}
+
+func (s *Store) IsParticipantByActor(ctx context.Context, surveyID uint, a *identity.Actor) (bool, error) {
+	p, err := s.GetParticipantByActor(ctx, surveyID, a)
+	if err != nil {
+		return false, err
+	}
+	return p != nil, nil
+}
+
+func (s *Store) CreateAnonParticipant(ctx context.Context, surveyID uint, anonSessionID string, intakeData *json.RawMessage) error {
+	p := &model.SurveyParticipant{
+		SurveyID:      surveyID,
+		AnonSessionID: &anonSessionID,
+		Role:          "participant",
+		IntakeData:    intakeData,
+	}
+	q := s.DB.Query(`INSERT INTO survey_participant ?values`, p)
+	_, err := q.Exec()
+	return err
 }

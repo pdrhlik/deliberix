@@ -22,6 +22,20 @@ func queryOne[T any](q *dali.Query) (*T, error) {
 	return &v, nil
 }
 
+func nullableUint(p *uint) any {
+	if p == nil {
+		return nil
+	}
+	return *p
+}
+
+func nullableString(p *string) any {
+	if p == nil {
+		return nil
+	}
+	return *p
+}
+
 func New(dsn string) (*Store, error) {
 	db, err := dali.Open("mysql", dsn)
 	if err != nil {

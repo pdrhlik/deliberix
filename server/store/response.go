@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 
+	"github.com/pdrhlik/deliberix/server/identity"
 	"github.com/pdrhlik/deliberix/server/model"
 )
 
@@ -125,4 +126,65 @@ func (s *Store) GetStatementSurveyID(ctx context.Context, statementID uint) (uin
 		return 0, err
 	}
 	return surveyID, nil
+}
+
+func (s *Store) CreateResponseByActor(ctx context.Context, statementID uint, a *identity.Actor, vote string, isImportant bool) error {
+	resp := &model.Response{
+		StatementID: statementID,
+		Vote:        vote,
+		IsImportant: isImportant,
+	}
+	if a.UserID != nil {
+		resp.UserID = a.UserID
+	}
+	if a.AnonSessionID != nil {
+		resp.AnonSessionID = a.AnonSessionID
+	}
+	q := s.DB.Query(`INSERT INTO response ?values`, resp)
+	_, err := q.Exec()
+	return err
+}
+
+func (s *Store) GetUserVotesForSurveyByActor(ctx context.Context, surveyID uint, a *identity.Actor) (map[uint]model.UserVote, error) {
+	type row struct {
+		StatementID uint   `db:"statement_id"`
+		Vote        string `db:"vote"`
+		IsImportant bool   `db:"is_important"`
+	}
+	var rows []row
+	q := s.DB.Query(`
+		SELECT r.statement_id, r.vote, r.is_important
+		FROM response r
+		JOIN statement st ON st.id = r.statement_id
+		WHERE st.survey_id = ?
+		  AND ((r.user_id IS NOT NULL AND r.user_id = ?) OR
+		       (r.anon_session_id IS NOT NULL AND r.anon_session_id = ?))`,
+		surveyID, nullableUint(a.UserID), nullableString(a.AnonSessionID),
+	)
+	if err := q.All(&rows); err != nil {
+		return nil, err
+	}
+	out := make(map[uint]model.UserVote, len(rows))
+	for _, v := range rows {
+		out[v.StatementID] = model.UserVote{Vote: v.Vote, IsImportant: v.IsImportant}
+	}
+	return out, nil
+}
+
+func (s *Store) GetVoteProgressByActor(ctx context.Context, surveyID uint, a *identity.Actor) (model.VoteProgress, error) {
+	var p model.VoteProgress
+	q := s.DB.Query(`
+		SELECT
+		  (SELECT COUNT(*) FROM statement WHERE survey_id = ? AND status = 'approved') AS total,
+		  (SELECT COUNT(*) FROM response r
+		     JOIN statement st ON st.id = r.statement_id
+		     WHERE st.survey_id = ?
+		       AND ((r.user_id IS NOT NULL AND r.user_id = ?) OR
+		            (r.anon_session_id IS NOT NULL AND r.anon_session_id = ?))) AS voted`,
+		surveyID, surveyID, nullableUint(a.UserID), nullableString(a.AnonSessionID),
+	)
+	if err := q.ScanRow(&p.Total, &p.Voted); err != nil {
+		return p, err
+	}
+	return p, nil
 }

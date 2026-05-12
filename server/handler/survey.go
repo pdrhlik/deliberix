@@ -223,7 +223,7 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 		// Auto-add creator as survey admin
 		err = h.Store.AddParticipant(r.Context(), &model.SurveyParticipant{
 			SurveyID: id,
-			UserID:   user.ID,
+			UserID:   &user.ID,
 			Role:     "admin",
 		})
 		if err != nil {
@@ -492,7 +492,7 @@ func (h *Handler) JoinSurvey() AppHandlerFunc {
 
 		p := &model.SurveyParticipant{
 			SurveyID:   survey.ID,
-			UserID:     user.ID,
+			UserID:     &user.ID,
 			Role:       "participant",
 			IntakeData: body.IntakeData,
 		}

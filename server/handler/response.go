@@ -54,7 +54,7 @@ func (h *Handler) SubmitResponse() AppHandlerFunc {
 
 		resp := &model.Response{
 			StatementID: statementID,
-			UserID:      user.ID,
+			UserID:      &user.ID,
 			Vote:        in.Vote,
 			IsImportant: in.IsImportant,
 		}
