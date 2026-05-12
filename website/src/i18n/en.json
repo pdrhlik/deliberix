@@ -39,7 +39,7 @@
   },
   "about": {
     "title": "About Deliberix",
-    "intro": "Deliberix is a deliberative platform for gathering and analyzing opinions. It helps groups discover consensus, understand differing viewpoints, and lead participatory discussion.",
+    "intro": "Deliberix is a deliberative platform for gathering and analyzing opinions, inspired by Pol.is and All Our Ideas. It helps groups discover consensus, understand differing viewpoints, and lead structured participatory discussion.",
     "how-title": "How it works",
     "how-text": "Survey administrators create a set of opening statements on a given topic. Participants then rate each statement by choosing \"agree\", \"disagree\", or \"skip\", and can also mark statements they consider important. They can also submit their own new statements, which are then added to the group vote. Real-time results continuously show vote distribution, agreement levels between participants, and importance ratings.",
     "open-title": "Open and transparent",
@@ -51,7 +51,6 @@
     "title": "Contact",
     "intro": "Have questions about Deliberix? Want to set up an instance for your organization? Get in touch.",
     "email-label": "Email us",
-    "github-label": "GitHub",
     "web-label": "Academix ecosystem"
   },
   "footer": {

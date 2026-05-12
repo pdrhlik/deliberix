@@ -4,7 +4,9 @@
       <ion-menu contentId="main-content" type="overlay">
         <ion-header>
           <ion-toolbar>
-            <ion-title>{{ "common.app-name" | translate }}</ion-title>
+            <a [href]="homeUrl()" class="brand-link">
+              <ion-title class="brand-title">{{ "common.app-name" | translate }}</ion-title>
+            </a>
           </ion-toolbar>
         </ion-header>
 

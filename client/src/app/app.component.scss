@@ -6,6 +6,16 @@ ion-menu {
     --color: var(--ion-color-primary);
     font-weight: 600;
   }
+
+  .brand-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+
+    .brand-title {
+      cursor: pointer;
+    }
+  }
 }
 
 .user-info {

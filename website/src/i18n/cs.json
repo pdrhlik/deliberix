@@ -39,19 +39,18 @@
   },
   "about": {
     "title": "O Deliberix",
-    "intro": "Deliberix je deliberativní platforma pro sběr a vyhodnocování názorů. Pomáhá skupinám objevovat konsenzus, porozumět rozdílným postojům a vést participativní diskusi.",
+    "intro": "Deliberix je deliberativní platforma pro sběr a vyhodnocování názorů, inspirovaná projekty Pol.is a All Our Ideas. Pomáhá skupinám objevovat konsenzus, porozumět rozdílným postojům a vést strukturovanou participativní diskusi.",
     "how-title": "Jak to funguje",
     "how-text": "Administrátoři průzkumu vytvoří sadu úvodních výroků k danému tématu. Účastníci následně každý výrok hodnotí výběrem možností „souhlasím“, „nesouhlasím“ nebo „přeskočit“ a mohou zároveň vybrat výroky, které považují za důležité. Mohou také navrhovat vlastní nové výroky, které jsou následně zařazeny do skupinového hlasování. Výsledky v reálném čase průběžně zobrazují rozložení hlasů, míru shody mezi účastníky a hodnocení důležitosti tvrzení.",
     "open-title": "Otevřený a transparentní",
     "open-text": "Deliberix je navržen pro nasazení on-premise nebo jako hostovaná služba. Nastavení viditelnosti průzkumu, soukromí a přístupu k výsledkům jsou plně konfigurovatelná pro každý jednotlivý průzkum.",
-    "who-title": "Pro koho je určeno?",
+    "who-title": "Pro koho je určen?",
     "who-text": "Pro obce, univerzity, neziskové organizace, firmy a všechny, kdo chtějí lépe porozumět tomu, co si skupina skutečně myslí. Využití sahá od zpětné vazby ve výuce až po rozsáhlé veřejné konzultace."
   },
   "contact": {
     "title": "Kontakt",
     "intro": "Máte otázky o Deliberix? Chcete nastavit instanci pro vaši organizaci? Ozvěte se nám.",
     "email-label": "Napište nám",
-    "github-label": "GitHub",
     "web-label": "Ekosystém Academix"
   },
   "footer": {
