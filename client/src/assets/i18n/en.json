@@ -20,6 +20,8 @@
     "cannot_remove_admin": "An admin cannot be removed.",
     "moderation_forbidden": "Only admins and moderators can access moderation.",
     "moderation_lock": "Moderation can only be changed before the survey is activated.",
+    "anon_not_allowed": "This survey does not accept anonymous voting.",
+    "anon_lock": "Anonymous voting can only be changed before the survey is activated.",
     "statement_text_length": "Statement length is out of the allowed range.",
     "text_required": "Text is required.",
     "title_required": "Title is required.",

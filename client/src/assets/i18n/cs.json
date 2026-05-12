@@ -20,6 +20,8 @@
     "cannot_remove_admin": "Administrátora nelze odebrat.",
     "moderation_forbidden": "Pouze administrátoři a moderátoři mají přístup k moderaci.",
     "moderation_lock": "Moderaci lze měnit pouze před aktivací průzkumu.",
+    "anon_not_allowed": "Tento průzkum neumožňuje anonymní hlasování.",
+    "anon_lock": "Anonymní hlasování lze měnit pouze před aktivací průzkumu.",
     "statement_text_length": "Délka výroku je mimo povolený rozsah.",
     "text_required": "Text je povinný.",
     "title_required": "Název je povinný.",
