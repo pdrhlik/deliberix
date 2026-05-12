@@ -3,6 +3,7 @@ package store
 import (
 	"context"
 
+	"github.com/pdrhlik/deliberix/server/identity"
 	"github.com/pdrhlik/deliberix/server/model"
 )
 
@@ -51,6 +52,33 @@ func (s *Store) GetNextStatement(ctx context.Context, surveyID, userID uint, ord
 			)
 		ORDER BY `+orderClause+`
 		LIMIT 1`, surveyID, userID))
+}
+
+func (s *Store) GetNextStatementByActor(ctx context.Context, surveyID uint, a *identity.Actor, order string) (*model.Statement, error) {
+	if a == nil {
+		return nil, nil
+	}
+	var orderClause string
+	switch order {
+	case "sequential":
+		orderClause = "s.id ASC"
+	case "least_voted":
+		orderClause = "(SELECT COUNT(*) FROM response r2 WHERE r2.statement_id = s.id) ASC, s.id ASC"
+	default: // random
+		orderClause = "RAND()"
+	}
+
+	return queryOne[model.Statement](s.DB.Query(`
+		SELECT s.* FROM statement s
+		WHERE s.survey_id = ?
+			AND s.status = 'approved'
+			AND s.id NOT IN (
+				SELECT r.statement_id FROM response r
+				WHERE (r.user_id IS NOT NULL AND r.user_id = ?)
+				   OR (r.anon_session_id IS NOT NULL AND r.anon_session_id = ?)
+			)
+		ORDER BY `+orderClause+`
+		LIMIT 1`, surveyID, nullableUint(a.UserID), nullableString(a.AnonSessionID)))
 }
 
 func (s *Store) ModerateStatement(ctx context.Context, statementID, moderatorID uint, status string) error {

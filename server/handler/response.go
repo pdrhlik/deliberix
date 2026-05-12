@@ -14,7 +14,10 @@ func (h *Handler) SubmitResponse() AppHandlerFunc {
 			return writeError(w, http.StatusBadRequest, "invalid_statement_id", "invalid statement id")
 		}
 
-		user := identity.GetUserFromContext(r.Context())
+		actor := identity.GetActorFromContext(r.Context())
+		if actor == nil {
+			return writeError(w, http.StatusForbidden, "must_be_participant", "must be a participant")
+		}
 
 		// Get the survey this statement belongs to
 		surveyID, err := h.Store.GetStatementSurveyID(r.Context(), statementID)
@@ -34,8 +37,8 @@ func (h *Handler) SubmitResponse() AppHandlerFunc {
 			return writeError(w, http.StatusForbidden, "survey_closed", "survey has closed")
 		}
 
-		// Verify user is participant
-		isParticipant, err := h.Store.IsParticipant(r.Context(), surveyID, user.ID)
+		// Verify actor is participant
+		isParticipant, err := h.Store.IsParticipantByActor(r.Context(), surveyID, actor)
 		if err != nil {
 			return err
 		}
@@ -52,18 +55,11 @@ func (h *Handler) SubmitResponse() AppHandlerFunc {
 			return writeError(w, http.StatusBadRequest, "invalid_vote", "vote must be agree, disagree, or abstain")
 		}
 
-		resp := &model.Response{
-			StatementID: statementID,
-			UserID:      &user.ID,
-			Vote:        in.Vote,
-			IsImportant: in.IsImportant,
-		}
-
-		if err := h.Store.CreateResponse(r.Context(), resp); err != nil {
+		if err := h.Store.CreateResponseByActor(r.Context(), statementID, actor, in.Vote, in.IsImportant); err != nil {
 			return writeError(w, http.StatusConflict, "already_voted", "already voted on this statement")
 		}
 
-		return writeJSON(w, http.StatusCreated, resp)
+		return writeJSON(w, http.StatusCreated, map[string]string{"status": "ok"})
 	}
 }
 
@@ -77,9 +73,12 @@ func (h *Handler) GetVoteProgress() AppHandlerFunc {
 			return nil
 		}
 
-		user := identity.GetUserFromContext(r.Context())
+		actor := identity.GetActorFromContext(r.Context())
+		if actor == nil {
+			return writeError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
+		}
 
-		progress, err := h.Store.GetVoteProgress(r.Context(), survey.ID, user.ID)
+		progress, err := h.Store.GetVoteProgressByActor(r.Context(), survey.ID, actor)
 		if err != nil {
 			return err
 		}

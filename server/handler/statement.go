@@ -87,9 +87,12 @@ func (h *Handler) SubmitStatement() AppHandlerFunc {
 			return nil
 		}
 
-		user := identity.GetUserFromContext(r.Context())
+		actor := identity.GetActorFromContext(r.Context())
+		if actor == nil {
+			return writeError(w, http.StatusForbidden, "must_be_participant", "must be a participant to submit statements")
+		}
 
-		isParticipant, err := h.Store.IsParticipant(r.Context(), survey.ID, user.ID)
+		isParticipant, err := h.Store.IsParticipantByActor(r.Context(), survey.ID, actor)
 		if err != nil {
 			return err
 		}
@@ -129,7 +132,7 @@ func (h *Handler) SubmitStatement() AppHandlerFunc {
 			Text:     in.Text,
 			Type:     "user_submitted",
 			Status:   status,
-			AuthorID: &user.ID,
+			AuthorID: actor.UserID,
 		}
 
 		id, err := h.Store.CreateStatement(r.Context(), st)
@@ -156,9 +159,12 @@ func (h *Handler) GetNextStatement() AppHandlerFunc {
 			return writeError(w, http.StatusForbidden, "survey_closed", "survey has closed")
 		}
 
-		user := identity.GetUserFromContext(r.Context())
+		actor := identity.GetActorFromContext(r.Context())
+		if actor == nil {
+			return writeError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
+		}
 
-		st, err := h.Store.GetNextStatement(r.Context(), survey.ID, user.ID, survey.StatementOrder)
+		st, err := h.Store.GetNextStatementByActor(r.Context(), survey.ID, actor, survey.StatementOrder)
 		if err != nil {
 			return err
 		}

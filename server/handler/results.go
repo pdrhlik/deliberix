@@ -23,7 +23,10 @@ func (h *Handler) GetResults() AppHandlerFunc {
 			return nil
 		}
 
-		user := identity.GetUserFromContext(r.Context())
+		actor := identity.GetActorFromContext(r.Context())
+		if actor == nil {
+			return writeError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
+		}
 
 		switch survey.ResultVisibility {
 		case "after_close":
@@ -31,7 +34,7 @@ func (h *Handler) GetResults() AppHandlerFunc {
 				return writeError(w, http.StatusForbidden, "results_after_close", "Results are available after the survey closes.")
 			}
 		case "after_completion":
-			progress, err := h.Store.GetVoteProgress(r.Context(), survey.ID, user.ID)
+			progress, err := h.Store.GetVoteProgressByActor(r.Context(), survey.ID, actor)
 			if err != nil {
 				return err
 			}
@@ -52,7 +55,7 @@ func (h *Handler) GetResults() AppHandlerFunc {
 			return err
 		}
 
-		myVotes, err := h.Store.GetUserVotesForSurvey(r.Context(), survey.ID, user.ID)
+		myVotes, err := h.Store.GetUserVotesForSurveyByActor(r.Context(), survey.ID, actor)
 		if err != nil {
 			return err
 		}

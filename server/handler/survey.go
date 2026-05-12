@@ -268,8 +268,11 @@ func (h *Handler) GetSurvey() AppHandlerFunc {
 
 		// Private surveys are only visible to participants
 		if survey.Visibility == "private" {
-			user := identity.GetUserFromContext(r.Context())
-			isParticipant, err := h.Store.IsParticipant(r.Context(), survey.ID, user.ID)
+			actor := identity.GetActorFromContext(r.Context())
+			if actor == nil {
+				return writeError(w, http.StatusNotFound, "survey_not_found", "survey not found")
+			}
+			isParticipant, err := h.Store.IsParticipantByActor(r.Context(), survey.ID, actor)
 			if err != nil {
 				return err
 			}
@@ -442,8 +445,11 @@ func (h *Handler) GetMyParticipation() AppHandlerFunc {
 			return nil
 		}
 
-		user := identity.GetUserFromContext(r.Context())
-		p, err := h.Store.GetParticipant(r.Context(), survey.ID, user.ID)
+		actor := identity.GetActorFromContext(r.Context())
+		if actor == nil {
+			return writeError(w, http.StatusNotFound, "not_a_participant", "not a participant")
+		}
+		p, err := h.Store.GetParticipantByActor(r.Context(), survey.ID, actor)
 		if err != nil {
 			return err
 		}
