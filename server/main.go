@@ -118,6 +118,8 @@ func main() {
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.AuthOptional(cfg.JWTSecret, s))
 
+		// Needs AuthOptional so the handler can detect an existing JWT or anon-cookie
+		// participant and return 409 as required by spec § 1.
 		r.Post("/api/v1/survey/{slug}/anon/join", handler.ErrorHandler(h.AnonJoin()))
 
 		r.Get("/api/v1/survey/{slug}", handler.ErrorHandler(h.GetSurvey()))
