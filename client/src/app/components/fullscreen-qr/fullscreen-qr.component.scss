@@ -1,0 +1,38 @@
+// Selector-prefixed styles since ViewEncapsulation.None makes them global.
+
+app-fullscreen-qr {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  display: block;
+
+  .fullscreen-qr-wrap {
+    width: 100vw;
+    height: 100vh;
+    /* dvh fallback for mobile browsers that change vh with chrome */
+    width: 100dvw;
+    height: 100dvh;
+    background: white;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+  }
+
+  qrcode {
+    display: block;
+    width: min(95vw, 95vh);
+    height: min(95vw, 95vh);
+    /* dvh variant where supported */
+    width: min(95dvw, 95dvh);
+    height: min(95dvw, 95dvh);
+  }
+
+  qrcode svg,
+  qrcode img {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: 100% !important;
+    max-height: 100% !important;
+  }
+}

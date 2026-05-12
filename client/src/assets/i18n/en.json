@@ -147,7 +147,13 @@
     "moderation-enabled": "Require statement moderation",
     "moderation-enabled-help": "New participant-submitted statements wait for moderator approval. Can only be changed before the survey is activated.",
     "moderation-disabled-readonly": "No moderation — new statements appear immediately",
-    "moderation-enabled-readonly": "Moderated — new statements need approval"
+    "moderation-enabled-readonly": "Moderated — new statements need approval",
+    "share-title": "Share survey",
+    "share-action": "Share",
+    "share-copy": "Copy link",
+    "share-copied": "Link copied to clipboard.",
+    "share-fullscreen": "Show fullscreen",
+    "share-exit-hint": "Click anywhere or press Esc to exit"
   },
   "statement": {
     "statements": "Statements",

@@ -3,6 +3,7 @@ import { Component, inject, signal } from "@angular/core";
 import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import {
   AlertController,
+  ModalController,
   IonBackButton,
   IonBadge,
   IonButton,
@@ -37,6 +38,7 @@ import {
   peopleOutline,
   playOutline,
   settingsOutline,
+  shareSocialOutline,
   shieldCheckmarkOutline,
   trashOutline,
 } from "ionicons/icons";
@@ -47,6 +49,7 @@ import { ParticipantsComponent } from "../../components/participants/participant
 import { SurveyResultsComponent } from "../../components/survey-results/survey-results.component";
 import { SeedStatementsComponent } from "../../components/seed-statements/seed-statements.component";
 import { SubmitStatementComponent } from "../../components/submit-statement/submit-statement.component";
+import { SurveyShareComponent } from "../../components/survey-share/survey-share.component";
 import { Statement } from "../../models/statement.model";
 import { SurveyParticipant } from "../../models/participant.model";
 import { Survey } from "../../models/survey.model";
@@ -100,6 +103,7 @@ export class SurveyDetailPage {
   private surveyService = inject(SurveyService);
   private translate = inject(TranslateService);
   private alertController = inject(AlertController);
+  private modalController = inject(ModalController);
   private api = inject(ApiService);
   private auth = inject(AuthService);
   private moderationService = inject(ModerationService);
@@ -140,7 +144,20 @@ export class SurveyDetailPage {
       closeOutline,
       barChartOutline,
       trashOutline,
+      shareSocialOutline,
     });
+  }
+
+  async openShare(s: Survey) {
+    const url = `${window.location.origin}/survey/${s.slug}`;
+    const modal = await this.modalController.create({
+      component: SurveyShareComponent,
+      componentProps: {
+        surveyTitle: s.title,
+        shareUrl: url,
+      },
+    });
+    await modal.present();
   }
 
   ionViewWillEnter() {

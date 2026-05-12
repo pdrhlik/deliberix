@@ -4,6 +4,13 @@
       <ion-back-button defaultHref="/surveys"></ion-back-button>
     </ion-buttons>
     <ion-title>{{ survey()?.title }}</ion-title>
+    @if (survey(); as s) {
+    <ion-buttons slot="end">
+      <ion-button (click)="openShare(s)" [attr.aria-label]="'survey.share-action' | translate">
+        <ion-icon name="share-social-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    }
   </ion-toolbar>
 
   @if (survey(); as s) {

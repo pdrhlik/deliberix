@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ "survey.share-title" | translate }}</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="dismiss()" aria-label="Close">
+        <ion-icon name="close-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <div class="share-container">
+    <div class="qr-wrap">
+      <qrcode
+        [qrdata]="shareUrl"
+        [width]="280"
+        [margin]="2"
+        [errorCorrectionLevel]="'M'"
+        [elementType]="'svg'"
+      ></qrcode>
+    </div>
+
+    <p class="share-url">{{ shareUrl }}</p>
+  </div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <div class="footer-actions">
+      <button class="action-tab" (click)="enterFullscreen()">
+        <ion-icon name="expand-outline"></ion-icon>
+        <span>{{ "survey.share-fullscreen" | translate }}</span>
+      </button>
+
+      @if (canNativeShare) {
+        <button class="action-tab" (click)="share()">
+          <ion-icon name="share-social-outline"></ion-icon>
+          <span>{{ "survey.share-action" | translate }}</span>
+        </button>
+      }
+
+      <button class="action-tab" (click)="copyLink()">
+        <ion-icon name="copy-outline"></ion-icon>
+        <span>{{ "survey.share-copy" | translate }}</span>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-footer>

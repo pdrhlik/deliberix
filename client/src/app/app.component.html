@@ -63,4 +63,8 @@
   } @else {
     <ion-router-outlet></ion-router-outlet>
   }
+
+  @if (fullscreenQrUrl(); as url) {
+    <app-fullscreen-qr [url]="url"></app-fullscreen-qr>
+  }
 </ion-app>

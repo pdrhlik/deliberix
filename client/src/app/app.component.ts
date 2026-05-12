@@ -8,7 +8,9 @@ import { TranslatePipe } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
 import { addCircleOutline, listOutline, logOutOutline, personOutline } from "ionicons/icons";
 import { environment } from "../environments/environment";
+import { FullscreenQrComponent } from "./components/fullscreen-qr/fullscreen-qr.component";
 import { AuthService } from "./services/auth.service";
+import { FullscreenQrService } from "./services/fullscreen-qr.service";
 import { LocaleService } from "./services/locale.service";
 import { ToastService } from "./services/toast.service";
 
@@ -34,10 +36,12 @@ import { ToastService } from "./services/toast.service";
     IonLabel,
     IonFooter,
     IonMenuToggle,
+    FullscreenQrComponent,
   ],
 })
 export class AppComponent {
   auth = inject(AuthService);
+  fullscreenQrUrl = inject(FullscreenQrService).url;
   private locale = inject(LocaleService);
   private toast = inject(ToastService);
 

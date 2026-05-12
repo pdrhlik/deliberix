@@ -147,7 +147,13 @@
     "moderation-enabled": "Vyžadovat moderaci výroků",
     "moderation-enabled-help": "Nové výroky od účastníků čekají na schválení moderátorem. Lze nastavit pouze před aktivací průzkumu.",
     "moderation-disabled-readonly": "Bez moderace — nové výroky se zobrazí ihned",
-    "moderation-enabled-readonly": "S moderací — nové výroky musí být schváleny"
+    "moderation-enabled-readonly": "S moderací — nové výroky musí být schváleny",
+    "share-title": "Sdílet průzkum",
+    "share-action": "Sdílet",
+    "share-copy": "Zkopírovat odkaz",
+    "share-copied": "Odkaz byl zkopírován.",
+    "share-fullscreen": "Zobrazit na celé obrazovce",
+    "share-exit-hint": "Klikněte kamkoli nebo stiskněte Esc pro ukončení"
   },
   "statement": {
     "statements": "Výroky",
