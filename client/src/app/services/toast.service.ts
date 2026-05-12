@@ -1,6 +1,7 @@
 import { inject, Injectable } from "@angular/core";
 import { ToastController } from "@ionic/angular/standalone";
 import { TranslateService } from "@ngx-translate/core";
+import { apiErrorMessage } from "../utils/api-error";
 
 @Injectable({
   providedIn: "root",
@@ -21,8 +22,8 @@ export class ToastService {
     await this.show(messageKey, "warning", 4000, params, true);
   }
 
-  async apiError(err?: any) {
-    const message = err?.error?.error || this.translate.instant("common.error");
+  async apiError(err?: unknown) {
+    const message = apiErrorMessage(err, this.translate);
     const toast = await this.toastController.create({
       message,
       duration: 5000,

@@ -23,7 +23,7 @@ func (h *Handler) GetModerationQueue() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || (participant.Role != "admin" && participant.Role != "moderator") {
-			return writeError(w, http.StatusForbidden, "only admins and moderators can access moderation")
+			return writeError(w, http.StatusForbidden, "moderation_forbidden", "only admins and moderators can access moderation")
 		}
 
 		items, err := h.Store.ListStatementsBySurvey(r.Context(), survey.ID, "pending")
@@ -38,7 +38,7 @@ func (h *Handler) ModerateStatement() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		statementID, err := parseIDParam(r, "id")
 		if err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid statement id")
+			return writeError(w, http.StatusBadRequest, "invalid_statement_id", "invalid statement id")
 		}
 
 		user := identity.GetUserFromContext(r.Context())
@@ -49,7 +49,7 @@ func (h *Handler) ModerateStatement() AppHandlerFunc {
 			return err
 		}
 		if st == nil {
-			return writeError(w, http.StatusNotFound, "statement not found")
+			return writeError(w, http.StatusNotFound, "statement_not_found", "statement not found")
 		}
 
 		// Verify user is admin or moderator of this survey
@@ -58,18 +58,18 @@ func (h *Handler) ModerateStatement() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || (participant.Role != "admin" && participant.Role != "moderator") {
-			return writeError(w, http.StatusForbidden, "only admins and moderators can moderate")
+			return writeError(w, http.StatusForbidden, "moderation_forbidden", "only admins and moderators can moderate")
 		}
 
 		var in struct {
 			Status string `json:"status"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		if in.Status != "approved" && in.Status != "rejected" {
-			return writeError(w, http.StatusBadRequest, "status must be approved or rejected")
+			return writeError(w, http.StatusBadRequest, "invalid_moderation_status", "status must be approved or rejected")
 		}
 
 		if err := h.Store.ModerateStatement(r.Context(), statementID, user.ID, in.Status); err != nil {

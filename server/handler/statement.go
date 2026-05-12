@@ -42,21 +42,21 @@ func (h *Handler) AddSeedStatement() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || participant.Role != "admin" {
-			return writeError(w, http.StatusForbidden, "only survey admins can add seed statements")
+			return writeError(w, http.StatusForbidden, "only_admin_can_seed", "only survey admins can add seed statements")
 		}
 
 		var in model.CreateStatementRequest
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		if in.Text == "" {
-			return writeError(w, http.StatusBadRequest, "text is required")
+			return writeError(w, http.StatusBadRequest, "text_required", "text is required")
 		}
 
 		textLen := uint(len([]rune(in.Text)))
 		if textLen < survey.StatementCharMin || textLen > survey.StatementCharMax {
-			return writeError(w, http.StatusBadRequest, "statement text length out of range")
+			return writeError(w, http.StatusBadRequest, "statement_text_length", "statement text length out of range")
 		}
 
 		st := &model.Statement{
@@ -94,29 +94,29 @@ func (h *Handler) SubmitStatement() AppHandlerFunc {
 			return err
 		}
 		if !isParticipant {
-			return writeError(w, http.StatusForbidden, "must be a participant to submit statements")
+			return writeError(w, http.StatusForbidden, "must_be_participant", "must be a participant to submit statements")
 		}
 
 		if survey.Status != "active" {
-			return writeError(w, http.StatusBadRequest, "survey is not active")
+			return writeError(w, http.StatusBadRequest, "survey_not_active", "survey is not active")
 		}
 
 		if isSurveyClosed(survey) {
-			return writeError(w, http.StatusForbidden, "survey has closed")
+			return writeError(w, http.StatusForbidden, "survey_closed", "survey has closed")
 		}
 
 		var in model.CreateStatementRequest
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		if in.Text == "" {
-			return writeError(w, http.StatusBadRequest, "text is required")
+			return writeError(w, http.StatusBadRequest, "text_required", "text is required")
 		}
 
 		textLen := uint(len([]rune(in.Text)))
 		if textLen < survey.StatementCharMin || textLen > survey.StatementCharMax {
-			return writeError(w, http.StatusBadRequest, "statement text length out of range")
+			return writeError(w, http.StatusBadRequest, "statement_text_length", "statement text length out of range")
 		}
 
 		status := "pending"
@@ -153,7 +153,7 @@ func (h *Handler) GetNextStatement() AppHandlerFunc {
 		}
 
 		if isSurveyClosed(survey) {
-			return writeError(w, http.StatusForbidden, "survey has closed")
+			return writeError(w, http.StatusForbidden, "survey_closed", "survey has closed")
 		}
 
 		user := identity.GetUserFromContext(r.Context())

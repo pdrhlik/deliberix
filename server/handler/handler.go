@@ -29,9 +29,10 @@ func writeJSON(w http.ResponseWriter, status int, payload interface{}) error {
 	return json.NewEncoder(w).Encode(payload)
 }
 
-func writeError(w http.ResponseWriter, status int, message string) error {
+func writeError(w http.ResponseWriter, status int, code, message string) error {
 	return writeJSON(w, status, map[string]string{
-		"error": message,
+		"code":    code,
+		"message": message,
 	})
 }
 

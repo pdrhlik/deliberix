@@ -28,17 +28,17 @@ func (h *Handler) Register() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		var in model.RegisterRequest
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		in.Email = strings.ToLower(strings.TrimSpace(in.Email))
 		in.Name = strings.TrimSpace(in.Name)
 
 		if in.Email == "" || in.Password == "" {
-			return writeError(w, http.StatusBadRequest, "email and password are required")
+			return writeError(w, http.StatusBadRequest, "email_and_password_required", "email and password are required")
 		}
 		if len(in.Password) < 8 {
-			return writeError(w, http.StatusBadRequest, "password must be at least 8 characters")
+			return writeError(w, http.StatusBadRequest, "password_too_short", "password must be at least 8 characters")
 		}
 
 		existing, err := h.Store.GetUserByEmail(r.Context(), in.Email)
@@ -46,7 +46,7 @@ func (h *Handler) Register() AppHandlerFunc {
 			return err
 		}
 		if existing != nil {
-			return writeError(w, http.StatusConflict, "email already registered")
+			return writeError(w, http.StatusConflict, "email_already_registered", "email already registered")
 		}
 
 		hash, err := service.HashPassword(in.Password)
@@ -116,7 +116,7 @@ func (h *Handler) Login() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		var in model.LoginRequest
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		in.Email = strings.ToLower(strings.TrimSpace(in.Email))
@@ -126,11 +126,11 @@ func (h *Handler) Login() AppHandlerFunc {
 			return err
 		}
 		if u == nil {
-			return writeError(w, http.StatusUnauthorized, "invalid email or password")
+			return writeError(w, http.StatusUnauthorized, "invalid_credentials", "invalid email or password")
 		}
 
 		if err := service.CheckPassword(u.PasswordHash, in.Password); err != nil {
-			return writeError(w, http.StatusUnauthorized, "invalid email or password")
+			return writeError(w, http.StatusUnauthorized, "invalid_credentials", "invalid email or password")
 		}
 
 		token, err := service.GenerateToken(u.ID, h.Config.JWTSecret)
@@ -151,15 +151,15 @@ func (h *Handler) VerifyEmail() AppHandlerFunc {
 			Token string `json:"token"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 		if in.Token == "" {
-			return writeError(w, http.StatusBadRequest, "token is required")
+			return writeError(w, http.StatusBadRequest, "token_required", "token is required")
 		}
 
 		userID, err := h.Store.UseEmailVerification(r.Context(), in.Token)
 		if err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid or expired verification token")
+			return writeError(w, http.StatusBadRequest, "invalid_verification_token", "invalid or expired verification token")
 		}
 
 		u, err := h.Store.GetUserByID(r.Context(), userID)
@@ -185,12 +185,12 @@ func (h *Handler) ForgotPassword() AppHandlerFunc {
 			Email string `json:"email"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		in.Email = strings.ToLower(strings.TrimSpace(in.Email))
 		if in.Email == "" {
-			return writeError(w, http.StatusBadRequest, "email is required")
+			return writeError(w, http.StatusBadRequest, "email_required", "email is required")
 		}
 
 		// Always return success to prevent email enumeration
@@ -233,18 +233,18 @@ func (h *Handler) ResetPassword() AppHandlerFunc {
 			Password string `json:"password"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 		if in.Token == "" || in.Password == "" {
-			return writeError(w, http.StatusBadRequest, "token and password are required")
+			return writeError(w, http.StatusBadRequest, "token_and_password_required", "token and password are required")
 		}
 		if len(in.Password) < 8 {
-			return writeError(w, http.StatusBadRequest, "password must be at least 8 characters")
+			return writeError(w, http.StatusBadRequest, "password_too_short", "password must be at least 8 characters")
 		}
 
 		userID, err := h.Store.UsePasswordReset(r.Context(), in.Token)
 		if err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid or expired reset token")
+			return writeError(w, http.StatusBadRequest, "invalid_reset_token", "invalid or expired reset token")
 		}
 
 		hash, err := service.HashPassword(in.Password)
@@ -269,15 +269,15 @@ func (h *Handler) ResendVerification() AppHandlerFunc {
 			return err
 		}
 		if u == nil {
-			return writeError(w, http.StatusNotFound, "user not found")
+			return writeError(w, http.StatusNotFound, "user_not_found", "user not found")
 		}
 
 		if u.EmailVerifiedAt != nil {
-			return writeError(w, http.StatusBadRequest, "email already verified")
+			return writeError(w, http.StatusBadRequest, "email_already_verified", "email already verified")
 		}
 
 		if h.Notify == nil {
-			return writeError(w, http.StatusServiceUnavailable, "email service not configured")
+			return writeError(w, http.StatusServiceUnavailable, "email_service_not_configured", "email service not configured")
 		}
 
 		recent, err := h.Store.HasRecentVerification(r.Context(), u.ID, 30*time.Second)
@@ -285,7 +285,7 @@ func (h *Handler) ResendVerification() AppHandlerFunc {
 			return err
 		}
 		if recent {
-			return writeError(w, http.StatusTooManyRequests, "please wait before requesting another verification email")
+			return writeError(w, http.StatusTooManyRequests, "verification_rate_limited", "please wait before requesting another verification email")
 		}
 
 		token, err := generateToken()
@@ -318,12 +318,12 @@ func (h *Handler) RequestMagicLink() AppHandlerFunc {
 			Email string `json:"email"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		in.Email = strings.ToLower(strings.TrimSpace(in.Email))
 		if in.Email == "" {
-			return writeError(w, http.StatusBadRequest, "email is required")
+			return writeError(w, http.StatusBadRequest, "email_required", "email is required")
 		}
 
 		// Always return success to prevent email enumeration
@@ -374,16 +374,16 @@ func (h *Handler) VerifyMagicLink() AppHandlerFunc {
 			Token string `json:"token"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 		if in.Token == "" {
-			return writeError(w, http.StatusBadRequest, "token is required")
+			return writeError(w, http.StatusBadRequest, "token_required", "token is required")
 		}
 
 		userID, err := h.Store.UseMagicLink(r.Context(), in.Token)
 		if err != nil {
 			log.Printf("magic link verify failed for token %.8s...: %v", in.Token, err)
-			return writeError(w, http.StatusBadRequest, "invalid or expired sign-in link")
+			return writeError(w, http.StatusBadRequest, "invalid_magic_link", "invalid or expired sign-in link")
 		}
 
 		u, err := h.Store.GetUserByID(r.Context(), userID)
@@ -391,7 +391,7 @@ func (h *Handler) VerifyMagicLink() AppHandlerFunc {
 			return err
 		}
 		if u == nil {
-			return writeError(w, http.StatusBadRequest, "user not found")
+			return writeError(w, http.StatusBadRequest, "user_not_found", "user not found")
 		}
 
 		// Auto-verify email if not yet verified (they proved email ownership)

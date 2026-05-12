@@ -12,7 +12,7 @@ func (h *Handler) Me() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		ident := identity.GetUserFromContext(r.Context())
 		if ident == nil {
-			return writeError(w, http.StatusUnauthorized, "unauthorized")
+			return writeError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
 		}
 
 		u, err := h.Store.GetUserByID(r.Context(), ident.ID)
@@ -20,7 +20,7 @@ func (h *Handler) Me() AppHandlerFunc {
 			return err
 		}
 		if u == nil {
-			return writeError(w, http.StatusUnauthorized, "user not found")
+			return writeError(w, http.StatusUnauthorized, "user_not_found", "user not found")
 		}
 
 		return writeJSON(w, http.StatusOK, u)
@@ -36,7 +36,7 @@ func (h *Handler) UpdateProfile() AppHandlerFunc {
 			Locale *string `json:"locale"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		u, err := h.Store.GetUserByID(r.Context(), ident.ID)
@@ -44,7 +44,7 @@ func (h *Handler) UpdateProfile() AppHandlerFunc {
 			return err
 		}
 		if u == nil {
-			return writeError(w, http.StatusNotFound, "user not found")
+			return writeError(w, http.StatusNotFound, "user_not_found", "user not found")
 		}
 
 		name := u.Name
@@ -55,7 +55,7 @@ func (h *Handler) UpdateProfile() AppHandlerFunc {
 		if in.Locale != nil {
 			l := *in.Locale
 			if l != "en" && l != "cs" {
-				return writeError(w, http.StatusBadRequest, "locale must be en or cs")
+				return writeError(w, http.StatusBadRequest, "invalid_locale", "locale must be en or cs")
 			}
 			locale = l
 		}
@@ -82,11 +82,11 @@ func (h *Handler) ChangePassword() AppHandlerFunc {
 			NewPassword     string `json:"newPassword"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		if in.NewPassword == "" || len(in.NewPassword) < 8 {
-			return writeError(w, http.StatusBadRequest, "New password must be at least 8 characters.")
+			return writeError(w, http.StatusBadRequest, "password_too_short", "New password must be at least 8 characters.")
 		}
 
 		u, err := h.Store.GetUserByID(r.Context(), ident.ID)
@@ -94,16 +94,16 @@ func (h *Handler) ChangePassword() AppHandlerFunc {
 			return err
 		}
 		if u == nil {
-			return writeError(w, http.StatusNotFound, "user not found")
+			return writeError(w, http.StatusNotFound, "user_not_found", "user not found")
 		}
 
 		// If user already has a password, require current password
 		if u.PasswordHash != "" {
 			if in.CurrentPassword == "" {
-				return writeError(w, http.StatusBadRequest, "Please enter your current password.")
+				return writeError(w, http.StatusBadRequest, "current_password_required", "Please enter your current password.")
 			}
 			if err := service.CheckPassword(u.PasswordHash, in.CurrentPassword); err != nil {
-				return writeError(w, http.StatusUnauthorized, "The current password you entered is incorrect.")
+				return writeError(w, http.StatusUnauthorized, "current_password_incorrect", "The current password you entered is incorrect.")
 			}
 		}
 

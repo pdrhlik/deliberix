@@ -34,7 +34,7 @@ func (h *Handler) ListParticipants() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || participant.Role != "admin" {
-			return writeError(w, http.StatusForbidden, "only admins can list participants")
+			return writeError(w, http.StatusForbidden, "only_admin_can_list_participants", "only admins can list participants")
 		}
 
 		items, err := h.Store.ListParticipants(r.Context(), survey.ID)
@@ -62,12 +62,12 @@ func (h *Handler) UpdateParticipantRole() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || participant.Role != "admin" {
-			return writeError(w, http.StatusForbidden, "only admins can change roles")
+			return writeError(w, http.StatusForbidden, "only_admin_can_change_roles", "only admins can change roles")
 		}
 
 		targetUserID, err := parseUserIDParam(r)
 		if err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid user id")
+			return writeError(w, http.StatusBadRequest, "invalid_user_id", "invalid user id")
 		}
 
 		target, err := h.Store.GetParticipant(r.Context(), survey.ID, targetUserID)
@@ -75,20 +75,20 @@ func (h *Handler) UpdateParticipantRole() AppHandlerFunc {
 			return err
 		}
 		if target == nil {
-			return writeError(w, http.StatusNotFound, "participant not found")
+			return writeError(w, http.StatusNotFound, "participant_not_found", "participant not found")
 		}
 		if target.Role == "admin" {
-			return writeError(w, http.StatusForbidden, "cannot change admin role")
+			return writeError(w, http.StatusForbidden, "cannot_change_admin_role", "cannot change admin role")
 		}
 
 		var in struct {
 			Role string `json:"role"`
 		}
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 		if in.Role != "participant" && in.Role != "moderator" {
-			return writeError(w, http.StatusBadRequest, "role must be participant or moderator")
+			return writeError(w, http.StatusBadRequest, "invalid_role", "role must be participant or moderator")
 		}
 
 		if err := h.Store.UpdateParticipantRole(r.Context(), survey.ID, targetUserID, in.Role); err != nil {
@@ -116,12 +116,12 @@ func (h *Handler) RemoveParticipant() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || participant.Role != "admin" {
-			return writeError(w, http.StatusForbidden, "only admins can remove participants")
+			return writeError(w, http.StatusForbidden, "only_admin_can_remove_participants", "only admins can remove participants")
 		}
 
 		targetUserID, err := parseUserIDParam(r)
 		if err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid user id")
+			return writeError(w, http.StatusBadRequest, "invalid_user_id", "invalid user id")
 		}
 
 		target, err := h.Store.GetParticipant(r.Context(), survey.ID, targetUserID)
@@ -129,10 +129,10 @@ func (h *Handler) RemoveParticipant() AppHandlerFunc {
 			return err
 		}
 		if target == nil {
-			return writeError(w, http.StatusNotFound, "participant not found")
+			return writeError(w, http.StatusNotFound, "participant_not_found", "participant not found")
 		}
 		if target.Role == "admin" {
-			return writeError(w, http.StatusForbidden, "cannot remove admin")
+			return writeError(w, http.StatusForbidden, "cannot_remove_admin", "cannot remove admin")
 		}
 
 		if err := h.Store.RemoveParticipant(r.Context(), survey.ID, targetUserID); err != nil {

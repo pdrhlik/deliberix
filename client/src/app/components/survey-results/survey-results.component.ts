@@ -9,7 +9,7 @@ import {
   IonSpinner,
   IonText,
 } from "@ionic/angular/standalone";
-import { TranslatePipe } from "@ngx-translate/core";
+import { TranslatePipe, TranslateService } from "@ngx-translate/core";
 import { addIcons } from "ionicons";
 import {
   checkmarkCircleOutline,
@@ -19,6 +19,7 @@ import {
 } from "ionicons/icons";
 import { StatementResult, SurveyStats, UserVote } from "../../models/results.model";
 import { ResultsService } from "../../services/results.service";
+import { apiErrorMessage } from "../../utils/api-error";
 
 @Component({
   selector: "app-survey-results",
@@ -39,6 +40,7 @@ import { ResultsService } from "../../services/results.service";
 })
 export class SurveyResultsComponent implements OnInit {
   private resultsService = inject(ResultsService);
+  private translate = inject(TranslateService);
 
   surveySlug = input.required<string>();
 
@@ -66,7 +68,7 @@ export class SurveyResultsComponent implements OnInit {
       this.myVotes.set(res.myVotes || {});
     } catch (e: any) {
       if (e?.status === 403) {
-        this.error.set(e?.error?.error || "Results not available yet.");
+        this.error.set(apiErrorMessage(e, this.translate));
       }
     } finally {
       this.loading.set(false);

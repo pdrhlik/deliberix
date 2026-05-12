@@ -28,7 +28,7 @@ func (h *Handler) GetResults() AppHandlerFunc {
 		switch survey.ResultVisibility {
 		case "after_close":
 			if survey.Status != "closed" {
-				return writeError(w, http.StatusForbidden, "Results are available after the survey closes.")
+				return writeError(w, http.StatusForbidden, "results_after_close", "Results are available after the survey closes.")
 			}
 		case "after_completion":
 			progress, err := h.Store.GetVoteProgress(r.Context(), survey.ID, user.ID)
@@ -36,7 +36,7 @@ func (h *Handler) GetResults() AppHandlerFunc {
 				return err
 			}
 			if progress.Total > 0 && progress.Voted < progress.Total {
-				return writeError(w, http.StatusForbidden, "Please complete all votes to see results.")
+				return writeError(w, http.StatusForbidden, "results_after_completion", "Please complete all votes to see results.")
 			}
 		case "continuous":
 			// Always visible

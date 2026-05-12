@@ -88,7 +88,7 @@ func (h *Handler) getSurveyFromSlug(w http.ResponseWriter, r *http.Request) (*mo
 		return nil, err
 	}
 	if survey == nil {
-		writeError(w, http.StatusNotFound, "survey not found")
+		writeError(w, http.StatusNotFound, "survey_not_found", "survey not found")
 		return nil, nil
 	}
 	return survey, nil
@@ -116,11 +116,11 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		var in model.CreateSurveyRequest
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		if in.Title == "" {
-			return writeError(w, http.StatusBadRequest, "title is required")
+			return writeError(w, http.StatusBadRequest, "title_required", "title is required")
 		}
 
 		user := identity.GetUserFromContext(r.Context())
@@ -140,7 +140,7 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 		}
 
 		if charMin > charMax {
-			return writeError(w, http.StatusBadRequest, "statement_char_min must be less than or equal to statement_char_max")
+			return writeError(w, http.StatusBadRequest, "char_min_max_invalid", "statement_char_min must be less than or equal to statement_char_max")
 		}
 
 		moderationEnabled := true
@@ -151,42 +151,42 @@ func (h *Handler) CreateSurvey() AppHandlerFunc {
 		visibility := "private"
 		if in.Visibility != "" {
 			if !validVisibilities[in.Visibility] {
-				return writeError(w, http.StatusBadRequest, "invalid visibility value")
+				return writeError(w, http.StatusBadRequest, "invalid_visibility", "invalid visibility value")
 			}
 			visibility = in.Visibility
 		}
 		privacyMode := "anonymous"
 		if in.PrivacyMode != "" {
 			if !validPrivacyModes[in.PrivacyMode] {
-				return writeError(w, http.StatusBadRequest, "invalid privacy_mode value")
+				return writeError(w, http.StatusBadRequest, "invalid_privacy_mode", "invalid privacy_mode value")
 			}
 			privacyMode = in.PrivacyMode
 		}
 		invitationMode := "none"
 		if in.InvitationMode != "" {
 			if !validInvitationModes[in.InvitationMode] {
-				return writeError(w, http.StatusBadRequest, "invalid invitation_mode value")
+				return writeError(w, http.StatusBadRequest, "invalid_invitation_mode", "invalid invitation_mode value")
 			}
 			invitationMode = in.InvitationMode
 		}
 		resultVisibility := "after_completion"
 		if in.ResultVisibility != "" {
 			if !validResultVisibility[in.ResultVisibility] {
-				return writeError(w, http.StatusBadRequest, "invalid result_visibility value")
+				return writeError(w, http.StatusBadRequest, "invalid_result_visibility", "invalid result_visibility value")
 			}
 			resultVisibility = in.ResultVisibility
 		}
 		statementOrder := "random"
 		if in.StatementOrder != "" {
 			if !validStatementOrders[in.StatementOrder] {
-				return writeError(w, http.StatusBadRequest, "invalid statement_order value")
+				return writeError(w, http.StatusBadRequest, "invalid_statement_order", "invalid statement_order value")
 			}
 			statementOrder = in.StatementOrder
 		}
 
 		if in.IntakeConfig != nil {
 			if err := validateIntakeConfig(*in.IntakeConfig); err != nil {
-				return writeError(w, http.StatusBadRequest, err.Error())
+				return writeError(w, http.StatusBadRequest, "invalid_intake_config", err.Error())
 			}
 		}
 
@@ -268,7 +268,7 @@ func (h *Handler) GetSurvey() AppHandlerFunc {
 				return err
 			}
 			if !isParticipant {
-				return writeError(w, http.StatusNotFound, "survey not found")
+				return writeError(w, http.StatusNotFound, "survey_not_found", "survey not found")
 			}
 		}
 
@@ -293,12 +293,12 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || participant.Role != "admin" {
-			return writeError(w, http.StatusForbidden, "only survey admins can update")
+			return writeError(w, http.StatusForbidden, "only_admin_can_update", "only survey admins can update")
 		}
 
 		var in model.UpdateSurveyRequest
 		if err := parseJSON(r, &in); err != nil {
-			return writeError(w, http.StatusBadRequest, "invalid request body")
+			return writeError(w, http.StatusBadRequest, "invalid_request_body", "invalid request body")
 		}
 
 		fields := dali.Map{}
@@ -313,31 +313,31 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 		}
 		if in.Visibility != nil {
 			if !validVisibilities[*in.Visibility] {
-				return writeError(w, http.StatusBadRequest, "invalid visibility value")
+				return writeError(w, http.StatusBadRequest, "invalid_visibility", "invalid visibility value")
 			}
 			fields["visibility"] = *in.Visibility
 		}
 		if in.PrivacyMode != nil {
 			if !validPrivacyModes[*in.PrivacyMode] {
-				return writeError(w, http.StatusBadRequest, "invalid privacy_mode value")
+				return writeError(w, http.StatusBadRequest, "invalid_privacy_mode", "invalid privacy_mode value")
 			}
 			fields["privacy_mode"] = *in.PrivacyMode
 		}
 		if in.InvitationMode != nil {
 			if !validInvitationModes[*in.InvitationMode] {
-				return writeError(w, http.StatusBadRequest, "invalid invitation_mode value")
+				return writeError(w, http.StatusBadRequest, "invalid_invitation_mode", "invalid invitation_mode value")
 			}
 			fields["invitation_mode"] = *in.InvitationMode
 		}
 		if in.ResultVisibility != nil {
 			if !validResultVisibility[*in.ResultVisibility] {
-				return writeError(w, http.StatusBadRequest, "invalid result_visibility value")
+				return writeError(w, http.StatusBadRequest, "invalid_result_visibility", "invalid result_visibility value")
 			}
 			fields["result_visibility"] = *in.ResultVisibility
 		}
 		if in.StatementOrder != nil {
 			if !validStatementOrders[*in.StatementOrder] {
-				return writeError(w, http.StatusBadRequest, "invalid statement_order value")
+				return writeError(w, http.StatusBadRequest, "invalid_statement_order", "invalid statement_order value")
 			}
 			fields["statement_order"] = *in.StatementOrder
 		}
@@ -349,7 +349,7 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 		}
 		if in.ModerationEnabled != nil {
 			if survey.Status != "draft" {
-				return writeError(w, http.StatusBadRequest, "moderation_enabled can only be changed while survey is in draft")
+				return writeError(w, http.StatusBadRequest, "moderation_lock", "moderation_enabled can only be changed while survey is in draft")
 			}
 			fields["moderation_enabled"] = *in.ModerationEnabled
 		}
@@ -363,11 +363,11 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 			charMax = *in.StatementCharMax
 		}
 		if charMin > charMax {
-			return writeError(w, http.StatusBadRequest, "statement_char_min must be less than or equal to statement_char_max")
+			return writeError(w, http.StatusBadRequest, "char_min_max_invalid", "statement_char_min must be less than or equal to statement_char_max")
 		}
 		if in.IntakeConfig != nil {
 			if err := validateIntakeConfig(*in.IntakeConfig); err != nil {
-				return writeError(w, http.StatusBadRequest, err.Error())
+				return writeError(w, http.StatusBadRequest, "invalid_intake_config", err.Error())
 			}
 			fields["intake_config"] = *in.IntakeConfig
 		}
@@ -376,7 +376,7 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 		}
 
 		if len(fields) == 0 {
-			return writeError(w, http.StatusBadRequest, "no fields to update")
+			return writeError(w, http.StatusBadRequest, "no_fields_to_update", "no fields to update")
 		}
 
 		if err := h.Store.UpdateSurvey(r.Context(), survey.ID, fields); err != nil {
@@ -408,7 +408,7 @@ func (h *Handler) DeleteSurvey() AppHandlerFunc {
 			return err
 		}
 		if participant == nil || participant.Role != "admin" {
-			return writeError(w, http.StatusForbidden, "only survey admins can delete")
+			return writeError(w, http.StatusForbidden, "only_admin_can_delete", "only survey admins can delete")
 		}
 
 		if err := h.Store.DeleteSurvey(r.Context(), survey.ID); err != nil {
@@ -436,7 +436,7 @@ func (h *Handler) GetMyParticipation() AppHandlerFunc {
 			return err
 		}
 		if p == nil {
-			return writeError(w, http.StatusNotFound, "not a participant")
+			return writeError(w, http.StatusNotFound, "not_a_participant", "not a participant")
 		}
 
 		return writeJSON(w, http.StatusOK, p)
@@ -456,11 +456,11 @@ func (h *Handler) JoinSurvey() AppHandlerFunc {
 		user := identity.GetUserFromContext(r.Context())
 
 		if survey.Status != "active" {
-			return writeError(w, http.StatusBadRequest, "survey is not active")
+			return writeError(w, http.StatusBadRequest, "survey_not_active", "survey is not active")
 		}
 
 		if isSurveyClosed(survey) {
-			return writeError(w, http.StatusForbidden, "survey has closed")
+			return writeError(w, http.StatusForbidden, "survey_closed", "survey has closed")
 		}
 
 		isParticipant, err := h.Store.IsParticipant(r.Context(), survey.ID, user.ID)
@@ -468,7 +468,7 @@ func (h *Handler) JoinSurvey() AppHandlerFunc {
 			return err
 		}
 		if isParticipant {
-			return writeError(w, http.StatusConflict, "already a participant")
+			return writeError(w, http.StatusConflict, "already_a_participant", "already a participant")
 		}
 
 		var body struct {

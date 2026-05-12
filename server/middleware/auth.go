@@ -10,25 +10,31 @@ import (
 	"github.com/pdrhlik/deliberix/server/store"
 )
 
+func writeAuthError(w http.ResponseWriter, status int, code, message string) {
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(status)
+	w.Write([]byte(`{"code":"` + code + `","message":"` + message + `"}`))
+}
+
 func Auth(secret string, s *store.Store) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			auth := r.Header.Get("Authorization")
 			_, token, _ := strings.Cut(auth, "Bearer ")
 			if token == "" {
-				http.Error(w, "unauthorized", http.StatusUnauthorized)
+				writeAuthError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
 				return
 			}
 
 			userID, err := service.ValidateToken(token, secret)
 			if err != nil {
-				http.Error(w, "unauthorized", http.StatusUnauthorized)
+				writeAuthError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
 				return
 			}
 
 			u, err := s.GetUserByID(r.Context(), userID)
 			if err != nil || u == nil {
-				http.Error(w, "unauthorized", http.StatusUnauthorized)
+				writeAuthError(w, http.StatusUnauthorized, "unauthorized", "unauthorized")
 				return
 			}
 
@@ -43,9 +49,7 @@ func Auth(secret string, s *store.Store) func(http.Handler) http.Handler {
 			if !ident.EmailVerified {
 				path := r.URL.Path
 				if path != "/api/v1/auth/me" && path != "/api/v1/auth/resend-verification" {
-					w.Header().Set("Content-Type", "application/json")
-					w.WriteHeader(http.StatusForbidden)
-					w.Write([]byte(`{"error":"email not verified"}`))
+					writeAuthError(w, http.StatusForbidden, "email_not_verified", "email not verified")
 					return
 				}
 			}
