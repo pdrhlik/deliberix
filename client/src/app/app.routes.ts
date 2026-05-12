@@ -68,7 +68,7 @@ export const routes: Routes = [
   },
   {
     path: "survey/:slug/moderation",
-    canActivate: [surveyAccessGuard],
+    canActivate: [authGuard],
     loadComponent: () =>
       import("./pages/survey-moderation/survey-moderation.page").then(
         (m) => m.SurveyModerationPage,
