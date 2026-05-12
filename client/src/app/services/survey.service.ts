@@ -40,4 +40,9 @@ export class SurveyService {
     await this.loadSurveys();
     return survey;
   }
+
+  async deleteSurvey(slug: string): Promise<void> {
+    await firstValueFrom(this.api.delete<void>(`/survey/${slug}`));
+    await this.loadSurveys();
+  }
 }

@@ -35,6 +35,7 @@ import {
   playOutline,
   settingsOutline,
   shieldCheckmarkOutline,
+  trashOutline,
 } from "ionicons/icons";
 import { firstValueFrom } from "rxjs";
 import { IntakeConfigBuilderComponent } from "../../components/intake-config-builder/intake-config-builder.component";
@@ -117,6 +118,7 @@ export class SurveyDetailPage {
   editClosesAt = signal("");
   editIntakeConfig = signal<IntakeConfig | null>(null);
   savingSettings = signal(false);
+  deleting = signal(false);
 
   constructor() {
     addIcons({
@@ -130,6 +132,7 @@ export class SurveyDetailPage {
       checkmarkOutline,
       closeOutline,
       barChartOutline,
+      trashOutline,
     });
   }
 
@@ -311,6 +314,28 @@ export class SurveyDetailPage {
       this.toast.apiError(e);
     } finally {
       this.savingSettings.set(false);
+    }
+  }
+
+  async confirmDelete() {
+    const s = this.survey();
+    if (!s) return;
+
+    const confirmed = await this.confirmAction(
+      this.translate.instant("survey.delete"),
+      this.translate.instant("survey.delete-confirm", { title: s.title }),
+    );
+    if (!confirmed) return;
+
+    this.deleting.set(true);
+    try {
+      await this.surveyService.deleteSurvey(s.slug);
+      this.toast.success("survey.deleted");
+      this.router.navigateByUrl("/surveys", { replaceUrl: true });
+    } catch (e) {
+      this.toast.apiError(e);
+    } finally {
+      this.deleting.set(false);
     }
   }
 

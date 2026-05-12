@@ -99,7 +99,10 @@
     "statement-char-min": "Min statement length",
     "statement-char-max": "Max statement length",
     "closes-at": "Closes at",
-    "settings-saved": "Survey settings have been saved."
+    "settings-saved": "Survey settings have been saved.",
+    "delete": "Delete survey",
+    "delete-confirm": "Are you sure you want to delete the survey \"{{title}}\"? This action cannot be undone and will remove all statements, votes, and participants.",
+    "deleted": "Survey has been deleted."
   },
   "statement": {
     "statements": "Statements",

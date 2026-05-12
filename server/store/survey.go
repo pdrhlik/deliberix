@@ -90,6 +90,12 @@ func (s *Store) UpdateSurvey(ctx context.Context, id uint, fields dali.Map) erro
 	return err
 }
 
+func (s *Store) DeleteSurvey(ctx context.Context, id uint) error {
+	q := s.DB.Query(`DELETE FROM survey WHERE id = ?`, id)
+	_, err := q.Exec()
+	return err
+}
+
 func (s *Store) AddParticipant(ctx context.Context, p *model.SurveyParticipant) error {
 	q := s.DB.Query(`INSERT INTO survey_participant ?values`, p)
 	_, err := q.Exec()

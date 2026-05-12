@@ -372,7 +372,24 @@
       </div>
       }
     </div>
-    } }
+    }
+
+    <div class="danger-zone">
+      <ion-button
+        expand="block"
+        color="danger"
+        (click)="confirmDelete()"
+        [disabled]="deleting()"
+      >
+        @if (deleting()) {
+        <ion-spinner name="crescent"></ion-spinner>
+        } @else {
+        <ion-icon name="trash-outline" slot="start"></ion-icon>
+        {{ "survey.delete" | translate }}
+        }
+      </ion-button>
+    </div>
+    }
 
     <!-- PARTICIPANTS (admin) -->
     @if (activeSegment() === "participants") {

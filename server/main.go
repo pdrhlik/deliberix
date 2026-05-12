@@ -88,6 +88,7 @@ func main() {
 		r.Get("/api/v1/survey/public", handler.ErrorHandler(h.ListPublicSurveys()))
 		r.Get("/api/v1/survey/{slug}", handler.ErrorHandler(h.GetSurvey()))
 		r.Patch("/api/v1/survey/{slug}", handler.ErrorHandler(h.UpdateSurvey()))
+		r.Delete("/api/v1/survey/{slug}", handler.ErrorHandler(h.DeleteSurvey()))
 		r.Post("/api/v1/survey/{slug}/join", handler.ErrorHandler(h.JoinSurvey()))
 		r.Get("/api/v1/survey/{slug}/participant/me", handler.ErrorHandler(h.GetMyParticipation()))
 

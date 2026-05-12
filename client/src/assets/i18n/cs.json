@@ -99,7 +99,10 @@
     "statement-char-min": "Min. délka výroku",
     "statement-char-max": "Max. délka výroku",
     "closes-at": "Uzavírá se",
-    "settings-saved": "Nastavení průzkumu byla uložena."
+    "settings-saved": "Nastavení průzkumu byla uložena.",
+    "delete": "Smazat průzkum",
+    "delete-confirm": "Opravdu chcete smazat průzkum „{{title}}“? Tato akce je nevratná a smaže všechny výroky, hlasy a účastníky.",
+    "deleted": "Průzkum byl smazán."
   },
   "statement": {
     "statements": "Výroky",

@@ -379,6 +379,35 @@ func (h *Handler) UpdateSurvey() AppHandlerFunc {
 	}
 }
 
+func (h *Handler) DeleteSurvey() AppHandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) error {
+		survey, err := h.getSurveyFromSlug(w, r)
+		if err != nil {
+			return err
+		}
+		if survey == nil {
+			return nil
+		}
+
+		user := identity.GetUserFromContext(r.Context())
+
+		participant, err := h.Store.GetParticipant(r.Context(), survey.ID, user.ID)
+		if err != nil {
+			return err
+		}
+		if participant == nil || participant.Role != "admin" {
+			return writeError(w, http.StatusForbidden, "only survey admins can delete")
+		}
+
+		if err := h.Store.DeleteSurvey(r.Context(), survey.ID); err != nil {
+			return err
+		}
+
+		w.WriteHeader(http.StatusNoContent)
+		return nil
+	}
+}
+
 func (h *Handler) GetMyParticipation() AppHandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) error {
 		survey, err := h.getSurveyFromSlug(w, r)
