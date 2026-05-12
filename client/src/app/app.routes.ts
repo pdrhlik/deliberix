@@ -1,5 +1,6 @@
 import { Routes } from "@angular/router";
 import { authGuard } from "./guards/auth.guard";
+import { surveyAccessGuard } from "./guards/survey-access.guard";
 
 export const routes: Routes = [
   {
@@ -55,19 +56,19 @@ export const routes: Routes = [
   },
   {
     path: "survey/:slug",
-    canActivate: [authGuard],
+    canActivate: [surveyAccessGuard],
     loadComponent: () =>
       import("./pages/survey-detail/survey-detail.page").then((m) => m.SurveyDetailPage),
   },
   {
     path: "survey/:slug/results",
-    canActivate: [authGuard],
+    canActivate: [surveyAccessGuard],
     loadComponent: () =>
       import("./pages/survey-results/survey-results.page").then((m) => m.SurveyResultsPage),
   },
   {
     path: "survey/:slug/moderation",
-    canActivate: [authGuard],
+    canActivate: [surveyAccessGuard],
     loadComponent: () =>
       import("./pages/survey-moderation/survey-moderation.page").then(
         (m) => m.SurveyModerationPage,
@@ -75,13 +76,13 @@ export const routes: Routes = [
   },
   {
     path: "survey/:slug/vote",
-    canActivate: [authGuard],
+    canActivate: [surveyAccessGuard],
     loadComponent: () =>
       import("./pages/survey-vote/survey-vote.page").then((m) => m.SurveyVotePage),
   },
   {
     path: "survey/:slug/join",
-    canActivate: [authGuard],
+    canActivate: [surveyAccessGuard],
     loadComponent: () =>
       import("./pages/survey-join/survey-join.page").then((m) => m.SurveyJoinPage),
   },

@@ -15,6 +15,7 @@ export interface Survey {
   statementCharMin: number;
   statementCharMax: number;
   moderationEnabled: boolean;
+  allowAnonymous: boolean;
   intakeConfig?: IntakeConfig;
   closesAt?: string;
   createdBy: number;
@@ -47,6 +48,7 @@ export interface CreateSurveyRequest {
   statementCharMin?: number;
   statementCharMax?: number;
   moderationEnabled?: boolean;
+  allowAnonymous?: boolean;
   intakeConfig?: IntakeConfig;
   closesAt?: string;
 }
@@ -63,6 +65,7 @@ export interface UpdateSurveyRequest {
   statementCharMin?: number;
   statementCharMax?: number;
   moderationEnabled?: boolean;
+  allowAnonymous?: boolean;
   intakeConfig?: IntakeConfig;
   closesAt?: string;
 }
