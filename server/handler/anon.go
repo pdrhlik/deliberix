@@ -50,6 +50,14 @@ func (h *Handler) AnonJoin() AppHandlerFunc {
 
 		sessionID := identity.NewAnonSessionID()
 		if err := h.Store.CreateAnonParticipant(r.Context(), survey.ID, sessionID, body.IntakeData); err != nil {
+			// A concurrent request may have created a participant for this caller
+			// between our check and our insert (e.g., double-tapped button).
+			// Re-check via the request's actor — if a row exists now, treat as 409.
+			if actor := identity.GetActorFromContext(r.Context()); actor != nil {
+				if p, _ := h.Store.GetParticipantByActor(r.Context(), survey.ID, actor); p != nil {
+					return writeError(w, http.StatusConflict, "already_a_participant", "already a participant")
+				}
+			}
 			return err
 		}
 
