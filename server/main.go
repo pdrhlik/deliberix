@@ -54,10 +54,19 @@ func main() {
 
 	r := chi.NewRouter()
 	r.Use(chimw.Logger)
+
+	// CORS: AllowCredentials requires an explicit origin (wildcard is forbidden
+	// by the spec when credentials are enabled). Use cfg.BaseURL in prod;
+	// fall back to the Angular dev server origin when unset.
+	allowedOrigins := []string{cfg.BaseURL}
+	if cfg.BaseURL == "" {
+		allowedOrigins = []string{"http://localhost:4200"}
+	}
 	r.Use(cors.Handler(cors.Options{
-		AllowedOrigins: []string{"*"},
-		AllowedMethods: []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
-		AllowedHeaders: []string{"Accept", "Authorization", "Content-Type"},
+		AllowedOrigins:   allowedOrigins,
+		AllowedMethods:   []string{"GET", "POST", "PATCH", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type"},
+		AllowCredentials: true,
 	}))
 
 	r.Get("/api/v1/health", func(w http.ResponseWriter, r *http.Request) {
@@ -65,7 +74,7 @@ func main() {
 		w.Write([]byte(`{"status":"ok"}`))
 	})
 
-	// Public auth routes
+	// Public — no auth required (cookies optional)
 	r.Post("/api/v1/auth/register", handler.ErrorHandler(h.Register()))
 	r.Post("/api/v1/auth/login", handler.ErrorHandler(h.Login()))
 	r.Post("/api/v1/auth/verify-email", handler.ErrorHandler(h.VerifyEmail()))
@@ -73,46 +82,52 @@ func main() {
 	r.Post("/api/v1/auth/magic-link/verify", handler.ErrorHandler(h.VerifyMagicLink()))
 	r.Post("/api/v1/auth/forgot-password", handler.ErrorHandler(h.ForgotPassword()))
 	r.Post("/api/v1/auth/reset-password", handler.ErrorHandler(h.ResetPassword()))
+	r.Post("/api/v1/anon/logout", handler.ErrorHandler(h.AnonLogout()))
 
-	// Protected routes
+	// JWT-only (admin + user-management)
 	r.Group(func(r chi.Router) {
 		r.Use(middleware.AuthJWT(cfg.JWTSecret, s))
+
 		r.Get("/api/v1/auth/me", handler.ErrorHandler(h.Me()))
 		r.Patch("/api/v1/auth/me", handler.ErrorHandler(h.UpdateProfile()))
 		r.Post("/api/v1/auth/change-password", handler.ErrorHandler(h.ChangePassword()))
 		r.Post("/api/v1/auth/resend-verification", handler.ErrorHandler(h.ResendVerification()))
 
-		// Survey routes
+		// Survey CRUD + JWT-only membership
 		r.Get("/api/v1/survey", handler.ErrorHandler(h.ListSurveys()))
 		r.Post("/api/v1/survey", handler.ErrorHandler(h.CreateSurvey()))
 		r.Get("/api/v1/survey/public", handler.ErrorHandler(h.ListPublicSurveys()))
-		r.Get("/api/v1/survey/{slug}", handler.ErrorHandler(h.GetSurvey()))
 		r.Patch("/api/v1/survey/{slug}", handler.ErrorHandler(h.UpdateSurvey()))
 		r.Delete("/api/v1/survey/{slug}", handler.ErrorHandler(h.DeleteSurvey()))
 		r.Post("/api/v1/survey/{slug}/join", handler.ErrorHandler(h.JoinSurvey()))
-		r.Get("/api/v1/survey/{slug}/participant/me", handler.ErrorHandler(h.GetMyParticipation()))
 
-		// Participant management routes
+		// Participant management
 		r.Get("/api/v1/survey/{slug}/participants", handler.ErrorHandler(h.ListParticipants()))
 		r.Patch("/api/v1/survey/{slug}/participant/{userId}/role", handler.ErrorHandler(h.UpdateParticipantRole()))
 		r.Delete("/api/v1/survey/{slug}/participant/{userId}", handler.ErrorHandler(h.RemoveParticipant()))
 
-		// Statement routes
-		r.Get("/api/v1/survey/{slug}/statement", handler.ErrorHandler(h.ListStatements()))
-		r.Post("/api/v1/survey/{slug}/statement", handler.ErrorHandler(h.SubmitStatement()))
+		// Seed statements (admin)
 		r.Post("/api/v1/survey/{slug}/statement/seed", handler.ErrorHandler(h.AddSeedStatement()))
-		r.Get("/api/v1/survey/{slug}/statement/next", handler.ErrorHandler(h.GetNextStatement()))
 
-		// Moderation routes
+		// Moderation
 		r.Get("/api/v1/survey/{slug}/moderation", handler.ErrorHandler(h.GetModerationQueue()))
 		r.Patch("/api/v1/statement/{id}/moderate", handler.ErrorHandler(h.ModerateStatement()))
+	})
 
-		// Results routes
+	// Dual-auth (JWT OR anon cookie OR no auth — handlers gate per route)
+	r.Group(func(r chi.Router) {
+		r.Use(middleware.AuthOptional(cfg.JWTSecret, s))
+
+		r.Post("/api/v1/survey/{slug}/anon/join", handler.ErrorHandler(h.AnonJoin()))
+
+		r.Get("/api/v1/survey/{slug}", handler.ErrorHandler(h.GetSurvey()))
+		r.Get("/api/v1/survey/{slug}/participant/me", handler.ErrorHandler(h.GetMyParticipation()))
+		r.Get("/api/v1/survey/{slug}/statement", handler.ErrorHandler(h.ListStatements()))
+		r.Get("/api/v1/survey/{slug}/statement/next", handler.ErrorHandler(h.GetNextStatement()))
+		r.Post("/api/v1/survey/{slug}/statement", handler.ErrorHandler(h.SubmitStatement()))
+		r.Post("/api/v1/statement/{id}/response", handler.ErrorHandler(h.SubmitResponse()))
 		r.Get("/api/v1/survey/{slug}/results", handler.ErrorHandler(h.GetResults()))
 		r.Get("/api/v1/survey/{slug}/stats", handler.ErrorHandler(h.GetSurveyStats()))
-
-		// Response routes
-		r.Post("/api/v1/statement/{id}/response", handler.ErrorHandler(h.SubmitResponse()))
 		r.Get("/api/v1/survey/{slug}/progress", handler.ErrorHandler(h.GetVoteProgress()))
 	})
 
