@@ -1,6 +1,6 @@
 {
   "nav": {
-    "home": "Domov",
+    "home": "Domů",
     "about": "O projektu",
     "contact": "Kontakt",
     "login": "Přihlásit se",
@@ -8,20 +8,20 @@
   },
   "hero": {
     "title": "Deliberativní průzkumy pro lepší rozhodování",
-    "subtitle": "Dejte každému hlasu spravedlivou šanci. Deliberix pomáhá komunitám, organizacím a výzkumníkům sbírat nuancované názory prostřednictvím strukturované deliberace.",
+    "subtitle": "Dejte každému hlasu spravedlivou šanci. Deliberix pomáhá komunitám, organizacím a výzkumníkům jednoduše sbírat názory lidí a lépe porozumět tomu, kde se shodují a kde mají rozdílné pohledy.",
     "cta-primary": "Začít zdarma",
     "cta-secondary": "Procházet veřejné průzkumy"
   },
   "features": {
     "title": "Jak to funguje",
     "vote-title": "Hodnoťte výroky",
-    "vote-desc": "Účastníci souhlasí, nesouhlasí nebo přeskočí každý výrok. Jednoduše a rychle.",
+    "vote-desc": "Účastníci u každého výroku zvolí, zda souhlasí, nesouhlasí, nebo jej přeskočí.",
     "submit-title": "Přidejte vlastní",
-    "submit-desc": "Kdokoli může navrhnout nové výroky, o kterých bude komunita rozhodovat.",
+    "submit-desc": "Každý může navrhnout nový výrok, o kterém následně hlasuje celá komunita.",
     "results-title": "Sledujte konsenzus",
     "results-desc": "Výsledky v reálném čase ukazují, kde se skupina shoduje a kde se názory rozcházejí.",
     "moderate-title": "Komunitní moderace",
-    "moderate-desc": "Moderátoři posuzují příspěvky, aby diskuze zůstala produktivní."
+    "moderate-desc": "Moderátoři mohou posuzovat příspěvky, aby diskuze zůstala produktivní."
   },
   "usecases": {
     "title": "Vytvořeno pro",
@@ -39,13 +39,13 @@
   },
   "about": {
     "title": "O Deliberix",
-    "intro": "Deliberix je deliberativní průzkumová platforma inspirovaná projekty Pol.is a All Our Ideas. Pomáhá skupinám objevovat konsenzus a porozumět neshodám prostřednictvím strukturované participace.",
+    "intro": "Deliberix je deliberativní platforma pro sběr a vyhodnocování názorů. Pomáhá skupinám objevovat konsenzus, porozumět rozdílným postojům a vést participativní diskusi.",
     "how-title": "Jak to funguje",
-    "how-text": "Administrátoři průzkumu vytvoří sadu počátečních výroků k tématu. Účastníci hodnotí každý výrok jako souhlas, nesouhlas nebo přeskočení a mohou označit důležité. Mohou také navrhovat nové výroky k moderaci. Výsledky zobrazují rozložení hlasů, míru shody a hodnocení důležitosti v reálném čase.",
+    "how-text": "Administrátoři průzkumu vytvoří sadu úvodních výroků k danému tématu. Účastníci následně každý výrok hodnotí výběrem možností „souhlasím“, „nesouhlasím“ nebo „přeskočit“ a mohou zároveň vybrat výroky, které považují za důležité. Mohou také navrhovat vlastní nové výroky, které jsou následně zařazeny do skupinového hlasování. Výsledky v reálném čase průběžně zobrazují rozložení hlasů, míru shody mezi účastníky a hodnocení důležitosti tvrzení.",
     "open-title": "Otevřený a transparentní",
-    "open-text": "Deliberix je navržen pro nasazení on-premise nebo jako hostovaná služba. Viditelnost průzkumu, soukromí a přístup k výsledkům jsou plně konfigurovatelné pro každý průzkum.",
-    "who-title": "Pro koho je to?",
-    "who-text": "Obce, univerzity, neziskové organizace, firmy a kdokoli, kdo chce porozumět tomu, co si skupina skutečně myslí. Od zpětné vazby ve třídě po národní konzultace."
+    "open-text": "Deliberix je navržen pro nasazení on-premise nebo jako hostovaná služba. Nastavení viditelnosti průzkumu, soukromí a přístupu k výsledkům jsou plně konfigurovatelná pro každý jednotlivý průzkum.",
+    "who-title": "Pro koho je určeno?",
+    "who-text": "Pro obce, univerzity, neziskové organizace, firmy a všechny, kdo chtějí lépe porozumět tomu, co si skupina skutečně myslí. Využití sahá od zpětné vazby ve výuce až po rozsáhlé veřejné konzultace."
   },
   "contact": {
     "title": "Kontakt",

@@ -8,20 +8,20 @@
   },
   "hero": {
     "title": "Deliberative surveys for better decisions",
-    "subtitle": "Give every voice a fair hearing. Deliberix helps communities, organizations, and researchers gather nuanced opinions through structured deliberation.",
+    "subtitle": "Give every voice a fair hearing. Deliberix helps communities, organizations, and researchers easily gather people's opinions and better understand where they agree and where their views differ.",
     "cta-primary": "Get started for free",
     "cta-secondary": "Browse public surveys"
   },
   "features": {
     "title": "How it works",
     "vote-title": "Rate statements",
-    "vote-desc": "Participants agree, disagree, or skip on each statement. Simple and fast.",
+    "vote-desc": "For each statement, participants choose whether they agree, disagree, or skip it.",
     "submit-title": "Submit your own",
-    "submit-desc": "Anyone can propose new statements for the community to consider.",
+    "submit-desc": "Anyone can propose a new statement that the whole community then votes on.",
     "results-title": "See the consensus",
     "results-desc": "Real-time results show where the group agrees and where opinions diverge.",
     "moderate-title": "Community moderation",
-    "moderate-desc": "Moderators review submissions to keep the conversation productive."
+    "moderate-desc": "Moderators can review submissions to keep the conversation productive."
   },
   "usecases": {
     "title": "Built for",
@@ -39,13 +39,13 @@
   },
   "about": {
     "title": "About Deliberix",
-    "intro": "Deliberix is a deliberative survey platform inspired by Pol.is and All Our Ideas. It helps groups discover consensus and understand disagreement through structured participation.",
+    "intro": "Deliberix is a deliberative platform for gathering and analyzing opinions. It helps groups discover consensus, understand differing viewpoints, and lead participatory discussion.",
     "how-title": "How it works",
-    "how-text": "Survey administrators create a set of seed statements on a topic. Participants rate each statement as agree, disagree, or skip, and can mark important ones. They can also submit new statements for moderation. Results show real-time vote distributions, agreement levels, and importance ratings.",
+    "how-text": "Survey administrators create a set of opening statements on a given topic. Participants then rate each statement by choosing \"agree\", \"disagree\", or \"skip\", and can also mark statements they consider important. They can also submit their own new statements, which are then added to the group vote. Real-time results continuously show vote distribution, agreement levels between participants, and importance ratings.",
     "open-title": "Open and transparent",
-    "open-text": "Deliberix is designed to be deployed on-premise or used as a hosted service. Survey visibility, privacy, and result access are fully configurable per survey.",
+    "open-text": "Deliberix is designed to be deployed on-premise or used as a hosted service. Visibility settings, privacy, and result access are fully configurable for each individual survey.",
     "who-title": "Who is it for?",
-    "who-text": "Municipalities, universities, NGOs, companies, and anyone who wants to understand what a group really thinks. From classroom feedback to national consultations."
+    "who-text": "For municipalities, universities, NGOs, companies, and everyone who wants to better understand what a group really thinks. Use cases range from classroom feedback all the way to large-scale public consultations."
   },
   "contact": {
     "title": "Contact",
