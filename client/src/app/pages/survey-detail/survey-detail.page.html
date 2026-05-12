@@ -376,6 +376,20 @@
           </ion-note>
         </div>
       </ion-toggle>
+
+      <ion-toggle
+        [checked]="editAllowAnonymous()"
+        (ionChange)="editAllowAnonymous.set($event.detail.checked)"
+        labelPlacement="start"
+        justify="space-between"
+      >
+        <div>
+          <div>{{ "survey.allow-anonymous" | translate }}</div>
+          <ion-note color="medium" class="toggle-hint">
+            {{ "survey.allow-anonymous-help" | translate }}
+          </ion-note>
+        </div>
+      </ion-toggle>
     </div>
 
     <h3 class="section-heading">{{ "intake.intake-form" | translate }}</h3>
@@ -427,6 +441,16 @@
           {{ "survey.moderation-enabled-readonly" | translate }}
           } @else {
           {{ "survey.moderation-disabled-readonly" | translate }}
+          }
+        </span>
+      </div>
+      <div class="readonly-field">
+        <span class="readonly-label">{{ "survey.allow-anonymous" | translate }}</span>
+        <span class="readonly-value">
+          @if (s.allowAnonymous) {
+          {{ "survey.allow-anonymous-on" | translate }}
+          } @else {
+          {{ "survey.allow-anonymous-off" | translate }}
           }
         </span>
       </div>

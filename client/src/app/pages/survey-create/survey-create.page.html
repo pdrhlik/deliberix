@@ -162,6 +162,20 @@
                 </ion-note>
               </div>
             </ion-toggle>
+
+            <ion-toggle
+              [(ngModel)]="allowAnonymous"
+              name="allowAnonymous"
+              labelPlacement="start"
+              justify="space-between"
+            >
+              <div>
+                <div>{{ "survey.allow-anonymous" | translate }}</div>
+                <ion-note color="medium" class="toggle-hint">
+                  {{ "survey.allow-anonymous-help" | translate }}
+                </ion-note>
+              </div>
+            </ion-toggle>
           </div>
         </ion-accordion>
         <ion-accordion value="intake">

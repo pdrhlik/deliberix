@@ -127,6 +127,7 @@ export class SurveyDetailPage {
   editStatementCharMin = signal(20);
   editStatementCharMax = signal(150);
   editModerationEnabled = signal(true);
+  editAllowAnonymous = signal(false);
   editClosesAt = signal("");
   editIntakeConfig = signal<IntakeConfig | null>(null);
   savingSettings = signal(false);
@@ -179,6 +180,7 @@ export class SurveyDetailPage {
     this.editStatementCharMin.set(survey.statementCharMin);
     this.editStatementCharMax.set(survey.statementCharMax);
     this.editModerationEnabled.set(survey.moderationEnabled);
+    this.editAllowAnonymous.set(survey.allowAnonymous);
     this.editClosesAt.set(survey.closesAt ?? "");
     this.editIntakeConfig.set(survey.intakeConfig ?? null);
 
@@ -364,6 +366,7 @@ export class SurveyDetailPage {
         statementCharMin: this.editStatementCharMin(),
         statementCharMax: this.editStatementCharMax(),
         moderationEnabled: this.editModerationEnabled(),
+        allowAnonymous: this.editAllowAnonymous(),
         closesAt: this.editClosesAt() ? new Date(this.editClosesAt()).toISOString() : undefined,
         intakeConfig: this.editIntakeConfig()?.fields?.length
           ? this.editIntakeConfig()!

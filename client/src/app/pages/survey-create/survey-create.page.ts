@@ -70,6 +70,7 @@ export class SurveyCreatePage {
   statementCharMin = 20;
   statementCharMax = 150;
   moderationEnabled = true;
+  allowAnonymous = false;
   closesAt = "";
   intakeConfig = signal<IntakeConfig | null>(null);
   submitting = signal(false);
@@ -89,6 +90,7 @@ export class SurveyCreatePage {
         statementCharMin: this.statementCharMin,
         statementCharMax: this.statementCharMax,
         moderationEnabled: this.moderationEnabled,
+        allowAnonymous: this.allowAnonymous,
         closesAt: this.closesAt ? new Date(this.closesAt).toISOString() : undefined,
         intakeConfig: this.intakeConfig()?.fields?.length ? this.intakeConfig()! : undefined,
       });
