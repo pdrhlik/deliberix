@@ -38,3 +38,17 @@ ion-accordion-group {
   margin: 0;
   font-size: 0.875rem;
 }
+
+.toggle-hint {
+  display: block;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  white-space: normal;
+}
+
+// Ionic 8 ion-toggle clips its slotted label by default. Allow wrap.
+ion-toggle::part(label) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}

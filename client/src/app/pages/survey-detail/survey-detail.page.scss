@@ -160,6 +160,13 @@ ion-segment {
   white-space: normal;
 }
 
+// Ionic 8 ion-toggle clips its slotted label by default. Allow wrap.
+ion-toggle::part(label) {
+  white-space: normal;
+  overflow: visible;
+  text-overflow: clip;
+}
+
 .auth-link {
   text-align: center;
   margin: 0.75rem 0 0;
